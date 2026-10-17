@@ -1,8 +1,18 @@
-"""Эпизод NNN — <ОБЪЕКТ>, вертикаль 1080×1920 60 fps (шаблон: скопировать в episodes/epNNN_<obj>/).
+"""Эпизод NNN — <ОБЪЕКТ>, вертикаль 1080×1920 60 fps (шаблон: скопировать в episodes/epNNN_<slug>/).
 
-    blender -b --factory-startup -P episodes/epNNN_<obj>/shots_9x16.py -- <шот> [preview F,..] [final] [save]
+    blender -b --factory-startup -P episodes/epNNN_<slug>/shots_9x16.py -- <шот> [preview F,..] [pct=50] [samples=N] [outdir=DIR] [final] [save]
+
+    preview F,..  — кадры превью (pct=50 по умолчанию) в out/<ep>/9x16/previews/<шот>_fNNNN.png (outdir= — другая папка)
+    final         — PNG-секвенция out/<ep>/9x16/frames/<шот>/####.png с докачкой (обычно через tools/render_episode.sh)
+    save          — .blend в out/<ep>/9x16/scenes/<шот>.blend
+    Лог превью — перенаправлять в out/<ep>/9x16/logs/prev_<шот>.log (по нему tools/cues.py). Один Blender за раз.
 
 Монтаж (кадры @60): перечислить шоты, длительность и смысл каждого; где склейки и на каких событиях.
+SHOTS = episode.json → edit[].frames (проверяет tools/check_episode.py); цель Σ ≤ 3570 кадров (59,5 с).
+Шоты с пульсаром: S.report_flash(<шот>, NS.key_pulse_flash(...)); другие события для музыки — print строки
+«EVENT <шот> <имя>: кадр[:значение], ...» (формат — docstring tools/cues.py).
+fps — из сцены (C.scene_fps(sc)), не из S.OPT. Общие параметры — system.py (from system import ...).
+API — docs/spacekit.md.
 Каждый эпизод — своя драматургия и раскладка: этот файл — только каркас, не шаблон ролика.
 """
 import os
@@ -22,7 +32,7 @@ from spacekit import sky as SKY
 EP = os.path.basename(HERE)
 OUT = os.path.join(C.OUT, EP, "9x16")
 S.OPT.update(fmt="9x16", fps=60)
-SHOTS = {"v1": 300}
+SHOTS = {"v1": 300, "v2": 600, "v3": 720, "v4": 720, "v5": 600, "v6": 630}  # = episode.json edit
 sph = CAM.sph
 
 

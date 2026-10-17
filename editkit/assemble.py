@@ -10,16 +10,27 @@ edit.json (пути — абсолютные или относительно к�
   "crossfade": 0, "fade_in": 30, "fade_out": 45, "tail": 0,
   "shots": [{"dir": "out/.../frames/v1", "frames": 300, "first": 1, "xfade_in": 0}, ...],
   "titles": [{"text": "...", "start": 30, "length": 150, "size": 64, "x": 0.5, "y": 0.5, "fade": 20,
-              "font": "C:/Windows/Fonts/segoeuisl.ttf", "align": "CENTER", "outline": 0, "color": [1,1,1]}],
-  "captions": {"items": [{"text": "...", "start": 61, "end": 120}], "size": 72, "y": 0.36,
-               "font": "C:/Windows/Fonts/seguisb.ttf", "outline": 6, "highlight": [1.0, 0.85, 0.35]},
+              "font": "C:/Windows/Fonts/segoeuisl.ttf", "align": "CENTER", "outline": 0, "color": [1,1,1],
+              "shadow": true, "wrap": null}],
+  "captions": {"items": [{"text": "...", "start": 61, "end": 120}], "size": 72, "x": 0.5, "y": 0.36,
+               "font": "C:/Windows/Fonts/seguisb.ttf", "outline": 6, "wrap": 0.86, "color": [1,1,1],
+               "shadow": true},
   "audio": [{"path": "out/.../vo_en.wav", "start": 1, "volume": 1.0, "fade_in": 0, "fade_out": 0}]
 }
-shots[].first — с какого кадра секвенции брать (обрезка начала). xfade_in — наплыв В этот шот (0 — встык).
+shots[].first — номер первого кадра секвенции (число в имени файла: 0001.png = 1; обрезка начала).
+  Берутся строго кадры first..first+frames-1: нет файла или файл 0 байт (плейсхолдер Blender после
+  аварийного рендера) — ошибка со списком кадров. xfade_in — наплыв В этот шот (0 — встык); каждый наплыв
+  укорачивает таймлайн на xfade_in кадров.
 tail — кадры чёрного после затемнения. captions — субтитры фразами (обычно из tools/tts.py).
+Титры/субтитры: x, y — доли кадра, y отсчитывается от НИЗА (0.955 — у верхнего края, 0.30 — 30% от низа).
+  outline — толщина обводки: 0..1 — доля (как outline_width в Blender), значения > 1 — проценты (8 -> 0.08).
+  fade (титры) и fade_in/fade_out (видео, звук) ограничиваются половиной длины клипа.
+  Нет файла шрифта — WARN и шрифт Blender по умолчанию. Лишние ключи (max_chars и т.п.) игнорируются.
+fps: целый (24/25/30/50/60) или NTSC-дробный (23.976, 29.97, 59.94 -> fps=N, fps_base=1.001); иное — ошибка.
 """
 import json
 import os
+import re
 import sys
 
 import bpy
@@ -29,6 +40,33 @@ REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 def P(path):
     return path if os.path.isabs(path) else os.path.join(REPO, path)
+
+
+def fps_pair(fps):
+    """fps из edit.json -> (render.fps, render.fps_base). Дробные — только NTSC (N*1000/1001)."""
+    fps = float(fps)
+    if abs(fps - round(fps)) < 1e-6:
+        return int(round(fps)), 1.0
+    n = round(fps * 1.001)
+    if abs(n / 1.001 - fps) < 0.01:
+        return n, 1.001
+    raise ValueError(f"fps {fps}: поддерживаются целые и NTSC-дробные (29.97, 59.94)")
+
+
+def shot_files(d, first, frames):
+    """Имена кадров first..first+frames-1 по номеру в имени файла; пропуски и 0-байтные файлы — ошибка."""
+    by_num = {}
+    for f in os.listdir(d):
+        m = re.match(r"^(.*?)(\d+)\.png$", f, re.IGNORECASE)
+        if m:
+            by_num.setdefault(int(m.group(2)), f)
+    need = range(first, first + frames)
+    missing = [n for n in need if n not in by_num]
+    empty = [n for n in need if n in by_num and os.path.getsize(os.path.join(d, by_num[n])) == 0]
+    if missing or empty:
+        raise RuntimeError(f"{d}: кадры {first}..{first + frames - 1}: нет {len(missing)} {missing[:10]}, "
+                           f"0 байт {len(empty)} {empty[:10]} — 0-байтные удалить и дорендерить")
+    return [by_num[n] for n in need]
 
 
 def key_prop(strip, prop, pairs):
@@ -52,22 +90,26 @@ def text_strip(sed, name, channel, start, length, text, size, x, y, font=None, a
     if outline:
         ts.use_outline = True
         ts.outline_color = (0, 0, 0, 1)
-        ts.outline_width = outline / 100.0 if outline > 1 else outline
+        ts.outline_width = outline / 100.0 if outline > 1 else outline   # 0..1 — доля, > 1 — проценты
     ts.use_shadow = shadow
     if shadow:
         ts.shadow_color = (0, 0, 0, 0.6)
         ts.shadow_blur = 0.6
-    if font and os.path.exists(font):
-        ts.font = bpy.data.fonts.load(font, check_existing=True)
+    if font:
+        if os.path.exists(font):
+            ts.font = bpy.data.fonts.load(font, check_existing=True)
+        else:
+            print(f"WARN: шрифт не найден: {font} ({name}) — шрифт Blender по умолчанию")
     ts.blend_type = "ALPHA_OVER"
     return ts
 
 
 def main(cfg):
     fmt = cfg.get("format", {"w": 1920, "h": 1080, "fps": 30})
-    fps = int(fmt["fps"])
+    fps_i, fps_base = fps_pair(fmt["fps"])
+    fps = fps_i / fps_base
     sc = bpy.context.scene
-    sc.render.fps, sc.render.fps_base = fps, 1.0
+    sc.render.fps, sc.render.fps_base = fps_i, fps_base
     sc.render.resolution_x, sc.render.resolution_y, sc.render.resolution_percentage = fmt["w"], fmt["h"], 100
     # PNG уже прошли AgX при рендере — здесь только Standard, без повторного тонмаппинга
     sc.view_settings.view_transform = "Standard"
@@ -82,11 +124,7 @@ def main(cfg):
         xf = 0 if i == 0 else shot.get("xfade_in", xf_def)
         cursor = 1 if i == 0 else strips[-1].frame_final_end - xf
         d = P(shot["dir"])
-        files = sorted(f for f in os.listdir(d) if f.lower().endswith(".png"))
-        first = shot.get("first", 1)
-        files = files[first - 1: first - 1 + shot["frames"]]
-        if len(files) < shot["frames"]:
-            raise RuntimeError(f"в {d} только {len(files)} кадров из {shot['frames']} (с {first})")
+        files = shot_files(d, shot.get("first", 1), shot["frames"])
         st = sed.strips.new_image(f"shot{i + 1}", os.path.join(d, files[0]),
                                   channel=1 + (i % 2), frame_start=cursor, fit_method="FIT")
         for f in files[1:]:
@@ -103,6 +141,8 @@ def main(cfg):
                                   input1=a, input2=b)
 
     fi, fo = cfg.get("fade_in", 0), cfg.get("fade_out", 0)
+    fi = min(fi, strips[0].frame_final_duration // 2)
+    fo = min(fo, strips[-1].frame_final_duration // 2)
     if fi:
         key_prop(strips[0], "color_multiply", [(1, 0.0), (1 + fi, 1.0)])
     if fo:
@@ -115,7 +155,7 @@ def main(cfg):
                         t.get("x", 0.5), t.get("y", 0.5), t.get("font"), t.get("align", "CENTER"),
                         tuple(t.get("color", (0.92, 0.94, 1.0))), t.get("outline", 0), t.get("shadow", True),
                         t.get("wrap"))
-        fd = t.get("fade", 20)
+        fd = min(t.get("fade", 20), t["length"] // 2)    # иначе ключи альфы идут не по порядку
         s0, s1 = t["start"], t["start"] + t["length"] - 1
         if fd:
             key_prop(ts, "blend_alpha", [(s0, 0.0), (s0 + fd, 1.0), (s1 - fd, 1.0), (s1, 0.0)])
@@ -139,11 +179,11 @@ def main(cfg):
         s0, s1 = s.frame_final_start, min(s.frame_final_end - 1, end)
         if s.frame_final_end - 1 > end:
             s.frame_final_end = end + 1
-        pairs = []
+        pairs, half = [], max(0, (s1 - s0) // 2)
         if a.get("fade_in"):
-            pairs += [(s0, 0.0), (s0 + a["fade_in"], vol)]
+            pairs += [(s0, 0.0), (s0 + min(a["fade_in"], half), vol)]
         if a.get("fade_out"):
-            pairs += [(s1 - a["fade_out"], vol), (s1, 0.0)]
+            pairs += [(s1 - min(a["fade_out"], half), vol), (s1, 0.0)]
         if pairs:
             key_prop(s, "volume", pairs)
 
@@ -165,12 +205,12 @@ def main(cfg):
         ff.video_bitrate = br
         ff.minrate = int(br * 0.5)
         ff.maxrate = int(br * 1.5)
-        ff.buffersize = int(br * 2)
+        ff.buffersize = min(int(br * 2), 2000)    # предел свойства в Blender 5.2 — 0..2000
     else:
         ff.constant_rate_factor = "CUSTOM"
         ff.custom_constant_rate_factor = int(v.get("crf", 15))
     ff.ffmpeg_preset = v.get("preset", "BEST")
-    ff.gopsize = int(v.get("gop", fps // 2))     # GOP ≤ половины частоты кадров (рекомендация YouTube)
+    ff.gopsize = int(v.get("gop", fps_i // 2))     # GOP ≤ половины частоты кадров (рекомендация YouTube)
     ff.use_max_b_frames = True
     ff.max_b_frames = 2
     if cfg.get("audio"):

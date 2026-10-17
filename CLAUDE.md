@@ -11,16 +11,25 @@
 - **Факты проверяются.** Каждое число в сценарии — с источником (ATNF Pulsar Catalogue, NASA Exoplanet Archive,
   статья). Источники идут в `publish_*.md` и закреплённый комментарий. Спекуляции — с «likely/probably».
 - **Пользователь одобряет до рендера.** Рендер — часы GPU. Шаги «выбор темы» и «одобрение сценария+превью» —
-  обязательные точки согласования (см. `docs/pipeline.md`). После одобрения — делать до конца без вопросов.
-- **Своя музыка** (`tools/music.py`) — никаких сторонних треков: Content ID на Shorts > 60 с блокирует ролик.
-- Длительность Shorts ≤ 60.0 с. Английский — основной мастер (монетизация), русский — зеркало (VK Видео, Rutube).
+  обязательные точки согласования (см. `docs/pipeline.md`). Состав сообщения на одобрение и что можно менять после
+  «ок» без вопроса (а что требует остановки) — `docs/approval.md`.
+- **Своя музыка** (`tools/music.py`) — никаких сторонних треков: Shorts > 60 с с любой претензией по авторскому
+  праву (Content ID или ручной) блокируется глобально.
+- Длительность Shorts: **цель 59–59,5 с, жёсткий максимум 60,0 с** (запас ≥ 0,5 с: AAC-дорожка удлиняет контейнер).
+  Английский — основной мастер (монетизация), русский — зеркало (VK Видео, Rutube).
 
 ## Окружение
 
 - Blender 5.2.2: `"/d/Blender/blender.exe"` (Git Bash). Скрипты: `blender -b --factory-startup -P <script> -- <args>`.
   Внутри Blender: Python 3.13 + numpy (scipy нет).
-- `.venv` (Python 3.14): kokoro-onnx, edge-tts, soundfile, scipy, pyloudnorm — для звука. Веса Kokoro — `assets/tts/`.
-- GPU: RTX 3060 8 ГБ, OptiX. Кадр 1080×1920: 3–6 с (крупные планы), 6–10 с (планеты/кольцо) при 40–48 spp.
+- Оболочка: команды в доках — для Git Bash (Bash tool; `render_episode.sh` нужны bash и cygpath). В PowerShell:
+  Blender — `& 'D:\Blender\blender.exe'`, venv — `.venv\Scripts\python.exe`.
+- `.venv` (Python 3.14): kokoro-onnx (работает на 3.14 через onnxruntime, в отличие от пакета kokoro), edge-tts,
+  soundfile, scipy, pyloudnorm — для звука. Веса Kokoro — `assets/tts/`.
+- RU-голос edge-tts — серая зона по ToS Microsoft (коммерческое использование без Azure); план B —
+  Silero `v5_cis_base_nostress` (MIT, ударения «+» в сценарии). Подробно — `README.md`.
+- GPU: RTX 3060 8 ГБ, OptiX. Замеры с/кадр и формула ETA — `docs/timings.md` (ep001: крупный план пульсара
+  3,8–4,4 с/кадр).
 - ffmpeg в системе нет: кодирование и чтение видео — через Blender (`editkit/`).
 
 ## Грабли (проверено)
@@ -29,8 +38,10 @@
   Blender падает на путях > 260 символов. Выводы — только в `out/` этого репо, имена короткие.
 - **Кириллица в пути** (`Проекты`): espeak-ng (фонемизатор Kokoro) её не читает — `tools/tts.py` копирует
   данные в `%LOCALAPPDATA%/space-shorts`. Аналогичные C-библиотеки могут вести себя так же.
-- **Во время финального рендера не грузить CPU** (TTS, музыка, pip): Cycles на GPU, но синхронизация сцены и
-  компоузер — на CPU; кадр замедлялся 6 → 12 с.
+- **Один Blender за раз.** Во время финального рендера не грузить CPU (превью, TTS, музыка, pip): Cycles на GPU, но
+  синхронизация сцены и компоузер — на CPU; кадр замедлялся 6 → 12 с, на 8 ГБ возможен OOM.
+  **Есть `out/RENDER.lock` или `tasklist` показывает `blender.exe` — только текстовая работа** (факты, сценарий,
+  `system.py`, код шотов); превью/TTS/музыку — в очередь, пользователю — ETA текущего рендера.
 - Blender 5.x API: компоузер — `scene.compositing_node_group` + `NodeGroupOutput`; параметры Glare — входные
   сокеты; видео — `image_settings.media_type="VIDEO"`; VSE — `sequence_editor.strips`; у action — слоты/каналбэги
   (`spacekit.anim.fcurves`). Анимация — только ключами: Python-драйверы в фоне без autoexec не работают.
@@ -43,8 +54,14 @@
 ## Соглашения
 
 - Код и комментарии — по-русски, кратко, в стиле `spacekit/`. Скрипты идемпотентны, сцены строятся с нуля.
-- Эпизод: `episodes/epNNN_<объект>/` — `system.py`, `shots_9x16.py`, `script_9x16.json`, `music_cues.json`,
-  `episode.json`, `publish_en.md`, `publish_ru.md`. Выход — `out/epNNN_<объект>/9x16/`.
+- Эпизод: `episodes/epNNN_<slug>/` — `facts.md`, `system.py`, `shots_9x16.py`, `script_9x16.json`,
+  `music_cues.json`, `episode.json`, `edit_9x16_<lang>.json` (генерирует `build_edit.py`; коммитить —
+  воспроизводимость монтажа), `publish_en.md`, `publish_ru.md`. Выход — `out/epNNN_<slug>/9x16/`.
+- Номер и slug: `NNN = max(episodes/ep*) + 1`, трёхзначный, не переиспользуется (и у брошенных эпизодов).
+  slug — `[a-z0-9_]`, ≤ 16 символов, по каталожному имени (`psr_j1748`, `trappist1`, `sgr_a`): лимит путей 260.
+- Перед превью и перед финалом — `tools/check_episode.py <episode.json>`. После сборки — `tools/qa.py <episode.json> <lang>`
+  (PASS/FAIL), релиз — `tools/release.py`.
 - Перед финальным рендером — превью (pct=50) всех шотов + контактный лист (`tools/contact.py`) + проверка
-  вспышек/таймингов. После — `editkit/verify_video.py` по ключевым кадрам.
+  вспышек/таймингов (`tools/cues.py`: FLASH/EVENT из логов → pulses/risers). После — `editkit/verify_video.py`
+  по ключевым кадрам (через `tools/qa.py`).
 - Коммиты — по-русски, по одному логическому изменению.

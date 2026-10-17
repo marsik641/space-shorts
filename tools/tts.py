@@ -1,17 +1,26 @@
 """Озвучка по сценарию: сегменты с якорями во времени -> дорожка голоса WAV + тайминги субтитров.
 
-    .venv/Scripts/python tools/tts.py <script.json> <lang> <out_dir>
+    .venv/Scripts/python tools/tts.py <script.json> <lang> <out_dir> [--max-chars N]
 
 script.json:
 {
   "duration_s": 59.83,
+  "caption_max_chars": 26,                       # необязательно: длина строки субтитра (CLI --max-chars важнее)
   "voices": {"en": {"engine": "kokoro", "voice": "af_heart", "speed": 1.0},
              "ru": {"engine": "edge", "voice": "ru-RU-SvetlanaNeural", "rate": "+0%"}},
   "segments": [{"at": 0.25, "en": "This dead star ...", "ru": "...", "en_cap": "... 161 ..."}, ...]
 }
-at — момент начала фразы на таймлайне ролика (с); <lang>_cap — текст субтитров, если он отличается от
-произносимого (цифры вместо слов). Если фраза не успевает до следующего якоря,
-скрипт ускоряет её (до ×1.25) и печатает предупреждение.
+at — момент начала фразы на таймлайне ролика (с); якоря строго по возрастанию, 0 ≤ at < duration_s
+(иначе ValueError). <lang>_cap — текст субтитров, если он отличается от произносимого (цифры вместо слов);
+«|» в нём — ручной разрыв строки. Если фраза не успевает до следующего якоря, скрипт ускоряет её
+(до ×1.25) и печатает OVERRUN; если до следующего якоря ≤ 0.35 с — сразу ×1.25 и WARN (раздвинуть якоря).
+voices.<lang>.speed — множитель темпа; у edge он перемножается с rate: "+10%" и ×1.1 -> "+21%".
+
+Тайминг субтитров: edge — по границам слов (WordBoundary), сопоставление по нормализованным словам
+(буквы/цифры без регистра и пунктуации; тире без звука пропускаются, слова через дефис склеиваются
+независимо от того, как их разбил edge). Начало фразы не раньше начала сегмента.
+kokoro и любой <lang>_cap, отличный от текста, — пропорционально числу символов (рассинхрон до 0.3–0.5 с
+на длинных фразах — ожидаемо, проверять глазами).
 
 Выход: <out_dir>/vo_<lang>.wav (48 кГц, моно float), <out_dir>/captions_<lang>.json
        ([{"text", "start", "end"}] в секундах — фразами по 2–5 слов для вертикальных субтитров).
@@ -19,13 +28,14 @@ at — момент начала фразы на таймлайне ролика
 Движки:
   kokoro — Kokoro-82M (Apache-2.0, только EN), локально, веса в assets/tts/ (kokoro-v1.0.onnx, voices-v1.0.bin)
   edge   — Microsoft Edge neural voices (edge-tts, нужен интернет; коммерческое использование — серая зона ToS,
-           см. docs/research). Даёт точные границы слов.
+           см. docs/research). Даёт границы слов.
+Передискретизация 24 -> 48 кГц — полифазный фильтр (scipy.signal.resample_poly), без зеркальных образов.
 """
+import argparse
 import asyncio
 import json
 import os
 import re
-import sys
 
 import numpy as np
 import soundfile as sf
@@ -36,11 +46,13 @@ MAX_SPEEDUP = 1.25
 
 
 def resample(x, sr_in, sr_out=SR):
+    """Полифазная передискретизация (фильтр против зеркальных образов); длина = ceil(len·sr_out/sr_in)."""
+    from math import gcd
+    from scipy.signal import resample_poly
     if sr_in == sr_out:
         return x.astype(np.float32)
-    n = int(round(len(x) * sr_out / sr_in))
-    t = np.linspace(0, len(x) - 1, n)
-    return np.interp(t, np.arange(len(x)), x).astype(np.float32)
+    g = gcd(int(sr_in), int(sr_out))
+    return resample_poly(x, sr_out // g, sr_in // g).astype(np.float32)
 
 
 def trim_silence(x, thr=0.004, pad=0.03):
@@ -85,10 +97,18 @@ def tts_kokoro(text, voice="af_heart", speed=1.0, lang="en-us"):
     return trim_silence(resample(np.asarray(samples, np.float32), sr)), None
 
 
+def edge_rate(rate="+0%", speed=1.0):
+    """rate из конфига × множитель speed -> rate для edge-tts: "+10%" и ×1.1 -> "+21%" (в пределах −50…+100%)."""
+    m = re.fullmatch(r"\s*([+-]?\d+(?:\.\d+)?)\s*%\s*", str(rate))
+    if not m:
+        raise ValueError(f"edge rate: ожидается вида '+10%', получено {rate!r}")
+    pct = ((1.0 + float(m.group(1)) / 100.0) * speed - 1.0) * 100.0
+    return f"{int(round(max(-50.0, min(100.0, pct)))):+d}%"
+
+
 def tts_edge(text, voice="ru-RU-SvetlanaNeural", rate="+0%", speed=1.0):
     import edge_tts
-    if speed != 1.0:
-        rate = f"{int(round((speed - 1.0) * 100)):+d}%"
+    rate = edge_rate(rate, speed)
 
     async def run():
         com = edge_tts.Communicate(text, voice, rate=rate, boundary="WordBoundary")
@@ -105,10 +125,10 @@ def tts_edge(text, voice="ru-RU-SvetlanaNeural", rate="+0%", speed=1.0):
     if x.ndim > 1:
         x = x.mean(axis=1)
     raw = resample(x, sr)
-    # границы слов — относительно начала после обрезки тишины
+    # границы слов — относительно начала после обрезки тишины; раньше начала звука слово не начинается
     idx = np.where(np.abs(raw) > 0.004)[0]
     lead = max(0, idx[0] - int(0.03 * SR)) / SR if len(idx) else 0.0
-    return trim_silence(raw), [(a - lead, b - lead, w) for a, b, w in words]
+    return trim_silence(raw), [(max(0.0, a - lead), max(0.0, b - lead), w) for a, b, w in words]
 
 
 def synth(text, cfg, speed=1.0):
@@ -189,16 +209,64 @@ def chunk_words(text, max_chars=26):
     return res
 
 
+def _norm(w):
+    """Ключ слова для сопоставления: только буквы/цифры, нижний регистр, ё=е (тире, дефис, пунктуация -> '')."""
+    return re.sub(r"[\W_]+", "", w.lower()).replace("ё", "е")
+
+
+def _word_aligned(chunks, words):
+    """Фразы -> границы слов edge по потоку нормализованных символов: у каждой буквы фразы есть слово edge
+    с той же буквой потока. Поэтому «sixty-one» сопоставится, разбит ли он edge на части или нет, а тире
+    без WordBoundary ничего не сдвигает. Если тексты расходятся — difflib по символам.
+    Фраза без единой совпавшей буквы -> None (вызывающий переходит на тайминг по длине)."""
+    import difflib
+    a_txt, a_own = [], []                   # поток букв фраз и номер фразы у каждой буквы
+    for ci, c in enumerate(chunks):
+        for w in c:
+            k = _norm(w)
+            a_txt.append(k)
+            a_own += [ci] * len(k)
+    b_txt, b_own = [], []                   # поток букв edge и номер слова edge
+    for wi, (_, _, w) in enumerate(words):
+        k = _norm(w)
+        b_txt.append(k)
+        b_own += [wi] * len(k)
+    A, B = "".join(a_txt), "".join(b_txt)
+    if A == B:
+        pairs = ((i, i) for i in range(len(A)))
+    else:
+        sm = difflib.SequenceMatcher(None, A, B, autojunk=False)
+        pairs = ((m.a + j, m.b + j) for m in sm.get_matching_blocks() for j in range(m.size))
+    first, last = {}, {}
+    for ia, ib in pairs:
+        ci, wi = a_own[ia], b_own[ib]
+        first.setdefault(ci, wi)
+        last[ci] = wi
+    lettered = set(a_own)
+    if not lettered <= set(first):
+        return None
+    res, prev = [], (0.0, 0.0)
+    for ci in range(len(chunks)):           # фраза без букв (только «—» после «|») — время соседа слева
+        prev = (words[first[ci]][0], words[last[ci]][1]) if ci in first else (prev[1], prev[1])
+        res.append(prev)
+    for i in range(1, len(res)):            # монотонность начал (на случай расхождения текста)
+        s0 = max(res[i][0], res[i - 1][0])
+        res[i] = (s0, max(res[i][1], s0))
+    return res
+
+
 def caption_times(chunks, dur, words=None):
-    """Время фраз: по границам слов (edge) или пропорционально числу символов (kokoro)."""
-    if words and len(words) >= sum(len(c) for c in chunks):
-        res, k = [], 0
-        for c in chunks:
-            a = words[k][0]
-            b = words[k + len(c) - 1][1]
-            res.append((a, b))
-            k += len(c)
-        return res
+    """Время фраз (с от начала сегмента), 0 ≤ start ≤ end ≤ dur: по границам слов edge (_word_aligned),
+    иначе (kokoro, <lang>_cap, несопоставимый текст) — пропорционально числу символов."""
+    res = _word_aligned(chunks, words) if words else None
+    if res is None:
+        if words:
+            print("WARN субтитры: слова edge не сопоставились с текстом — тайминг по длине")
+        res = _proportional(chunks, dur)
+    return [(min(max(0.0, a), dur), min(max(0.0, b), dur)) for a, b in res]
+
+
+def _proportional(chunks, dur):
     lens = [len(" ".join(c)) + 1 for c in chunks]
     tot = sum(lens)
     t, res = 0.0, []
@@ -209,13 +277,31 @@ def caption_times(chunks, dur, words=None):
     return res
 
 
-def main(script_path, lang, out_dir):
+MIN_LIMIT = 0.2     # с: если на фразу остаётся меньше — якоря стоят слишком тесно
+
+
+def check_anchors(segs, total):
+    """Якоря: 0 ≤ at < duration_s и строго по возрастанию — иначе ValueError."""
+    prev = None
+    for i, seg in enumerate(segs):
+        at = seg["at"]
+        if not 0.0 <= at < total:
+            raise ValueError(f"seg{i + 1}: at={at} вне [0, {total})")
+        if prev is not None and at <= prev:
+            raise ValueError(f"seg{i + 1}: at={at} не больше предыдущего якоря ({prev})")
+        prev = at
+
+
+def main(script_path, lang, out_dir, max_chars=None):
+    """max_chars (длина строки субтитра): аргумент/CLI > script["caption_max_chars"] > 26."""
     sc = json.load(open(script_path, encoding="utf-8"))
     cfg = sc["voices"][lang]
     total = sc["duration_s"]
+    max_chars = int(max_chars or sc.get("caption_max_chars") or 26)
     track = np.zeros(int(total * SR) + SR, np.float32)
     caps, report = [], []
     segs = sc["segments"]
+    check_anchors(segs, total)
     for i, seg in enumerate(segs):
         text = seg[lang]
         at = seg["at"]
@@ -224,7 +310,11 @@ def main(script_path, lang, out_dir):
         x, words = synth(text, cfg, speed)
         dur = len(x) / SR
         if dur > limit:
-            speed = min(MAX_SPEEDUP, dur / limit * 1.02)
+            if limit <= MIN_LIMIT:
+                print(f"WARN seg{i + 1}: до следующего якоря {limit + 0.15:.2f} с — раздвинь якоря")
+                speed = MAX_SPEEDUP
+            else:
+                speed = min(MAX_SPEEDUP, dur / limit * 1.02)
             x, words = synth(text, cfg, speed)
             dur = len(x) / SR
         a = int(at * SR)
@@ -232,15 +322,21 @@ def main(script_path, lang, out_dir):
         track[a:b] += x[: b - a]
         # текст субтитров может отличаться от произносимого (цифры вместо слов): тогда тайминг — по длине
         cap_text = seg.get(f"{lang}_cap", text)
-        chunks = chunk_words(cap_text)
+        chunks = chunk_words(cap_text, max_chars)
         cap_words = words if cap_text == text else None
         for (s0, s1), c in zip(caption_times(chunks, dur, cap_words), chunks):
             caps.append({"text": " ".join(c), "start": round(at + s0, 3), "end": round(at + s1 + 0.12, 3)})
         status = "OK" if dur <= limit else "OVERRUN"
         report.append(f"{status} seg{i + 1} at={at:.2f}s dur={dur:.2f}s limit={limit:.2f}s speed={speed:.2f}")
-    # субтитры не перекрываются: конец фразы <= начала следующей
+    # субтитры не перекрываются: конец фразы <= начала следующей, всё внутри [0, duration_s];
+    # при OVERRUN голос заходит на следующий якорь — такие фразы схлопываются (start = end), видно по WARN
+    for c in caps:
+        c["start"], c["end"] = min(c["start"], total), min(c["end"], total)
     for p, q in zip(caps, caps[1:]):
-        p["end"] = min(p["end"], q["start"])
+        p["end"] = max(p["start"], min(p["end"], q["start"]))
+    for c in caps:
+        if c["end"] - c["start"] < 0.3:
+            print(f"WARN субтитр «{c['text']}» {c['start']:.2f}–{c['end']:.2f} с — короче 0.3 с")
     peak = np.max(np.abs(track)) or 1.0
     track = track[: int(total * SR)] / peak * 0.89          # −1 дБFS
     os.makedirs(out_dir, exist_ok=True)
@@ -252,4 +348,11 @@ def main(script_path, lang, out_dir):
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:4])
+    ap = argparse.ArgumentParser(description="озвучка + субтитры по script.json")
+    ap.add_argument("script")
+    ap.add_argument("lang")
+    ap.add_argument("out_dir")
+    ap.add_argument("--max-chars", type=int, default=None,
+                    help="длина строки субтитра (иначе script.caption_max_chars, иначе 26)")
+    a = ap.parse_args()
+    main(a.script, a.lang, a.out_dir, a.max_chars)

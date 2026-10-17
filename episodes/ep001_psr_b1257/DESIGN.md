@@ -1,5 +1,13 @@
 # Пульсар PSR B1257+12 и его планеты — дизайн-спека
 
+> **ИСТОРИЧЕСКИЙ документ** 16:9-версии (1920×1080, 30 fps) до переноса кода в `spacekit/`. **Не следовать путям и
+> правилам ниже.** Актуально: формат и процесс — `docs/pipeline.md` (9:16, 1080×1920, 60 fps); `lib/common.py` →
+> `spacekit/core.py` + `render.py` + `camera.py`; `lib/environment.py` → `spacekit/sky.py` + `fx/dust_ring.py`; `lib/neutron_star.py`,
+> `lib/planets.py` → `spacekit/bodies/`; `renders/`, `scenes/` → `out/<ep>/`; шоты — `shots_16x9.py` /
+> `shots_9x16.py`. Ядро библиотеки менять можно (с регресс-проверкой `tools/imgdiff.py`). Монтаж 16:9 — 47 с
+> (`edit_16x9.json`: 1261 кадр шотов + 150 хвост = 1411 @30), не ~42 с. Планеты A/B/C ниже = **b Драугр, c Полтергейст, d Фобетор**
+> (обозначения `facts.md`).
+
 Цель: реалистичный (уровень визуализаций NASA Goddard / ESA, «научно-документальный» вид) ролик
 **MP4, 1920×1080, 30 fps, H.264**, ~42 с. Рендер — Blender 5.2.2 Cycles на RTX 3060 (OptiX).
 

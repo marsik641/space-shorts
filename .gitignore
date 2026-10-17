@@ -18,5 +18,6 @@ __pycache__/
 
 # Секреты (OAuth для загрузки на YouTube и т.п.)
 secrets/
+token.json
 *.token.json
 client_secret*.json

@@ -4,7 +4,7 @@
 |---|---|---|
 | «spins 161 times every second» | P = 6.2185 мс → 160.81 об/с | ATNF Pulsar Catalogue v2.6 (Manchester et al. 2005, AJ 129, 1993): https://www.atnf.csiro.au/research/pulsar/psrcat/ |
 | «the collapsed core of a giant star», «more massive than the Sun» | масса B1257+12 не измерена, принята 1.4 M☉; все измеренные НЗ тяжелее Солнца | Konacki & Wolszczan 2003, ApJ 591, L147–L150: https://arxiv.org/abs/astro-ph/0305536 |
-| «only twenty kilometers across» | радиус НЗ ≈ 10–12 км (Özel & Freire: 9.9–11.2 км; NICER: ~12–13 км) | Özel & Freire 2016, ARA&A 54, 401: https://arxiv.org/abs/1603.02698 ; NASA: https://imagine.gsfc.nasa.gov/science/objects/neutron_stars1.html |
+| «only twenty kilometers across» | радиус НЗ ≈ 10–13 км (Özel & Freire: 9.9–11.2 км; NICER: ~12–13 км) → **диаметр ≈ 20–25 км** (NICER — до 26); «twenty» в ролике — округление вниз, нижняя граница. При следующей правке сценария — «about twenty kilometers» | Özel & Freire 2016, ARA&A 54, 401: https://arxiv.org/abs/1603.02698 ; NASA: https://imagine.gsfc.nasa.gov/science/objects/neutron_stars1.html |
 | лучи радиоизлучения «как маяк» | излучение вдоль магнитных полюсов (модель маяка) | NASA Imagine the Universe (там же) |
 | «In 1992 … planets orbiting it» | 1992: две планеты (c, d); 1994: третья (b, Драугр) | Wolszczan & Frail 1992, Nature 355, 145–147: https://doi.org/10.1038/355145a0 ; Wolszczan 1994, Science 264, 538: https://doi.org/10.1126/science.264.5158.538 |
 | «The first planets ever confirmed beyond our Solar System» | общепринятая формулировка (окончательное подтверждение — 1994) | там же |
