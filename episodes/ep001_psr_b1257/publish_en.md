@@ -4,22 +4,24 @@
 
 ## Title (pick one)
 1. **This Dead Star Spins 161 Times a Second** ← recommended
-2. The First Exoplanets Ever Found Orbit a Dead Star
+2. The First Confirmed Exoplanets Orbit a Dead Star
 3. Planets Named After Ghosts, Circling a Star Called Lich
 
 ## Description
 ```
 A dead star spinning 161 times per second — and the first planets ever confirmed beyond our Solar System orbit it.
 
-PSR B1257+12 ("Lich") is a millisecond pulsar ~2,300 light-years away in Virgo. In 1992 Wolszczan & Frail found three planets around it: Draugr (0.02 Earth masses), Poltergeist (4.3) and Phobetor (3.9).
+PSR B1257+12 ("Lich") is a millisecond pulsar ~2,300 light-years away in Virgo. In 1992 Wolszczan & Frail found two planets around it, and a third in 1994: Draugr (0.02 Earth masses), Poltergeist (4.3) and Phobetor (3.9).
 
 Visualization based on real data. Rotation slowed ~270×, orbits sped up, sizes and distances not to scale; pulsar beams are radio waves shown as visible light; the dust belt is hypothetical.
 
 Sources:
-• Wolszczan & Frail 1992, Nature 355, 145 — https://www.nature.com/articles/355145a0
+• Wolszczan & Frail 1992, Nature 355, 145 — https://doi.org/10.1038/355145a0
+• Wolszczan 1994, Science 264, 538 — https://doi.org/10.1126/science.264.5158.538
 • Konacki & Wolszczan 2003, ApJ 591, L147 — https://arxiv.org/abs/astro-ph/0305536
 • NASA Exoplanet Archive — https://exoplanetarchive.ipac.caltech.edu/overview/PSR%20B1257+12
-• IAU NameExoWorlds 2015 — https://www.iau.org/news/pressreleases/detail/iau1514/
+• IAU NameExoWorlds 2015 — https://iauarchive.eso.org/news/pressreleases/detail/iau1514/
+• Distance (VLBI, 710 pc): Yan et al. 2013 — https://arxiv.org/abs/1211.0111
 
 Rendered in Blender Cycles · scientific visualization / artist's impression.
 #space #astronomy #pulsar #exoplanets #neutronstar
@@ -30,7 +32,7 @@ space, astronomy, pulsar, PSR B1257+12, neutron star, exoplanets, science visual
 
 ## Pinned comment
 ```
-Real numbers from Wolszczan & Frail (1992) and Konacki & Wolszczan (2003) — links in the description.
+Real numbers from Wolszczan & Frail (1992), Wolszczan (1994) and Konacki & Wolszczan (2003) — links in the description.
 Which dead star should we render next: the fastest pulsar (716 spins/s) or a magnetar that shook Earth's ionosphere? 👇
 ```
 
@@ -41,4 +43,4 @@ Which dead star should we render next: the fastest pulsar (716 spins/s) or a mag
 - Publish: steady evening slot for US viewers (e.g. 18:00 ET), same slot for the series.
 
 ## Cross-post (clean master, no watermarks)
-- **TikTok / Reels:** `A dead star spins 161 times per second — and the first exoplanets ever found orbit it. 🌌 Real data, rendered. #space #astronomy #pulsar`
+- **TikTok / Reels:** `A dead star spins 161 times per second — and the first confirmed exoplanets orbit it. 🌌 Real data, rendered. #space #astronomy #pulsar`

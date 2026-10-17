@@ -31,7 +31,7 @@
    "at": 11.4,
    "shot": "v2",
    "en": "Its magnetic poles fire beams of radio waves that sweep through space like a lighthouse.",
-   "ru": "Из магнитных полюсов бьют лучи радиоизлучения и, как маяк, метут пространство."
+   "ru": "Из магнитных полюсов бьют лучи радиоизлучения и, как маяк, прочёсывают пространство."
   },
   {
    "at": 16.6,
@@ -48,26 +48,26 @@
   {
    "at": 28.4,
    "shot": "v4",
-   "en": "They probably formed from the wreckage the dying star left behind.",
-   "ru": "Скорее всего, они родились из обломков, оставшихся после гибели звезды."
+   "en": "They likely formed in a debris disk, perhaps from a destroyed companion star.",
+   "ru": "Вероятно, они родились из диска обломков — возможно, от разрушенной звезды-соседки."
   },
   {
    "at": 33.6,
    "shot": "v4",
-   "en": "Its radiation and particle wind batter them nonstop, likely lighting auroras on their night sides.",
-   "ru": "Излучение и ветер частиц пульсара бьют по ним без остановки — и, вероятно, зажигают сияния на ночной стороне."
+   "en": "Its radiation and particle wind batter them nonstop, and might even light auroras in their skies.",
+   "ru": "Излучение и ветер частиц пульсара бьют по ним без остановки — и, возможно, зажигают в их небе сияния."
   },
   {
    "at": 44.4,
    "shot": "v5",
-   "en": "Draugr. Poltergeist. Phobetor. Worlds named after ghosts and monsters, circling a star called Lich.",
-   "ru": "Драугр. Полтергейст. Фобетор. Миры с именами призраков и чудовищ вокруг звезды по имени Лич."
+   "en": "Draugr. Poltergeist. Phobetor. Worlds named after the undead and nightmares, circling a star called Lich.",
+   "ru": "Драугр. Полтергейст. Фобетор. Миры с именами нежити и кошмаров вокруг звезды по имени Лич."
   },
   {
    "at": 54.3,
    "shot": "v6",
-   "en": "And its pulse keeps time almost as well as an atomic clock.",
-   "ru": "А её пульс отмеряет время почти как атомные часы."
+   "en": "And pulsars like it keep time almost as well as atomic clocks.",
+   "ru": "А такие пульсары отмеряют время почти как атомные часы."
   }
  ]
 }
