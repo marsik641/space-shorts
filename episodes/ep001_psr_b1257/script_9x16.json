@@ -1,0 +1,73 @@
+{
+ "title": "PSR B1257+12 — the dead star with the first exoplanets",
+ "duration_s": 60.0,
+ "voices": {
+  "en": {
+   "engine": "kokoro",
+   "voice": "af_heart",
+   "speed": 0.98,
+   "lang": "en-us"
+  },
+  "ru": {
+   "engine": "edge",
+   "voice": "ru-RU-SvetlanaNeural",
+   "rate": "+0%"
+  }
+ },
+ "segments": [
+  {
+   "at": 0.3,
+   "shot": "v1",
+   "en": "This dead star spins one hundred and sixty-one times every second.",
+   "ru": "Эта мёртвая звезда делает сто шестьдесят один оборот в секунду."
+  },
+  {
+   "at": 4.55,
+   "shot": "v2",
+   "en": "It's a pulsar: the collapsed core of a giant star. More massive than the Sun, yet only twenty kilometers across.",
+   "ru": "Это пульсар — сжавшееся ядро гигантской звезды. Тяжелее Солнца, но всего двадцать километров в поперечнике."
+  },
+  {
+   "at": 11.4,
+   "shot": "v2",
+   "en": "Its magnetic poles fire beams of radio waves that sweep through space like a lighthouse.",
+   "ru": "Из магнитных полюсов бьют лучи радиоизлучения и, как маяк, метут пространство."
+  },
+  {
+   "at": 16.6,
+   "shot": "v3",
+   "en": "In 1992, astronomers found something no one expected: planets orbiting it.",
+   "ru": "В девяносто втором году вокруг него нашли то, чего никто не ждал, — планеты."
+  },
+  {
+   "at": 22.3,
+   "shot": "v3",
+   "en": "The first planets ever confirmed beyond our Solar System.",
+   "ru": "Первые подтверждённые планеты за пределами Солнечной системы."
+  },
+  {
+   "at": 28.4,
+   "shot": "v4",
+   "en": "They probably formed from the wreckage the dying star left behind.",
+   "ru": "Скорее всего, они родились из обломков, оставшихся после гибели звезды."
+  },
+  {
+   "at": 33.6,
+   "shot": "v4",
+   "en": "Its radiation and particle wind batter them nonstop, likely lighting auroras on their night sides.",
+   "ru": "Излучение и ветер частиц пульсара бьют по ним без остановки — и, вероятно, зажигают сияния на ночной стороне."
+  },
+  {
+   "at": 44.4,
+   "shot": "v5",
+   "en": "Draugr. Poltergeist. Phobetor. Worlds named after ghosts and monsters, circling a star called Lich.",
+   "ru": "Драугр. Полтергейст. Фобетор. Миры с именами призраков и чудовищ вокруг звезды по имени Лич."
+  },
+  {
+   "at": 54.3,
+   "shot": "v6",
+   "en": "And its pulse keeps time almost as well as an atomic clock.",
+   "ru": "А её пульс отмеряет время почти как атомные часы."
+  }
+ ]
+}

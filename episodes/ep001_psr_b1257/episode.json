@@ -1,0 +1,39 @@
+{
+ "id": "ep001_psr_b1257",
+ "object": "PSR B1257+12 (Lich) + Draugr, Poltergeist, Phobetor",
+ "series": "NEUTRON FILES",
+ "format_name": "9x16",
+ "format": {"w": 1080, "h": 1920, "fps": 60},
+ "shots_script": "episodes/ep001_psr_b1257/shots_9x16.py",
+ "frames_dir": "out/ep001_psr_b1257/9x16/frames",
+ "audio_dir": "out/ep001_psr_b1257/9x16/audio",
+ "script": "episodes/ep001_psr_b1257/script_9x16.json",
+ "music_cues": "episodes/ep001_psr_b1257/music_cues.json",
+ "languages": ["en", "ru"],
+ "output": "out/{id}/9x16/{id}_{lang}_1080x1920p60.mp4",
+ "video": {"bitrate_kbps": 40000, "preset": "BEST"},
+ "edit": [
+  {"shot": "v1", "frames": 270},
+  {"shot": "v2", "frames": 690},
+  {"shot": "v3", "frames": 720},
+  {"shot": "v4", "frames": 960},
+  {"shot": "v5", "frames": 600},
+  {"shot": "v6", "frames": 360}
+ ],
+ "caption_style": {"size": 70, "x": 0.5, "y": 0.30, "font": "C:/Windows/Fonts/seguisb.ttf", "outline": 8,
+                   "wrap": 0.84, "color": [1.0, 1.0, 1.0]},
+ "overlays": {
+  "en": [
+   {"text": "Scientific visualization · real data", "size": 30, "y": 0.955, "font": "C:/Windows/Fonts/segoeui.ttf",
+    "color": [0.78, 0.82, 0.9], "fade": 0},
+   {"text": "PSR B1257+12", "start_s": 0.2, "length_s": 4.2, "size": 54, "y": 0.885,
+    "font": "C:/Windows/Fonts/segoeuisl.ttf", "fade": 12}
+  ],
+  "ru": [
+   {"text": "Научная визуализация · реальные данные", "size": 30, "y": 0.955, "font": "C:/Windows/Fonts/segoeui.ttf",
+    "color": [0.78, 0.82, 0.9], "fade": 0},
+   {"text": "PSR B1257+12", "start_s": 0.2, "length_s": 4.2, "size": 54, "y": 0.885,
+    "font": "C:/Windows/Fonts/segoeuisl.ttf", "fade": 12}
+  ]
+ }
+}

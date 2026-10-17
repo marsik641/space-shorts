@@ -1,0 +1,101 @@
+{
+ "output": "out/ep001_psr_b1257/16x9/PSR_B1257+12_1080p30.mp4",
+ "crossfade": 0,
+ "fade_in": 30,
+ "fade_out": 45,
+ "tail": 150,
+ "crf": 15,
+ "shots": [
+  {
+   "dir": "out/ep001_psr_b1257/16x9/frames/s1",
+   "frames": 300,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep001_psr_b1257/16x9/frames/s2",
+   "frames": 314,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep001_psr_b1257/16x9/frames/s3",
+   "frames": 347,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep001_psr_b1257/16x9/frames/s4",
+   "frames": 300,
+   "xfade_in": 0
+  }
+ ],
+ "titles": [
+  {
+   "text": "PSR B1257+12",
+   "start": 30,
+   "length": 170,
+   "size": 76,
+   "y": 0.8,
+   "fade": 22,
+   "font": "C:/Windows/Fonts/segoeuisl.ttf"
+  },
+  {
+   "text": "Пульсар Лич и три его планеты · созвездие Девы, ~2300 световых лет",
+   "start": 45,
+   "length": 155,
+   "size": 36,
+   "y": 0.73,
+   "fade": 22,
+   "font": "C:/Windows/Fonts/segoeui.ttf"
+  },
+  {
+   "size": 34,
+   "x": 0.05,
+   "y": 0.08,
+   "align": "LEFT",
+   "fade": 18,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "text": "Нейтронная звезда: Ø ≈ 20 км, 161 оборот в секунду (здесь замедлено в ~270 раз)",
+   "start": 351,
+   "length": 160
+  },
+  {
+   "size": 34,
+   "x": 0.05,
+   "y": 0.08,
+   "align": "LEFT",
+   "fade": 18,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "text": "Полтергейст (PSR B1257+12 c) · ~4 массы Земли · полярные сияния от ветра пульсара",
+   "start": 670,
+   "length": 170
+  },
+  {
+   "size": 34,
+   "x": 0.05,
+   "y": 0.08,
+   "align": "LEFT",
+   "fade": 18,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "text": "Драугр, Полтергейст и Фобетор: годы длиной 25, 66 и 98 суток",
+   "start": 1032,
+   "length": 150
+  },
+  {
+   "text": "Вращение пульсара замедлено в ~270 раз, орбиты ускорены, размеры и расстояния не в масштабе.",
+   "start": 1269,
+   "length": 140,
+   "size": 32,
+   "y": 0.54,
+   "fade": 20,
+   "font": "C:/Windows/Fonts/segoeui.ttf"
+  },
+  {
+   "text": "Лучи пульсара — радиоизлучение: глазом они не видны и показаны условно. Пылевой пояс гипотетический.",
+   "start": 1269,
+   "length": 140,
+   "size": 32,
+   "y": 0.46,
+   "fade": 20,
+   "font": "C:/Windows/Fonts/segoeui.ttf"
+  }
+ ]
+}

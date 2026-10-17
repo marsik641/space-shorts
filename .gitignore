@@ -1,0 +1,22 @@
+# Тяжёлые результаты: кадры, видео, превью, логи
+out/
+*.mp4
+*.mov
+*.wav
+*.blend
+*.blend1
+
+# Сгенерированные/скачанные ассеты (восстанавливаются: Млечный Путь — при первом рендере, TTS — см. README)
+assets/milkyway.exr
+assets/milkyway_maps.npz
+assets/tts/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Секреты (OAuth для загрузки на YouTube и т.п.)
+secrets/
+*.token.json
+client_secret*.json
