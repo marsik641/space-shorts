@@ -92,76 +92,56 @@
    {
     "text": "This dead star spins",
     "start": 19,
-    "end": 94
+    "end": 131
    },
    {
-    "text": "one hundred and",
-    "start": 94,
-    "end": 152
-   },
-   {
-    "text": "sixty-one times every",
-    "start": 152,
-    "end": 231
-   },
-   {
-    "text": "second.",
-    "start": 231,
+    "text": "161 times every second.",
+    "start": 131,
     "end": 267
    },
    {
     "text": "It's a pulsar:",
     "start": 274,
-    "end": 327
+    "end": 334
    },
    {
-    "text": "the collapsed core of",
-    "start": 327,
-    "end": 406
+    "text": "the collapsed core",
+    "start": 334,
+    "end": 409
    },
    {
-    "text": "a giant star.",
-    "start": 406,
-    "end": 456
+    "text": "of a giant star.",
+    "start": 409,
+    "end": 477
    },
    {
-    "text": "More massive than the",
-    "start": 456,
-    "end": 534
+    "text": "More massive than the Sun,",
+    "start": 477,
+    "end": 585
    },
    {
-    "text": "Sun, yet only twenty",
-    "start": 534,
-    "end": 609
-   },
-   {
-    "text": "kilometers across.",
-    "start": 609,
+    "text": "yet only 20 km across.",
+    "start": 585,
     "end": 684
    },
    {
-    "text": "Its magnetic poles",
+    "text": "Its magnetic poles fire",
     "start": 685,
-    "end": 750
+    "end": 767
    },
    {
-    "text": "fire beams of radio",
-    "start": 750,
-    "end": 819
+    "text": "beams of radio waves",
+    "start": 767,
+    "end": 839
    },
    {
-    "text": "waves that sweep",
-    "start": 819,
-    "end": 877
+    "text": "that sweep through space",
+    "start": 839,
+    "end": 925
    },
    {
-    "text": "through space like a",
-    "start": 877,
-    "end": 949
-   },
-   {
-    "text": "lighthouse.",
-    "start": 949,
+    "text": "like a lighthouse.",
+    "start": 925,
     "end": 997
    },
    {
@@ -175,68 +155,58 @@
     "end": 1116
    },
    {
-    "text": "something no one",
+    "text": "something no one expected:",
     "start": 1116,
-    "end": 1191
+    "end": 1235
    },
    {
-    "text": "expected: planets",
-    "start": 1191,
-    "end": 1270
-   },
-   {
-    "text": "orbiting it.",
-    "start": 1270,
+    "text": "planets orbiting it.",
+    "start": 1235,
     "end": 1334
    },
    {
-    "text": "The first planets ever",
+    "text": "The first planets",
     "start": 1339,
-    "end": 1417
+    "end": 1400
    },
    {
-    "text": "confirmed beyond our",
-    "start": 1417,
-    "end": 1489
+    "text": "ever confirmed",
+    "start": 1400,
+    "end": 1451
    },
    {
-    "text": "Solar System.",
-    "start": 1489,
+    "text": "beyond our Solar System.",
+    "start": 1451,
     "end": 1544
    },
    {
-    "text": "They likely formed in",
+    "text": "They likely formed",
     "start": 1705,
-    "end": 1782
+    "end": 1772
    },
    {
-    "text": "a debris disk,",
-    "start": 1782,
+    "text": "in a debris disk,",
+    "start": 1772,
     "end": 1835
    },
    {
-    "text": "perhaps from a",
+    "text": "perhaps from a destroyed",
     "start": 1835,
-    "end": 1888
+    "end": 1923
    },
    {
-    "text": "destroyed companion star.",
-    "start": 1888,
+    "text": "companion star.",
+    "start": 1923,
     "end": 1987
    },
    {
-    "text": "Its radiation and",
+    "text": "Its radiation and particle wind",
     "start": 2017,
-    "end": 2085
+    "end": 2138
    },
    {
-    "text": "particle wind batter",
-    "start": 2085,
-    "end": 2165
-   },
-   {
-    "text": "them nonstop,",
-    "start": 2165,
+    "text": "batter them nonstop,",
+    "start": 2138,
     "end": 2218
    },
    {
@@ -250,28 +220,28 @@
     "end": 2396
    },
    {
-    "text": "Draugr. Poltergeist.",
+    "text": "Draugr. Poltergeist. Phobetor.",
     "start": 2665,
-    "end": 2746
+    "end": 2785
    },
    {
-    "text": "Phobetor. Worlds named",
-    "start": 2746,
-    "end": 2835
+    "text": "Worlds named after",
+    "start": 2785,
+    "end": 2858
    },
    {
-    "text": "after the undead and",
-    "start": 2835,
-    "end": 2916
+    "text": "the undead and nightmares,",
+    "start": 2858,
+    "end": 2962
    },
    {
-    "text": "nightmares, circling a",
-    "start": 2916,
-    "end": 3005
+    "text": "circling a star",
+    "start": 2962,
+    "end": 3024
    },
    {
-    "text": "star called Lich.",
-    "start": 3005,
+    "text": "called Lich.",
+    "start": 3024,
     "end": 3082
    },
    {
@@ -280,13 +250,13 @@
     "end": 3334
    },
    {
-    "text": "keep time almost as",
+    "text": "keep time almost",
     "start": 3334,
-    "end": 3410
+    "end": 3398
    },
    {
-    "text": "well as atomic clocks.",
-    "start": 3410,
+    "text": "as well as atomic clocks.",
+    "start": 3398,
     "end": 3504
    }
   ]

@@ -7,9 +7,10 @@ script.json:
   "duration_s": 59.83,
   "voices": {"en": {"engine": "kokoro", "voice": "af_heart", "speed": 1.0},
              "ru": {"engine": "edge", "voice": "ru-RU-SvetlanaNeural", "rate": "+0%"}},
-  "segments": [{"at": 0.25, "en": "This dead star ...", "ru": "Эта мёртвая звезда ..."}, ...]
+  "segments": [{"at": 0.25, "en": "This dead star ...", "ru": "...", "en_cap": "... 161 ..."}, ...]
 }
-at — момент начала фразы на таймлайне ролика (с). Если фраза не успевает до следующего якоря,
+at — момент начала фразы на таймлайне ролика (с); <lang>_cap — текст субтитров, если он отличается от
+произносимого (цифры вместо слов). Если фраза не успевает до следующего якоря,
 скрипт ускоряет её (до ×1.25) и печатает предупреждение.
 
 Выход: <out_dir>/vo_<lang>.wav (48 кГц, моно float), <out_dir>/captions_<lang>.json
@@ -120,25 +121,72 @@ def synth(text, cfg, speed=1.0):
 
 
 # ---------------------------------------------------------------- субтитры
-def chunk_words(text, max_chars=22, max_words=4):
-    """Фразы для вертикальных субтитров: 2–4 слова, не длиннее max_chars, разрыв на знаках препинания."""
-    words = text.split()
-    out, cur = [], []
-    for w in words:
-        cand = " ".join(cur + [w])
-        if cur and (len(cand) > max_chars or len(cur) >= max_words):
-            out.append(cur)
-            cur = []
+FUNCTION_WORDS = {
+    "a", "an", "the", "of", "to", "in", "on", "at", "by", "for", "with", "from", "than", "and", "or", "but",
+    "as", "its", "it's", "their", "our", "into", "like", "that", "is", "are", "was", "yet", "only", "even",
+    "и", "в", "во", "на", "с", "со", "к", "ко", "по", "о", "об", "от", "до", "из", "за", "для", "как", "но",
+    "а", "что", "же", "не", "ни", "у", "при", "без", "всего", "почти",
+}
+
+
+def _is_unit_pair(a, b):
+    """«20 km», «161 оборот», «1992 году» — число не отрывать от следующего слова."""
+    return bool(re.fullmatch(r"[\d.,]+", a))
+
+
+def _split_phrase(words, max_chars):
+    if len(" ".join(words)) <= max_chars or len(words) <= 1:
+        return [words]
+    best, best_cost = None, 1e9
+    for i in range(1, len(words)):
+        left, right = words[:i], words[i:]
+        L, R = len(" ".join(left)), len(" ".join(right))
+        cost = abs(L - R) + max(0, L - max_chars) * 3 + max(0, R - max_chars) * 3
+        if left[-1].lower().strip(",.") in FUNCTION_WORDS:
+            cost += 25
+        if _is_unit_pair(left[-1], right[0]):
+            cost += 60
+        if right[0].lower() in FUNCTION_WORDS:          # естественная граница: перед предлогом/союзом
+            cost -= 12
+        if len(left) == 1 or len(right) == 1:
+            cost += 10
+        if cost < best_cost:
+            best, best_cost = i, cost
+    return _split_phrase(words[:best], max_chars) + _split_phrase(words[best:], max_chars)
+
+
+def chunk_words(text, max_chars=26):
+    """Фразы для вертикальных субтитров: сначала по знакам препинания, затем сбалансированный разрез;
+    служебные слова не висят в конце строки, число не отрывается от единицы/слова за ним.
+    «|» в тексте — ручной разрыв (точная раскладка для сложных фраз)."""
+    if "|" in text:
+        return [p.split() for p in text.split("|") if p.strip()]
+    phrases, cur = [], []
+    for w in text.split():
         cur.append(w)
-        if re.search(r"[.,:;!?—]$", w) and len(cur) >= 2:
-            out.append(cur)
+        if re.search(r"[.,:;!?]$", w) or w in ("—", "–"):
+            phrases.append(cur)
             cur = []
     if cur:
-        if out and len(cur) == 1 and len(" ".join(out[-1] + cur)) <= max_chars + 6:
-            out[-1] += cur
+        phrases.append(cur)
+    # тире в начале фразы приклеиваем к предыдущей
+    merged = []
+    for p in phrases:
+        if merged and p and p[0] in ("—", "–") and len(p) == 1:
+            merged[-1] = merged[-1] + p
         else:
-            out.append(cur)
-    return out
+            merged.append(p)
+    out = []
+    for p in merged:
+        out += _split_phrase(p, max_chars)
+    # одиночное короткое слово — к соседу, если влезает
+    res = []
+    for c in out:
+        if res and len(c) == 1 and len(" ".join(res[-1] + c)) <= max_chars + 4:
+            res[-1] = res[-1] + c
+        else:
+            res.append(c)
+    return res
 
 
 def caption_times(chunks, dur, words=None):
@@ -182,8 +230,11 @@ def main(script_path, lang, out_dir):
         a = int(at * SR)
         b = min(len(track), a + len(x))
         track[a:b] += x[: b - a]
-        chunks = chunk_words(text)
-        for (s0, s1), c in zip(caption_times(chunks, dur, words), chunks):
+        # текст субтитров может отличаться от произносимого (цифры вместо слов): тогда тайминг — по длине
+        cap_text = seg.get(f"{lang}_cap", text)
+        chunks = chunk_words(cap_text)
+        cap_words = words if cap_text == text else None
+        for (s0, s1), c in zip(caption_times(chunks, dur, cap_words), chunks):
             caps.append({"text": " ".join(c), "start": round(at + s0, 3), "end": round(at + s1 + 0.12, 3)})
         status = "OK" if dur <= limit else "OVERRUN"
         report.append(f"{status} seg{i + 1} at={at:.2f}s dur={dur:.2f}s limit={limit:.2f}s speed={speed:.2f}")
