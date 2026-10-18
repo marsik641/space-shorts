@@ -1,6 +1,6 @@
 """Монтажный лист для editkit/assemble.py из описания эпизода + субтитров озвучки.
 
-    python tools/build_edit.py episodes/<id>/episode.json <lang> [--light]
+    python tools/build_edit.py episodes/<id>/episode.json <lang> [--light | --preview]
 
 Берёт: episode.json (порядок шотов, формат, оверлеи), <audio_dir>/captions_<lang>.json (секунды),
 <audio_dir>/mix_<lang>.wav. Пишет episodes/<id>/edit_<fmt>_<lang>.json (кадры монтажа с 1).
@@ -9,8 +9,9 @@ audio_dir = out/<id>/<fmt>/audio, output = out/<id>/<fmt>/<id>_<lang>_<w>x<h>p<f
 должны содержать id, а id — совпадать с именем папки эпизода (иначе ошибка: защита от копии чужого эпизода).
 Длина монтажа = Σ edit.frames − Σ xfade_in (наплывы укорачивают таймлайн, как в assemble.py).
 Оверлей без length_s идёт от start_s до конца ролика; субтитры и оверлеи обрезаются по концу монтажа.
---light — копия для телефона: тот же монтаж, video {bitrate_kbps: 6000}, output с суффиксом _light,
+--light — облегчённая копия: тот же монтаж, video {bitrate_kbps: 6000}, output с суффиксом _light,
 лист edit_<fmt>_<lang>_light.json.
+--preview — превью для телефона ≤ 30 МБ (лимит отправки файла): 3400 кбит/с, суффикс _preview.
 """
 import argparse
 import json
@@ -19,6 +20,7 @@ import sys
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 LIGHT_KBPS = 6000
+PREVIEW_KBPS = 3400      # 60 с ≈ 25 МБ: влезает в лимит 30 МБ на отправку в телефон
 
 
 def load(path):
@@ -52,12 +54,12 @@ def timeline_frames(edit, crossfade=0):
     return sum(s["frames"] for s in edit) - sum(s.get("xfade_in", crossfade) for s in edit[1:])
 
 
-def light_path(path):
+def light_path(path, suffix="_light"):
     root, ext = os.path.splitext(path)
-    return f"{root}_light{ext}"
+    return f"{root}{suffix}{ext}"
 
 
-def main(ep_path, lang, light=False):
+def main(ep_path, lang, light=False, preview=False):
     ep = load(ep_path)
     fmt = ep["format"]
     fps = fmt["fps"]
@@ -89,9 +91,10 @@ def main(ep_path, lang, light=False):
             titles.append(t)
     output = paths["output"].format(id=ep["id"], lang=lang)
     video = ep.get("video", {"bitrate_kbps": 40000})
-    if light:
-        output = light_path(output)
-        video = dict(video, bitrate_kbps=LIGHT_KBPS)
+    suffix = "_preview" if preview else ("_light" if light else "")
+    if suffix:
+        output = light_path(output, suffix)
+        video = dict(video, bitrate_kbps=PREVIEW_KBPS if preview else LIGHT_KBPS)
         video.pop("crf", None)
     edit = {
         "output": output,
@@ -104,12 +107,12 @@ def main(ep_path, lang, light=False):
         "captions": dict(st, items=items),
         "audio": [{"path": f"{audio_dir}/mix_{lang}.wav", "start": 1, "volume": 1.0}],
     }
-    name = f"edit_{ep['format_name']}_{lang}{'_light' if light else ''}.json"
+    name = f"edit_{ep['format_name']}_{lang}{suffix}.json"
     out = os.path.join(os.path.dirname(ep_path), name)
     with open(out, "w", encoding="utf-8") as fh:
         json.dump(edit, fh, ensure_ascii=False, indent=1)
     print(f"EDIT {out}: {total} кадров ({total / fps:.2f} с), {len(items)} субтитров, {len(titles)} оверлеев"
-          + (f", light {LIGHT_KBPS} кбит/с" if light else ""))
+          + (f", {suffix[1:]} {video['bitrate_kbps']} кбит/с" if suffix else ""))
     return out
 
 
@@ -120,6 +123,8 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="episode.json -> edit json для editkit/assemble.py")
     ap.add_argument("episode")
     ap.add_argument("lang")
-    ap.add_argument("--light", action="store_true", help=f"копия {LIGHT_KBPS} кбит/с, суффикс _light")
+    g = ap.add_mutually_exclusive_group()
+    g.add_argument("--light", action="store_true", help=f"копия {LIGHT_KBPS} кбит/с, суффикс _light")
+    g.add_argument("--preview", action="store_true", help=f"превью {PREVIEW_KBPS} кбит/с (≤ 30 МБ), суффикс _preview")
     a = ap.parse_args()
-    main(a.episode, a.lang, a.light)
+    main(a.episode, a.lang, a.light, a.preview)

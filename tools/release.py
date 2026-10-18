@@ -1,10 +1,10 @@
-"""Сборка пакета к загрузке: out/<id>/release/ — MP4 по всем языкам (+ _light-копии) и publish_*.md.
+"""Сборка пакета к загрузке: out/<id>/release/ — MP4 по всем языкам (+ _light и _preview) и publish_*.md.
 
     python tools/release.py episodes/<id>/episode.json [--dry-run]
 
 MP4 берутся по output из episode.json (как в build_edit), light — с суффиксом _light (build_edit --light).
-publish_<lang>.md — из папки эпизода. Нет основного MP4 или publish — FAIL (код 1); нет light — WARN.
-Копирование с сохранением времени (shutil.copy2); существующие файлы в release/ перезаписываются.
+publish_<lang>.md — из папки эпизода. Нет основного MP4, _preview или publish — FAIL (код 1); нет _light — WARN.
+Копирование с сохранением времени (shutil.copy2); файлы release/, которых нет в текущем составе, удаляются (DEL).
 Перед сборкой — tools/qa.py по каждому языку.
 """
 import argparse
@@ -41,6 +41,7 @@ def main():
     for lang in ep.get("languages", ["en"]):
         main_mp4 = paths["output"].format(id=eid, lang=lang)
         for src, required in ((main_mp4, True), (light_path(main_mp4), False),
+                              (light_path(main_mp4, "_preview"), True),
                               (os.path.join(ep_dir, f"publish_{lang}.md"), True)):
             if os.path.isfile(R(src)):
                 plan.append(R(src))
@@ -49,6 +50,13 @@ def main():
                 fails += 1
             else:
                 print(f"WARN нет {src} (python tools/build_edit.py {a.episode} {lang} --light + assemble)")
+    # чистый релиз: только файлы текущего состава (старые языки/версии не копятся)
+    if not a.dry_run and os.path.isdir(dest):
+        keep = {os.path.basename(p) for p in plan}
+        for f in os.listdir(dest):
+            if f not in keep:
+                os.remove(os.path.join(dest, f))
+                print(f"DEL  {f} (нет в текущем составе релиза)")
     if not a.dry_run:
         os.makedirs(dest, exist_ok=True)
     for src in plan:

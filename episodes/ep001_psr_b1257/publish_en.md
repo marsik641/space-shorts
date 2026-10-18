@@ -1,6 +1,12 @@
-# Ep. 001 — publish pack (EN, Neutron Frames)
+# Ep. 001 — publish pack (EN, Orbitfall)
 
-**File:** `ep001_psr_b1257_en_1080x1920p60.mp4` (59.98 s, 1080×1920, 60 fps)
+Channel: **Orbitfall** (`@Orbitfall`) · series **DEAD STARS** · release folder: `out/ep001_psr_b1257/release/`
+
+**Files:**
+- `ep001_psr_b1257_en_1080x1920p60.mp4` — master for YouTube (59.98 s = 3599 frames, 1080×1920, 60 fps)
+- `ep001_psr_b1257_en_1080x1920p60_light.mp4` — light copy (same edit, 6 Mbps)
+- `ep001_psr_b1257_en_1080x1920p60_preview.mp4` — preview to check on the phone (≤ 30 MB, ~3.4 Mbps); not for upload
+
 Duration is at the hard limit: a Short > 60 s with any copyright claim (Content ID or manual) is blocked worldwide. Next episodes: target 59–59.5 s.
 
 ## Title (pick one)
@@ -39,13 +45,13 @@ space, astronomy, pulsar, PSR B1257+12, neutron star, exoplanets, science visual
 ## Pinned comment
 ```
 Real numbers from Wolszczan & Frail (1992), Wolszczan (1994), Konacki & Wolszczan (2003) and the ATNF Pulsar Catalogue — all sources in the description.
-Which dead star should we render next: the fastest pulsar (716 spins/s) or a magnetar that shook Earth's ionosphere? 👇
+This is the first episode of DEAD STARS — one series of many across the whole universe. What should we render next: the fastest pulsar (716 spins/s) or a moon that sprays water into space? 👇
 ```
 
 ## Studio settings
 - Audience: **Not made for kids**. Category: **Science & Technology**. Language: English.
 - **Altered or synthetic content: YES (voluntary, conservative)** — photorealistic rendering of a scene that can't be filmed (planets, beams, auroras). Required by the help page for GenAI; a Blender render is formally not GenAI. The label doesn't reduce reach or monetization. The TTS voice may also get an automatic AI label in the description (C2PA/detection) — fine.
-- Playlist / series: **NEUTRON FILES — Dead Stars**. Related video: the long-form version when it exists.
+- Playlist / series: **DEAD STARS** (Orbitfall). Related video: the long-form version when it exists.
 - Publish: steady evening slot for US viewers (e.g. 18:00 ET), same slot for the series.
 
 ## Cross-post (clean master, no watermarks)

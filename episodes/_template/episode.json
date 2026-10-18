@@ -4,7 +4,7 @@
  "series": "<серия из docs/channel.md>",
  "format_name": "9x16",
  "format": {"w": 1080, "h": 1920, "fps": 60},
- "languages": ["en", "ru"],
+ "languages": ["en"],
  "output": "out/{id}/9x16/{id}_{lang}_1080x1920p60.mp4",
  "video": {"bitrate_kbps": 40000, "preset": "BEST"},
  "edit": [
@@ -22,12 +22,6 @@
    {"text": "Scientific visualization · real data", "size": 30, "y": 0.955, "font": "C:/Windows/Fonts/segoeui.ttf",
     "color": [0.78, 0.82, 0.9], "fade": 0},
    {"text": "<OBJECT NAME>", "start_s": 0.2, "length_s": 4.0, "size": 54, "y": 0.885,
-    "font": "C:/Windows/Fonts/segoeuisl.ttf", "fade": 12}
-  ],
-  "ru": [
-   {"text": "Научная визуализация · реальные данные", "size": 30, "y": 0.955, "font": "C:/Windows/Fonts/segoeui.ttf",
-    "color": [0.78, 0.82, 0.9], "fade": 0},
-   {"text": "<ИМЯ ОБЪЕКТА>", "start_s": 0.2, "length_s": 4.0, "size": 54, "y": 0.885,
     "font": "C:/Windows/Fonts/segoeuisl.ttf", "fade": 12}
   ]
  }

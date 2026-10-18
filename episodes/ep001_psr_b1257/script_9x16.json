@@ -7,11 +7,6 @@
    "voice": "af_heart",
    "speed": 0.98,
    "lang": "en-us"
-  },
-  "ru": {
-   "engine": "edge",
-   "voice": "ru-RU-SvetlanaNeural",
-   "rate": "+0%"
   }
  },
  "segments": [
@@ -19,61 +14,49 @@
    "at": 0.3,
    "shot": "v1",
    "en": "This dead star spins one hundred and sixty-one times every second.",
-   "ru": "Эта мёртвая звезда делает сто шестьдесят один оборот в секунду.",
-   "en_cap": "This dead star spins 161 times every second.",
-   "ru_cap": "Эта мёртвая звезда делает 161 оборот в секунду."
+   "en_cap": "This dead star spins 161 times every second."
   },
   {
    "at": 4.55,
    "shot": "v2",
    "en": "It's a pulsar: the collapsed core of a giant star. More massive than the Sun, yet only twenty kilometers across.",
-   "ru": "Это пульсар — сжавшееся ядро гигантской звезды. Тяжелее Солнца, но всего двадцать километров в поперечнике.",
-   "en_cap": "It's a pulsar: the collapsed core of a giant star. More massive than the Sun, yet only 20 km across.",
-   "ru_cap": "Это пульсар — сжавшееся ядро гигантской звезды. Тяжелее Солнца, но всего 20 км в поперечнике."
+   "en_cap": "It's a pulsar: the collapsed core of a giant star. More massive than the Sun, yet only 20 km across."
   },
   {
    "at": 11.4,
    "shot": "v2",
-   "en": "Its magnetic poles fire beams of radio waves that sweep through space like a lighthouse.",
-   "ru": "Из магнитных полюсов бьют лучи радиоизлучения и, как маяк, прочёсывают пространство."
+   "en": "Its magnetic poles fire beams of radio waves that sweep through space like a lighthouse."
   },
   {
    "at": 16.6,
    "shot": "v3",
-   "en": "In 1992, astronomers found something no one expected: planets orbiting it.",
-   "ru": "В девяносто втором году вокруг него нашли то, чего никто не ждал, — планеты.",
-   "ru_cap": "В 1992 году | вокруг него нашли то, | чего никто не ждал, — | планеты."
+   "en": "In 1992, astronomers found something no one expected: planets orbiting it."
   },
   {
    "at": 22.3,
    "shot": "v3",
-   "en": "The first planets ever confirmed beyond our Solar System.",
-   "ru": "Первые подтверждённые планеты за пределами Солнечной системы."
+   "en": "The first planets ever confirmed beyond our Solar System."
   },
   {
    "at": 28.4,
    "shot": "v4",
-   "en": "They likely formed in a debris disk, perhaps from a destroyed companion star.",
-   "ru": "Вероятно, они родились из диска обломков — возможно, от разрушенной звезды-соседки."
+   "en": "They likely formed in a debris disk, perhaps from a destroyed companion star."
   },
   {
    "at": 33.6,
    "shot": "v4",
    "en": "Its radiation and particle wind batter them nonstop, and might even light auroras in their skies.",
-   "ru": "Излучение и ветер частиц пульсара бьют по ним без остановки — и, возможно, зажигают в их небе сияния.",
    "en_cap": "Its radiation and particle wind | batter them nonstop, | and might even light | auroras in their skies."
   },
   {
    "at": 44.4,
    "shot": "v5",
-   "en": "Draugr. Poltergeist. Phobetor. Worlds named after the undead and nightmares, circling a star called Lich.",
-   "ru": "Драугр. Полтергейст. Фобетор. Миры с именами нежити и кошмаров вокруг звезды по имени Лич."
+   "en": "Draugr. Poltergeist. Phobetor. Worlds named after the undead and nightmares, circling a star called Lich."
   },
   {
    "at": 54.3,
    "shot": "v6",
    "en": "And pulsars like it keep time almost as well as atomic clocks.",
-   "ru": "А такие пульсары отмеряют время почти как атомные часы.",
    "en_cap": "And pulsars like it | keep time almost | as well as atomic clocks."
   }
  ]

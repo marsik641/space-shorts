@@ -1,7 +1,7 @@
 {
  "id": "ep001_psr_b1257",
  "object": "PSR B1257+12 (Lich) + Draugr, Poltergeist, Phobetor",
- "series": "NEUTRON FILES",
+ "series": "DEAD STARS",
  "format_name": "9x16",
  "format": {
   "w": 1080,
@@ -14,8 +14,7 @@
  "script": "episodes/ep001_psr_b1257/script_9x16.json",
  "music_cues": "episodes/ep001_psr_b1257/music_cues.json",
  "languages": [
-  "en",
-  "ru"
+  "en"
  ],
  "output": "out/{id}/9x16/{id}_{lang}_1080x1920p60.mp4",
  "video": {
@@ -65,29 +64,6 @@
   "en": [
    {
     "text": "Scientific visualization · real data",
-    "size": 30,
-    "y": 0.955,
-    "font": "C:/Windows/Fonts/segoeui.ttf",
-    "color": [
-     0.78,
-     0.82,
-     0.9
-    ],
-    "fade": 0
-   },
-   {
-    "text": "PSR B1257+12",
-    "start_s": 0.2,
-    "length_s": 4.2,
-    "size": 54,
-    "y": 0.885,
-    "font": "C:/Windows/Fonts/segoeuisl.ttf",
-    "fade": 12
-   }
-  ],
-  "ru": [
-   {
-    "text": "Научная визуализация · реальные данные",
     "size": 30,
     "y": 0.955,
     "font": "C:/Windows/Fonts/segoeui.ttf",

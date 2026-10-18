@@ -1,0 +1,271 @@
+{
+ "output": "out/ep001_psr_b1257/9x16/ep001_psr_b1257_en_1080x1920p60_preview.mp4",
+ "format": {
+  "w": 1080,
+  "h": 1920,
+  "fps": 60
+ },
+ "video": {
+  "bitrate_kbps": 3400,
+  "preset": "BEST"
+ },
+ "crossfade": 0,
+ "fade_in": 0,
+ "fade_out": 0,
+ "tail": 0,
+ "shots": [
+  {
+   "dir": "out/ep001_psr_b1257/9x16/frames/v1",
+   "frames": 270,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep001_psr_b1257/9x16/frames/v2",
+   "frames": 690,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep001_psr_b1257/9x16/frames/v3",
+   "frames": 720,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep001_psr_b1257/9x16/frames/v4",
+   "frames": 960,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep001_psr_b1257/9x16/frames/v5",
+   "frames": 600,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep001_psr_b1257/9x16/frames/v6",
+   "frames": 359,
+   "first": 1,
+   "xfade_in": 0
+  }
+ ],
+ "titles": [
+  {
+   "text": "Scientific visualization · real data",
+   "size": 30,
+   "y": 0.955,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "color": [
+    0.78,
+    0.82,
+    0.9
+   ],
+   "fade": 0,
+   "start": 1,
+   "length": 3599
+  },
+  {
+   "text": "PSR B1257+12",
+   "size": 54,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/segoeuisl.ttf",
+   "fade": 12,
+   "start": 13,
+   "length": 252
+  }
+ ],
+ "captions": {
+  "size": 70,
+  "x": 0.5,
+  "y": 0.3,
+  "font": "C:/Windows/Fonts/seguisb.ttf",
+  "outline": 8,
+  "wrap": 0.84,
+  "color": [
+   1.0,
+   1.0,
+   1.0
+  ],
+  "items": [
+   {
+    "text": "This dead star spins",
+    "start": 19,
+    "end": 131
+   },
+   {
+    "text": "161 times every second.",
+    "start": 131,
+    "end": 267
+   },
+   {
+    "text": "It's a pulsar:",
+    "start": 274,
+    "end": 334
+   },
+   {
+    "text": "the collapsed core",
+    "start": 334,
+    "end": 409
+   },
+   {
+    "text": "of a giant star.",
+    "start": 409,
+    "end": 477
+   },
+   {
+    "text": "More massive than the Sun,",
+    "start": 477,
+    "end": 585
+   },
+   {
+    "text": "yet only 20 km across.",
+    "start": 585,
+    "end": 684
+   },
+   {
+    "text": "Its magnetic poles fire",
+    "start": 685,
+    "end": 767
+   },
+   {
+    "text": "beams of radio waves",
+    "start": 767,
+    "end": 839
+   },
+   {
+    "text": "that sweep through space",
+    "start": 839,
+    "end": 925
+   },
+   {
+    "text": "like a lighthouse.",
+    "start": 925,
+    "end": 997
+   },
+   {
+    "text": "In 1992,",
+    "start": 997,
+    "end": 1037
+   },
+   {
+    "text": "astronomers found",
+    "start": 1037,
+    "end": 1116
+   },
+   {
+    "text": "something no one expected:",
+    "start": 1116,
+    "end": 1235
+   },
+   {
+    "text": "planets orbiting it.",
+    "start": 1235,
+    "end": 1334
+   },
+   {
+    "text": "The first planets",
+    "start": 1339,
+    "end": 1400
+   },
+   {
+    "text": "ever confirmed",
+    "start": 1400,
+    "end": 1451
+   },
+   {
+    "text": "beyond our Solar System.",
+    "start": 1451,
+    "end": 1544
+   },
+   {
+    "text": "They likely formed",
+    "start": 1705,
+    "end": 1772
+   },
+   {
+    "text": "in a debris disk,",
+    "start": 1772,
+    "end": 1835
+   },
+   {
+    "text": "perhaps from a destroyed",
+    "start": 1835,
+    "end": 1923
+   },
+   {
+    "text": "companion star.",
+    "start": 1923,
+    "end": 1987
+   },
+   {
+    "text": "Its radiation and particle wind",
+    "start": 2017,
+    "end": 2138
+   },
+   {
+    "text": "batter them nonstop,",
+    "start": 2138,
+    "end": 2218
+   },
+   {
+    "text": "and might even light",
+    "start": 2218,
+    "end": 2298
+   },
+   {
+    "text": "auroras in their skies.",
+    "start": 2298,
+    "end": 2396
+   },
+   {
+    "text": "Draugr. Poltergeist. Phobetor.",
+    "start": 2665,
+    "end": 2785
+   },
+   {
+    "text": "Worlds named after",
+    "start": 2785,
+    "end": 2858
+   },
+   {
+    "text": "the undead and nightmares,",
+    "start": 2858,
+    "end": 2962
+   },
+   {
+    "text": "circling a star",
+    "start": 2962,
+    "end": 3024
+   },
+   {
+    "text": "called Lich.",
+    "start": 3024,
+    "end": 3082
+   },
+   {
+    "text": "And pulsars like it",
+    "start": 3259,
+    "end": 3334
+   },
+   {
+    "text": "keep time almost",
+    "start": 3334,
+    "end": 3398
+   },
+   {
+    "text": "as well as atomic clocks.",
+    "start": 3398,
+    "end": 3504
+   }
+  ]
+ },
+ "audio": [
+  {
+   "path": "out/ep001_psr_b1257/9x16/audio/mix_en.wav",
+   "start": 1,
+   "volume": 1.0
+  }
+ ]
+}

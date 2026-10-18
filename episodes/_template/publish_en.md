@@ -1,6 +1,9 @@
-# Ep. NNN — publish pack (EN, Neutron Frames)
+# Ep. NNN — publish pack (EN, Orbitfall)
 
-**File:** `epNNN_slug_en_1080x1920p60.mp4` (59.x s, 1080×1920, 60 fps)
+Rules — `docs/publish.md`. Release folder — `out/epNNN_slug/release/`.
+
+**Files:** `epNNN_slug_en_1080x1920p60.mp4` (master, upload this; 59.x s, 1080×1920, 60 fps),
+`_light.mp4` (6 Mbps), `_preview.mp4` (≈ 3.4 Mbps, ≤ 30 MB, phone preview)
 
 ## Title (pick one)
 1. **<fact hook, ≤ 60 chars>** ← recommended
@@ -26,6 +29,9 @@ Not to scale: <scale/time conventions from facts.md>.
 ## Tags
 space, astronomy, <object>, <object type>, science visualization, 3D render
 
+## Hashtags
+#space #astronomy #<object> (3–5, also at the end of the description)
+
 ## Pinned comment
 ```
 <sources in short> — all links in the description.
@@ -35,9 +41,9 @@ space, astronomy, <object>, <object type>, science visualization, 3D render
 ## Studio settings
 - Audience: **Not made for kids**. Category: **Science & Technology**. Language: English.
 - Altered or synthetic content: <YES/NO> — voluntary (Blender render is not GenAI); why.
-- Playlist / series: <series>. Related video: <long-form, if any>.
-- Publish: steady evening slot for US viewers, same slot for the series.
+- Playlist / series: <series>. Related video: <long-form or previous episode on the topic, if any>.
+- Publish: <day, time> — steady evening slot for US viewers, same slot for the series.
 
-## Cross-post (clean master, no watermarks)
-- TikTok: <caption> (upload from RU blocked since 03.2022 — check; Creator Rewards only for > 60 s)
+## Cross-post (clean master, no watermarks, no YouTube links)
+- TikTok: <caption> (upload from RU blocked since 03.2022 — check; Creator Rewards only for > 60 s → reach only)
 - Instagram Reels: <caption> (reach only, no income)

@@ -1,0 +1,53 @@
+# Пакет к загрузке (финал `/make-video`)
+
+Отдельной команды нет: пакет собирает `/make-video` (часть B, шаги 10–13) после «ок» пользователя. Только EN.
+Каркас — `episodes/_template/publish_en.md`; готовый пример — `episodes/ep001_psr_b1257/publish_en.md`.
+
+## Что лежит в `out/<ep>/release/`
+
+| Файл | Что | Откуда |
+|---|---|---|
+| `<ep>_en_1080x1920p60.mp4` | мастер, H.264 40 Мбит/с, AAC 320 кбит/с — грузить в Studio и на площадки | `build_edit.py … en` + assemble |
+| `<ep>_en_1080x1920p60_light.mp4` | 6 Мбит/с, ≈ 45 МБ — запас/просмотр на ПК | `build_edit.py … en --light` + assemble |
+| `<ep>_en_1080x1920p60_preview.mp4` | 3400 кбит/с, **≤ 30 МБ** (ep001: 25,4 МБ) — отправка на телефон | `build_edit.py … en --preview` + assemble |
+| `publish_en.md` | тексты и настройки загрузки | этот документ |
+
+Сборка — `python tools/release.py episodes/<ep>/episode.json` (сначала `tools/qa.py … en` = PASS). Мастер, `_preview`
+и `publish_en.md` обязательны (нет — FAIL), `_light` — WARN. Файлы, которых нет в текущем составе (например, старые
+RU MP4 и publish_ru.md), release.py удаляет из release/ (строка DEL). Пользователю (SendUserFile): `_preview` и
+`publish_en.md`; мастер — путём к `release/`.
+Faststart/BT.709 Blender не пишет — сознательно без ремукса (`docs/pipeline.md`, «Оговорка про контейнер»).
+
+## `publish_en.md`
+
+1. **Названия** — 3 варианта, ≤ 60 символов, факт-крючок или вопрос, без кликбейт-лжи
+   (пример: «This Dead Star Spins 161 Times a Second»). Отметить рекомендуемый.
+2. **Описание**: 2–3 строки сути (первая строка видна в ленте) → «Visualization based on real data:» +
+   ключевые параметры → **Sources** — **каждое число ролика** со ссылкой из `facts.md` (не влезает — в закреп) →
+   «Rendered in Blender Cycles · scientific visualization / artist's impression» + условности (масштаб, замедление) →
+   3–5 хэштегов (`#space #astronomy #<объект>`).
+3. **Теги**: 5–8 (роль минимальная): объект, тип объекта, space, astronomy, science visualization, 3D render.
+4. **Закреплённый комментарий**: источники коротко + вопрос зрителю (выбор следующей темы).
+5. **Studio**: не для детей; категория Science & Technology; язык English; плейлист/серия; **Related video**
+   (long-form или прошлый эпизод по теме). «Altered or synthetic content» — **добровольно**: по справке обязательно
+   для GenAI, Blender-рендер формально не GenAI; консервативно отмечать для фотореалистичных сцен, которых не было
+   (метка не режет охват). TTS-озвучка может получить автометку YouTube.
+6. **Слот публикации**: стабильный вечер для США, один слот на серию, без «магических часов».
+7. **Кросс-пост (EN)**: короткие нативные подписи, без ссылок на YouTube; грузить чистый мастер (не скачивать с YouTube).
+   - TikTok: из РФ загрузка новых видео заблокирована с 03.2022 (проверить); Creator Rewards — только ролики > 60 с,
+     наш мастер не подходит — только охват.
+   - Instagram Reels: только охват (Meta в РФ признана экстремистской, доход — юридический риск).
+
+## Монетизация — решения отложены
+
+Факты собраны в `docs/growth.md` (раздел 8) и `docs/channel.md`; план не утверждён. **RU-зеркало и RU-площадки
+(VK Клипы, Rutube, Wibes) — отложено**, не план: монетизация Клипов VK и Rutube Shorts не подтверждена; Wibes —
+условия проверить; для дохода в РФ — самозанятость/ИП, при 10k+ подписчиков — реестр РКН, интеграции — с ЕРИД.
+
+## Автозагрузка через YouTube Data API — позже
+
+Сейчас загрузку делает пользователь (Studio). Когда дойдёт:
+- Google Cloud проект, OAuth client (Desktop), scope `youtube.upload` + `youtube.force-ssl`;
+- consent screen перевести в **In production**: при External + Testing refresh token живёт **7 дней** (research.md:248, 288);
+- `client_secret*.json` и `token.json` — только в `secrets/` (в `.gitignore`);
+- квоты ~100 загрузок/сутки; у неаудированных проектов видео блокируется в private — первая загрузка тестовая unlisted.

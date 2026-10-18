@@ -13,11 +13,11 @@
 | `facts.md` | Факты с источниками (каждое число — URL), гипотезы, условности визуализации |
 | `system.py` | Реальные параметры → экранный масштаб (общие для всех шотов), docstring «реальность → экран», сиды |
 | `shots_9x16.py` | Шоты 1080×1920 60 fps на `spacekit.shot` (каркас; API — `docs/spacekit.md`) |
-| `script_9x16.json` | Озвучка EN/RU сегментами с якорями `at` (с), 59–59,5 с; `<lang>_cap` — цифры, `|` — ручные разрывы. Голос/темп — не как в прошлом эпизоде |
-| `episode.json` | `id` = имя папки; `edit` (кадры = SHOTS), оверлеи, `caption_style` в безопасных зонах Shorts (`docs/pipeline.md`, «Титры и субтитры») |
+| `script_9x16.json` | Озвучка EN сегментами с якорями `at` (с), 59–59,5 с; `en_cap` — цифры, `|` — ручные разрывы. Голос/темп — не как в прошлом эпизоде |
+| `episode.json` | `id` = имя папки; `languages: ["en"]`; `edit` (кадры = SHOTS, Σ ≤ 3599 при 60 fps), оверлеи `en`, `caption_style` в безопасных зонах Shorts (`docs/pipeline.md`, «Титры и субтитры») |
 | `music_cues.json` | Своя тональность/гармония/seed; `pulses`/`risers` заполняет `tools/cues.py` |
-| `publish_en.md`, `publish_ru.md` | Пакет к загрузке (`/publish-pack`) |
-| `edit_9x16_<lang>.json` | Генерирует `tools/build_edit.py` (коммитится — воспроизводимость монтажа) |
+| `publish_en.md` | Пакет к загрузке — финал `/make-video` (`docs/publish.md`) |
+| `edit_9x16_en[_light\|_preview].json` | Генерирует `tools/build_edit.py` (коммитится — воспроизводимость монтажа) |
 
 Проверка согласованности: `python tools/check_episode.py episodes/<ep>/episode.json`.
 Порядок работы — `docs/pipeline.md` и команда `/make-video`.
