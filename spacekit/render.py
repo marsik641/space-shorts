@@ -121,6 +121,11 @@ def render_sequence(out_dir, frame_start, frame_end, scene=None, step=1):
     r.use_placeholder = True
     r.use_file_extension = True
     r.filepath = os.path.join(os.path.abspath(out_dir), "####")
+    # 0-байтные плейсхолдеры от прерванного рендера иначе считаются готовыми кадрами и пропускаются
+    for f in os.listdir(out_dir):
+        p = os.path.join(out_dir, f)
+        if f.lower().endswith(".png") and os.path.getsize(p) == 0:
+            os.remove(p)
     scene.frame_start, scene.frame_end, scene.frame_step = frame_start, frame_end, step
     bpy.ops.render.render(animation=True)
 

@@ -49,9 +49,9 @@ def report_flash(shot, peaks):
     print(f"FLASH {shot}: " + ", ".join(f"{f}:{v:.2f}" for f, v in peaks))
 
 
-def frames_s(seconds):
-    """Секунды ролика -> число кадров при текущем fps."""
-    return int(round(seconds * OPT["fps"]))
+def frames_s(seconds, scene=None):
+    """Секунды ролика -> число кадров при fps сцены (вызывать после base_scene)."""
+    return int(round(seconds * C.scene_fps(scene)))
 
 
 def run(builders, out_dir, render_end=None, argv=None):

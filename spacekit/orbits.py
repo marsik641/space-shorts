@@ -88,7 +88,7 @@ def add_kepler_orbit(scene, body, *, center_parent, a, e, period_s, phase_deg=0.
     phase_deg — средняя аномалия в frame_start, omega_deg — аргумент перицентра. Возвращает пивот."""
     body = _body_root(body)
     plane = C.empty(f"{body.name}_OrbitPlane", coll="Planets", parent=center_parent, size=a * 0.05)
-    plane.rotation_mode = "ZXY"
+    plane.rotation_mode = "YXZ"   # M = Rz(node)·Rx(incl): наклон вокруг линии узлов, затем поворот узлов
     plane.rotation_euler = (math.radians(incl_deg), 0.0, math.radians(node_deg))
     body.parent = plane
     fps = C.scene_fps(scene)

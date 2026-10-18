@@ -1,7 +1,7 @@
 """Замер времени кадра в вариантах настроек (оптимизация рендера).
 
     blender -b --factory-startup -P tests/timing.py -- <episode_shots.py> <shot> <frame> <variant> [<variant> ...]
-variant: base | compgpu | lowspp | fast (= compgpu + lowspp)
+variant: base | compgpu | lowspp | fast (= compgpu + lowspp) | coarsevol (шаг объёма ×4) | fast2 (32 spp + coarsevol) | fast3 (20 spp)
 """
 import importlib.util
 import os
@@ -30,6 +30,17 @@ for v in variants:
         lay = sc.view_layers.get("Stars")
         if lay:
             lay.samples = 24
+    if v in ("coarsevol", "fast2"):
+        sc.cycles.volume_step_rate = 4.0
+    if v == "fast2":
+        sc.cycles.samples = 32
+        sc.cycles.adaptive_threshold = 0.04
+    if v == "fast3":                      # 20 spp, мягкий адаптивный порог, слой звёзд 16
+        sc.cycles.samples = 20
+        sc.cycles.adaptive_threshold = 0.05
+        lay = sc.view_layers.get("Stars")
+        if lay:
+            lay.samples = 16
     out = os.path.join(C.OUT, "timing", f"{shot}_{frame}_{v}.png")
     t = time.time()
     R.render_still(out, frame=frame)

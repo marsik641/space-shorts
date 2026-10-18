@@ -178,7 +178,8 @@ V5_PSR = (0.0, 115.0, 22.0)
 def shot_v5():
     n = SHOTS["v5"]
     ex = 0.6
-    sc = S.base_scene(n, exposure=ex, samples=48, bloom_strength=0.8, adaptive=0.03)
+    # планета на весь кадр (атмосфера + сияния — полупрозрачные оболочки): 20 spp, detail=mid -> 12 с/кадр вместо 31
+    sc = S.base_scene(n, exposure=ex, samples=20, bloom_strength=0.8, adaptive=0.05)
     u = Vector(V5_PSR).normalized()
     cam, tgt = CAM.camera_rig("Cam_V5", lens=30)
     # камера за планетой (пульсар скрыт диском), затем поднимается — пульсар выходит из-за лимба
@@ -196,11 +197,11 @@ def shot_v5():
                           beam_length=200, beam_half_angle_deg=8, detail="far",
                           light_energy=18000.0 * s2, spot_energy=24000.0 * s2, field_lines=False, particles=False)
     S.report_flash("v5", NS.key_pulse_flash(psr, cam, 1, n, width_deg=14))
-    ph = PL.build_planet(sc, "phobetor", radius=1.0, location=(0, 0, 0), detail="close", seed=SEEDS["phobetor"],
+    ph = PL.build_planet(sc, "phobetor", radius=1.0, location=(0, 0, 0), detail="mid", seed=SEEDS["phobetor"],
                          axial_tilt_deg=20, tilt_azimuth_deg=180.0, rot_period_s=70.0,
                          frame_start=1, frame_end=n, aurora_strength=0.8, light=psr["light"])
     PL.key_sun_power(ph, psr, 1, n)
-    S.finish(sc, stars, star_samples=24)
+    S.finish(sc, stars, star_samples=16)
     return sc, n
 
 
