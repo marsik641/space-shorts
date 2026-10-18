@@ -19,6 +19,7 @@ cues.json (обязательно только duration_s; остальное �
   "reverb": {"seconds": 3.5, "mix": 0.4},
   "bpm": null,                                       # число — сетка: начала искр встают на долю/subdiv
   "grid": {"subdiv": 2, "offset_s": 0.0, "pulses": false},     # pulses: true — и удары на сетку (рвёт синхрон
+  "mix": {"music_db": -20, "duck_db": -9},                  # уровни для tools/mix.py --cues (музыка здесь не меняется)
 }                                                               # с вспышками в кадре; по умолчанию нет)
 Поля: harmonics — число гармоник «пилы» пэда, rolloff — показатель завала 1/h^rolloff (больше -> темнее),
 detune — расстройка L/R в полутонах, attack/release — огибающая аккорда (с), octave — октава пэда от корня.
@@ -69,7 +70,7 @@ DEFAULTS = {
     "reverb": {"seconds": 3.5, "mix": 0.4},
     "grid": {"subdiv": 2, "offset_s": 0.0, "pulses": False},
 }
-TOP_KEYS = {"duration_s", "seed", "key", "chords", "pulses", "risers", "fade_out_s", "bpm", "note", "comment",
+TOP_KEYS = {"duration_s", "seed", "key", "chords", "pulses", "risers", "fade_out_s", "bpm", "note", "comment", "mix",
             *DEFAULTS}
 
 

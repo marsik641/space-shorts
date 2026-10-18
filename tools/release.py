@@ -1,9 +1,9 @@
-"""Сборка пакета к загрузке: out/<id>/release/ — MP4 по всем языкам (+ _light и _preview) и publish_*.md.
+"""Сборка пакета к загрузке: out/<id>/release/ — мастер MP4 и publish_<lang>.md по каждому языку, больше ничего.
 
     python tools/release.py episodes/<id>/episode.json [--dry-run]
 
-MP4 берутся по output из episode.json (как в build_edit), light — с суффиксом _light (build_edit --light).
-publish_<lang>.md — из папки эпизода. Нет основного MP4, _preview или publish — FAIL (код 1); нет _light — WARN.
+MP4 — по output из episode.json (как в build_edit); publish_<lang>.md — из папки эпизода. Нет одного из них — FAIL
+(код 1). _light/_preview в пакет не входят (решение владельца 18.10.2026: пакет = мастер + md).
 Копирование с сохранением времени (shutil.copy2); файлы release/, которых нет в текущем составе, удаляются (DEL).
 Перед сборкой — tools/qa.py по каждому языку.
 """
@@ -15,7 +15,7 @@ import sys
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from build_edit import ep_paths, light_path  # noqa: E402
+from build_edit import ep_paths  # noqa: E402
 
 
 def R(path):
@@ -26,7 +26,7 @@ def main():
     for _s in (sys.stdout, sys.stderr):      # кириллица в консоли/пайпе Windows
         if hasattr(_s, "reconfigure"):
             _s.reconfigure(encoding="utf-8", errors="replace")
-    ap = argparse.ArgumentParser(description="out/<id>/release/: MP4 (+_light) и publish_*.md")
+    ap = argparse.ArgumentParser(description="out/<id>/release/: мастер MP4 и publish_*.md")
     ap.add_argument("episode")
     ap.add_argument("--dry-run", action="store_true", help="только показать, что будет скопировано")
     a = ap.parse_args()
@@ -40,16 +40,12 @@ def main():
     plan, fails = [], 0
     for lang in ep.get("languages", ["en"]):
         main_mp4 = paths["output"].format(id=eid, lang=lang)
-        for src, required in ((main_mp4, True), (light_path(main_mp4), False),
-                              (light_path(main_mp4, "_preview"), True),
-                              (os.path.join(ep_dir, f"publish_{lang}.md"), True)):
+        for src in (main_mp4, os.path.join(ep_dir, f"publish_{lang}.md")):
             if os.path.isfile(R(src)):
                 plan.append(R(src))
-            elif required:
+            else:
                 print(f"FAIL нет {src}")
                 fails += 1
-            else:
-                print(f"WARN нет {src} (python tools/build_edit.py {a.episode} {lang} --light + assemble)")
     # чистый релиз: только файлы текущего состава (старые языки/версии не копятся)
     if not a.dry_run and os.path.isdir(dest):
         keep = {os.path.basename(p) for p in plan}

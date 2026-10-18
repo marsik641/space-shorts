@@ -19,8 +19,9 @@ voices.<lang>.speed — множитель темпа; у edge он перемн
 Тайминг субтитров: edge — по границам слов (WordBoundary), сопоставление по нормализованным словам
 (буквы/цифры без регистра и пунктуации; тире без звука пропускаются, слова через дефис склеиваются
 независимо от того, как их разбил edge). Начало фразы не раньше начала сегмента.
-kokoro и любой <lang>_cap, отличный от текста, — пропорционально числу символов (рассинхрон до 0.3–0.5 с
-на длинных фразах — ожидаемо, проверять глазами).
+kokoro и любой <lang>_cap, отличный от текста, — пропорционально числу символов, но куски, кончающиеся на знак
+препинания, привязываются к паузам в голосе (snap_to_pauses: RMS −40 дБ, пауза ≥ 0.15 с, окно ±0.9 с); рассинхрон
+остаётся внутри длинных фраз без пауз — проверять глазами.
 
 Выход: <out_dir>/vo_<lang>.wav (48 кГц, моно float), <out_dir>/captions_<lang>.json
        ([{"text", "start", "end"}] в секундах — фразами по 2–5 слов для вертикальных субтитров).
@@ -277,6 +278,74 @@ def _proportional(chunks, dur):
     return res
 
 
+def _pauses(x, thr_db=-40.0, min_len=0.15, hop=0.01):
+    """Паузы голоса [(начало, конец), с]: RMS по окнам hop ниже пика на thr_db дольше min_len."""
+    n = max(1, int(hop * SR))
+    m = len(x) // n
+    if m == 0:
+        return []
+    rms = np.sqrt(np.mean(x[: m * n].reshape(m, n) ** 2, axis=1))
+    sil = rms < (rms.max() or 1.0) * 10 ** (thr_db / 20.0)
+    runs, i = [], 0
+    while i < m:
+        if sil[i]:
+            j = i
+            while j < m and sil[j]:
+                j += 1
+            if (j - i) * hop >= min_len and i > 0 and j < m:      # только внутренние паузы
+                runs.append((i * hop, j * hop))
+            i = j
+        else:
+            i += 1
+    return runs
+
+
+def snap_to_pauses(chunks, times, x, window=0.9):
+    """Kokoro не даёт границ слов: кусок, кончающийся на . , : ; ? !, привязать к ближайшей паузе в голосе (±window):
+    он гаснет в начале паузы, следующий появляется в её конце. Между такими опорами — деление по числу символов."""
+    m = len(chunks)
+    if m < 2:
+        return times
+    pauses = _pauses(x)
+    ks = [k for k in range(1, m) if re.search(r"[.,:;?!]$", chunks[k - 1][-1])]
+    fixed = {}                                     # граница k (начало куска k) -> (конец k−1, начало k)
+    if ks and len(pauses) == len(ks):              # пауз ровно столько, сколько знаков на границах — по порядку
+        pairs = list(zip(ks, pauses))
+    else:                                          # иначе — ближайшая неиспользованная пауза, монотонно
+        pairs, last = [], -1.0
+        for k in ks:
+            b = times[k][0]
+            near = [p for p in pauses if p[0] > last and abs((p[0] + p[1]) / 2 - b) <= window]
+            if near:
+                p = min(near, key=lambda q: abs((q[0] + q[1]) / 2 - b))
+                pairs.append((k, p))
+                last = p[1]
+    lens = [len(" ".join(c)) + 1 for c in chunks]
+    prev_t, prev_k = times[0][0], 0
+    for k, p in pairs:
+        # кусок(и) между опорами не короче 0.3 с на кусок, иначе опору пропустить
+        if p[0] - prev_t < 0.3 * (k - prev_k):
+            continue
+        fixed[k] = (p[0] + 0.03, p[1] - 0.03)
+        prev_t, prev_k = p[1], k
+    if not fixed:
+        return times
+    lens = [len(" ".join(c)) + 1 for c in chunks]
+    ends = {0: (times[0][0], times[0][0]), m: (times[-1][1], times[-1][1])}
+    ends.update(fixed)
+    keys = sorted(ends)
+    out = [None] * m
+    for k0, k1 in zip(keys, keys[1:]):
+        t0, t1 = ends[k0][1], ends[k1][0]          # от начала куска k0 до конца куска k1−1
+        tot = sum(lens[k0:k1])
+        t = t0
+        for k in range(k0, k1):
+            d = (t1 - t0) * lens[k] / tot
+            out[k] = (t, t + d)
+            t += d
+    return out
+
+
 MIN_LIMIT = 0.2     # с: если на фразу остаётся меньше — якоря стоят слишком тесно
 
 
@@ -324,7 +393,10 @@ def main(script_path, lang, out_dir, max_chars=None):
         cap_text = seg.get(f"{lang}_cap", text)
         chunks = chunk_words(cap_text, max_chars)
         cap_words = words if cap_text == text else None
-        for (s0, s1), c in zip(caption_times(chunks, dur, cap_words), chunks):
+        times = caption_times(chunks, dur, cap_words)
+        if cap_words is None:                       # нет границ слов (kokoro) — границы фраз по паузам голоса
+            times = snap_to_pauses(chunks, times, x)
+        for (s0, s1), c in zip(times, chunks):
             caps.append({"text": " ".join(c), "start": round(at + s0, 3), "end": round(at + s1 + 0.12, 3)})
         status = "OK" if dur <= limit else "OVERRUN"
         report.append(f"{status} seg{i + 1} at={at:.2f}s dur={dur:.2f}s limit={limit:.2f}s speed={speed:.2f}")

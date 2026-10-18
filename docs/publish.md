@@ -8,14 +8,13 @@
 | Файл | Что | Откуда |
 |---|---|---|
 | `<ep>_en_1080x1920p60.mp4` | мастер, H.264 40 Мбит/с, AAC 320 кбит/с — грузить в Studio и на площадки | `build_edit.py … en` + assemble |
-| `<ep>_en_1080x1920p60_light.mp4` | 6 Мбит/с, ≈ 45 МБ — запас/просмотр на ПК | `build_edit.py … en --light` + assemble |
-| `<ep>_en_1080x1920p60_preview.mp4` | 3400 кбит/с, **≤ 30 МБ** (ep001: 25,4 МБ) — отправка на телефон | `build_edit.py … en --preview` + assemble |
 | `publish_en.md` | тексты и настройки загрузки | этот документ |
 
-Сборка — `python tools/release.py episodes/<ep>/episode.json` (сначала `tools/qa.py … en` = PASS). Мастер, `_preview`
-и `publish_en.md` обязательны (нет — FAIL), `_light` — WARN. Файлы, которых нет в текущем составе (например, старые
-RU MP4 и publish_ru.md), release.py удаляет из release/ (строка DEL). Пользователю (SendUserFile): `_preview` и
-`publish_en.md`; мастер — путём к `release/`.
+Только эти **два файла** (решение владельца, 18.10.2026): `_light`/`_preview`-копии не собираются и в пакет не
+входят (`build_edit.py --light/--preview` остались для ручных случаев). Сборка — `python tools/release.py
+episodes/<ep>/episode.json` (сначала `tools/qa.py … en` = PASS): нет мастера или `publish_en.md` — FAIL; файлы не
+из текущего состава (старые копии, RU) release.py удаляет из release/ (строка DEL). Пользователю (SendUserFile) —
+оба файла; если мастер не проходит по размеру — путь к `release/`.
 Faststart/BT.709 Blender не пишет — сознательно без ремукса (`docs/pipeline.md`, «Оговорка про контейнер»).
 
 ## `publish_en.md`

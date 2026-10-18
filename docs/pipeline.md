@@ -16,11 +16,11 @@
                                                                     ▼
                              [ТЫ: одобряешь сценарий и контактный лист — docs/approval.md]
                                                                     │
-   финальный рендер → озвучка → музыка (cues.py) → сведение → монтаж: мастер + light + preview → QA (qa.py)
+   финальный рендер → озвучка → музыка (cues.py) → сведение → монтаж мастера → QA (qa.py)
                                                                     │
                                                                     ▼
-   publish_en.md → release.py ──► out/<ep>/release/: мастер, _light, _preview (≤ 30 МБ), publish_en.md
-                                  → тебе: превью + publish_en.md (итог /make-video)
+   publish_en.md → release.py ──► out/<ep>/release/: мастер MP4 + publish_en.md
+                                  → тебе: оба файла (итог /make-video)
 ```
 
 ## Этап 0. GPU занят?
@@ -64,17 +64,18 @@ Claude читает `docs/channel.md` (серии, темы, отметки ✅)
 **Ты получаешь сообщение по шаблону `docs/approval.md` и отвечаешь: «ок» или правки.** После «ок» — до конца без
 вопросов, кроме случаев остановки из `docs/approval.md`.
 
-6. **Рендер.** `bash tools/render_episode.sh episodes/<ep>/shots_9x16.py v1 … vN` — в фоне, с докачкой,
+6. **Рендер.** ПК два — этот и rinat-pc; свободный выбирается перед стартом (`docs/remote_render.md`, «Два ПК: какой
+   свободен»). На rinat-pc — `tools/remote_render.py start` + `pull --watch`. Здесь — `bash tools/render_episode.sh episodes/<ep>/shots_9x16.py v1 … vN` — в фоне, с докачкой,
    пишет `out/RENDER.lock` (CPU не грузить параллельно). Время — по `docs/timings.md` (ep001 60 с ≈ 6 ч на RTX 3060, расчёт — `docs/timings.md`).
 7. **Звук.** `tools/tts.py` (Kokoro) → `tools/cues.py` (удары и подъёмы, см. «Музыка по событиям»)
    → `tools/music.py` → `tools/mix.py` (−14 LUFS, true-peak ≤ −1 dBTP).
-8. **Монтаж** — три сборки EN: `tools/build_edit.py <episode.json> en [--light | --preview]` → `editkit/assemble.py`.
-   Мастер — MP4 H.264 1080×1920p60 40 Мбит/с + AAC 320 кбит/с 48 кГц; `--light` — 6 Мбит/с, суффикс `_light`;
-   `--preview` — 3400 кбит/с, суффикс `_preview`, ≤ 30 МБ (лимит отправки на телефон; ep001 — 25,4 МБ).
+8. **Монтаж** — одна сборка, мастер EN: `tools/build_edit.py <episode.json> en` → `editkit/assemble.py`.
+   MP4 H.264 1080×1920p60 40 Мбит/с + AAC 320 кбит/с 48 кГц. Копии `--light`/`--preview` не собираются (пакет —
+   мастер + md, `docs/publish.md`).
 9. **QA.** `python tools/qa.py episodes/<ep>/episode.json en` — PASS/FAIL (см. «QA»), затем просмотр PNG глазами.
 10. **Пакет к загрузке** (`docs/publish.md`): `publish_en.md` (названия, описание с источниками, теги, хэштеги,
     закреп, Studio, Related video, слот, подписи TikTok/Reels) → `python tools/release.py episodes/<ep>/episode.json`
-    → `out/<ep>/release/` (мастер, `_light`, `_preview`, `publish_en.md`). Тебе приходят превью и `publish_en.md`.
+    → `out/<ep>/release/` (мастер MP4 и `publish_en.md`). Тебе приходят оба файла.
     Загрузку делаешь ты (Studio); автозагрузка через API — позже (`docs/publish.md`).
 
 ### Оговорка про контейнер (faststart, BT.709)
@@ -164,9 +165,9 @@ python tools/qa.py episodes/<ep>/episode.json en
 - Новый объект → новые шоты и драматургия; библиотека — кирпичи, не шаблон. Минимум 1 новый визуальный приём
   на ролик (новый модуль, ракурс, эффект).
 - Музыка — новая гармония/темп/тембр на каждый ролик (`music_cues.json`, значения не копировать), «честный звук» объекта где возможно.
-- **Голос и раскладка субтитров — источник однотипности.** Варьировать голос, темп и подачу между роликами (другой
-  голос Kokoro по серии, `speed`) или перейти на собственный (клонированный свой) голос. Раскладку субтитров
-  (y, кегль, шрифт, цвет) менять по сериям.
+- **Голос канала — Kokoro `af_heart` ×0.98** (решение владельца 18.10.2026, эп. 002: узнаваемый диктор во всех
+  роликах). Однотипность снимать подачей и темпом фраз, структурой и раскладкой субтитров (y, кегль, шрифт, цвет —
+  по сериям); собственный (клонированный) голос — позже.
 - Темы — по всему космосу, не серией однотипных пульсаров: соседние ролики — разные классы объектов.
 - Каждое число — с источником в описании.
 

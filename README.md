@@ -18,9 +18,9 @@
 |---|---|
 | `spacekit/` | Библиотека сцен (импортируется внутри Blender): `core`, `render`, `camera`, `anim`, `orbits`, `lighting`, `sky`, `shot`, `bodies/` (пульсар, планеты), `fx/` (пылевое кольцо, светящиеся линии орбит). Возможности и API — `docs/spacekit.md` |
 | `editkit/` | Монтаж в VSE Blender (`assemble.py`: шоты + титры + субтитры + звук → MP4), проверка видео (`verify_video.py`) |
-| `tools/` | Озвучка (`tts.py`), музыка (`music.py`), cue по вспышкам из логов рендера (`cues.py`), сведение (`mix.py`), монтажный лист (`build_edit.py`: `--light` — копия 6 Мбит/с, `--preview` — ≤ 30 МБ для телефона), проверка эпизода (`check_episode.py`), QA финального MP4 (`qa.py`, PASS/FAIL), сбор релиза (`release.py` → `out/<ep>/release/`), рендер эпизода (`render_episode.sh`), оформление канала (`brand.py`), контактные листы, регресс-сравнение картинок, мерцание |
+| `tools/` | Озвучка (`tts.py`), музыка (`music.py`), cue по вспышкам из логов рендера (`cues.py`), сведение (`mix.py`), монтажный лист (`build_edit.py`), проверка эпизода (`check_episode.py`), QA финального MP4 (`qa.py`, PASS/FAIL), сбор релиза (`release.py` → `out/<ep>/release/`), рендер эпизода (`render_episode.sh`; на другом ПК по ssh — `remote_render.py` + `remote/agent.py`, `docs/remote_render.md`), оформление канала (`brand.py`), контактные листы, регресс-сравнение картинок, мерцание |
 | `episodes/<id>/` | Эпизод: `facts.md` (факты + источники), `system.py` (параметры объекта), `shots_*.py` (шоты), `script_*.json` (текст + тайминг), `music_cues.json`, `episode.json`, `edit_*.json` (генерирует `build_edit.py`), `publish_en.md`. Сводка шотов всех эпизодов — `episodes/INDEX.md` |
-| `docs/` | `channel.md` (канал), `pipeline.md` (как делается ролик), `growth.md` (рост и деньги), `metrics.md` (метрики роликов), `spacekit.md` (что умеет библиотека), `timings.md` (замеры с/кадр и формула ETA), `approval.md` (сообщение на одобрение и что можно менять после «ок»), `publish.md` (пакет к загрузке), `research/` (исследование с источниками) |
+| `docs/` | `channel.md` (канал), `pipeline.md` (как делается ролик), `growth.md` (рост и деньги), `metrics.md` (метрики роликов), `spacekit.md` (что умеет библиотека), `timings.md` (замеры с/кадр и формула ETA), `approval.md` (сообщение на одобрение и что можно менять после «ок»), `publish.md` (пакет к загрузке), `remote_render.md` (рендер на другом ПК), `research/` (исследование с источниками) |
 | `ideas/` | Варианты следующих роликов (`_TEMPLATE_options.md` — формат файла вариантов) |
 | `out/` | Кадры, превью, аудио, готовые видео, `<ep>/release/` (пакет к загрузке), `brand/` (в git не идёт). `out/RENDER.lock` — идёт финальный рендер |
 | `.claude/` | `skills/` — команды конвейера `/next-video`, `/make-video` (до пакета к загрузке включительно); `workflows.md` — промпты ролей (исследователь, фактчекер, критики превью) |
@@ -54,15 +54,11 @@ A=out/ep001_psr_b1257/9x16/audio
 .venv/Scripts/python tools/music.py episodes/ep001_psr_b1257/music_cues.json $A/music.wav
 .venv/Scripts/python tools/mix.py $A/vo_en.wav $A/music.wav $A/mix_en.wav
 
-# 5. монтажный лист и сборка MP4: мастер 40 Мбит/с, _light 6 Мбит/с, _preview 3400 кбит/с (≤ 30 МБ, на телефон)
+# 5. монтажный лист и сборка мастера MP4 (40 Мбит/с)
 E=episodes/ep001_psr_b1257
 python tools/build_edit.py $E/episode.json en
 "/d/Blender/blender.exe" -b --factory-startup -P editkit/assemble.py -- $E/edit_9x16_en.json
-python tools/build_edit.py $E/episode.json en --light
-"/d/Blender/blender.exe" -b --factory-startup -P editkit/assemble.py -- $E/edit_9x16_en_light.json
-python tools/build_edit.py $E/episode.json en --preview
-"/d/Blender/blender.exe" -b --factory-startup -P editkit/assemble.py -- $E/edit_9x16_en_preview.json
-# -> out/ep001_psr_b1257/9x16/ep001_psr_b1257_en_1080x1920p60{,_light,_preview}.mp4
+# -> out/ep001_psr_b1257/9x16/ep001_psr_b1257_en_1080x1920p60.mp4
 
 # 6. QA финального MP4: размер/fps/длительность + кадры (2, каждая склейка ±1, последний) -> PNG, смотреть глазами
 python tools/qa.py episodes/ep001_psr_b1257/episode.json en          # PASS/FAIL
@@ -72,7 +68,7 @@ python tools/qa.py episodes/ep001_psr_b1257/episode.json en          # PASS/FAIL
   2,136,270,271,272,616,960,961,962,1321,1680,1681,1682,2161,2640,2641,2642,2941,3240,3241,3242,3420,3599
 
 # 7. пакет к загрузке: publish_en.md (docs/publish.md) + сбор релиза
-python tools/release.py episodes/ep001_psr_b1257/episode.json   # -> out/ep001_psr_b1257/release/: мастер, _light, _preview, publish_en.md
+python tools/release.py episodes/ep001_psr_b1257/episode.json   # -> out/ep001_psr_b1257/release/: мастер MP4 + publish_en.md
 ```
 
 Длительность: цель **59–59,5 с**, жёсткий максимум **60,0 с** (Shorts > 60 с с любой претензией по авторскому праву

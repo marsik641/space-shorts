@@ -18,8 +18,8 @@
 - **Пользователь одобряет до рендера.** Рендер — часы GPU. Шаги «выбор темы» и «одобрение сценария+превью» —
   обязательные точки согласования (см. `docs/pipeline.md`). Состав сообщения на одобрение и что можно менять после
   «ок» без вопроса (а что требует остановки) — `docs/approval.md`. После «ок» `/make-video` идёт до конца: итог —
-  пакет к загрузке `out/<ep>/release/` (мастер, `_light`, `_preview` ≤ 30 МБ, `publish_en.md`; `docs/publish.md`);
-  пользователю — превью и `publish_en.md`. Отдельной команды publish-pack нет.
+  пакет к загрузке `out/<ep>/release/` — **два файла**: мастер MP4 и `publish_en.md` (`docs/publish.md`); их же —
+  пользователю. Отдельной команды publish-pack нет.
 - **Своя музыка** (`tools/music.py`) — никаких сторонних треков: Shorts > 60 с с любой претензией по авторскому
   праву (Content ID или ручной) блокируется глобально.
 - Длительность Shorts: **цель 59–59,5 с, жёсткий максимум 60,0 с**. При 60 fps монтаж ≤ **3599 кадров**: VSE пишет звук
@@ -28,6 +28,9 @@
 ## Окружение
 
 - Blender 5.2.2: `"/d/Blender/blender.exe"` (Git Bash). Скрипты: `blender -b --factory-startup -P <script> -- <args>`.
+- Рендер-ПК два: этот и rinat-pc (по ssh через Tailscale, `tools/remote_render.py`, `docs/remote_render.md`). Ролики
+  рендерятся параллельно из разных чатов; свободный ПК перед стартом рендера выбирается по `docs/remote_render.md`
+  («Два ПК: какой свободен»), без вопроса пользователю.
   Внутри Blender: Python 3.13 + numpy (scipy нет).
 - Оболочка: команды в доках — для Git Bash (Bash tool; `render_episode.sh` нужны bash и cygpath). В PowerShell:
   Blender — `& 'D:\Blender\blender.exe'`, venv — `.venv\Scripts\python.exe`.
@@ -61,7 +64,7 @@
 
 - Код и комментарии — по-русски, кратко, в стиле `spacekit/`. Скрипты идемпотентны, сцены строятся с нуля.
 - Эпизод: `episodes/epNNN_<slug>/` — `facts.md`, `system.py`, `shots_9x16.py`, `script_9x16.json`,
-  `music_cues.json`, `episode.json`, `edit_9x16_en[_light|_preview].json` (генерирует `build_edit.py`; коммитить —
+  `music_cues.json`, `episode.json`, `edit_9x16_en.json` (генерирует `build_edit.py`; коммитить —
   воспроизводимость монтажа), `publish_en.md`. Выход — `out/epNNN_<slug>/9x16/`, пакет — `out/epNNN_<slug>/release/`.
 - Номер и slug: `NNN = max(episodes/ep*) + 1`, трёхзначный, не переиспользуется (и у брошенных эпизодов).
   slug — `[a-z0-9_]`, ≤ 16 символов, по каталожному имени (`psr_j1748`, `trappist1`, `sgr_a`): лимит путей 260.

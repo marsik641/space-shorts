@@ -155,10 +155,13 @@ def main(cfg):
                         t.get("x", 0.5), t.get("y", 0.5), t.get("font"), t.get("align", "CENTER"),
                         tuple(t.get("color", (0.92, 0.94, 1.0))), t.get("outline", 0), t.get("shadow", True),
                         t.get("wrap"))
-        fd = min(t.get("fade", 20), t["length"] // 2)    # иначе ключи альфы идут не по порядку
+        fd = t.get("fade", 20)
+        fi = min(t.get("fade_in", fd), t["length"] // 2)     # иначе ключи альфы идут не по порядку
+        fo = min(t.get("fade_out", fd), t["length"] // 2)    # fade_in/fade_out — раздельно (шов петли: 0 на краю)
         s0, s1 = t["start"], t["start"] + t["length"] - 1
-        if fd:
-            key_prop(ts, "blend_alpha", [(s0, 0.0), (s0 + fd, 1.0), (s1 - fd, 1.0), (s1, 0.0)])
+        pairs = ([(s0, 0.0), (s0 + fi, 1.0)] if fi else []) + ([(s1 - fo, 1.0), (s1, 0.0)] if fo else [])
+        if pairs:
+            key_prop(ts, "blend_alpha", pairs)
         ch += 1
 
     cap = cfg.get("captions")

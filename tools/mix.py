@@ -1,7 +1,9 @@
 """Сведение: голос + музыка с автодакингом -> стерео WAV 48 кГц, громкость под YouTube (−14 LUFS, ≤ −1 dBTP).
 
     .venv/Scripts/python tools/mix.py <vo.wav> <music.wav> <out.wav> [--music-db -20] [--duck-db -9] [--lufs -14]
-                                      [--ceiling -1] [--no-tp]
+                                      [--ceiling -1] [--no-tp] [--cues episodes/<ep>/music_cues.json]
+
+--cues — уровни музыки эпизода из music_cues.json: "mix": {"music_db": …, "duck_db": …} (явные флаги важнее).
 
 Входы — любой частоты дискретизации (приводятся к 48 кГц через resample_poly), моно или стерео.
 Лимитер (limit): упреждение 5 мс, атака — минимум по окну упреждения + сглаживание двумя скользящими
@@ -137,16 +139,25 @@ def main():
     ap.add_argument("vo")
     ap.add_argument("music")
     ap.add_argument("out")
-    ap.add_argument("--music-db", type=float, default=-20.0, help="уровень музыки относительно голоса без дакинга")
-    ap.add_argument("--duck-db", type=float, default=-9.0, help="дополнительное ослабление музыки под голосом")
+    ap.add_argument("--music-db", type=float, default=None, help="уровень музыки относительно голоса без дакинга (−20)")
+    ap.add_argument("--duck-db", type=float, default=None, help="дополнительное ослабление музыки под голосом (−9)")
     ap.add_argument("--lufs", type=float, default=-14.0)
     ap.add_argument("--ceiling", type=float, default=-1.0, help="потолок пика, dBTP (dBFS при --no-tp)")
     ap.add_argument("--no-tp", action="store_true", help="потолок по сэмплам, без true-peak")
+    ap.add_argument("--cues", default=None, help="music_cues.json: поле mix {music_db, duck_db} эпизода (CLI важнее)")
     ap.add_argument("--max-seconds", type=float, default=None,
                     help="обрезать итог до этой длины с затуханием 30 мс (AAC добавляет ~10 мс заполнения: "
                          "для ролика 60.0 с давать 59.97, чтобы дорожка в MP4 не вышла за 60.0)")
     a = ap.parse_args()
     tp = not a.no_tp
+    # уровни: CLI > music_cues.json["mix"] (--cues) > по умолчанию −20 / −9 (эп. 001)
+    cm = {}
+    if a.cues:
+        import json
+        cm = json.load(open(a.cues, encoding="utf-8")).get("mix", {})
+    a.music_db = a.music_db if a.music_db is not None else cm.get("music_db", -20.0)
+    a.duck_db = a.duck_db if a.duck_db is not None else cm.get("duck_db", -9.0)
+    print(f"MIX levels: music {a.music_db:+.1f} dB, duck {a.duck_db:+.1f} dB")
 
     vo, sr1 = sf.read(a.vo, dtype="float32")
     mu, sr2 = sf.read(a.music, dtype="float32")
