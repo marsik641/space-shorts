@@ -1,4 +1,5 @@
-"""Планеты PSR B1257+12: Драугр (A), Полтергейст (B), Фобетор (C).
+"""Процедурные планеты: kind PSR B1257+12 (Драугр, Полтергейст, Фобетор) и безатмосферные миры эп. 003+
+(ember, scorched, rust, frostrock, grooved, dirtyice — см. KINDS).
 
 Процедурные материалы (Principled + шумы/Вороной + bump), атмосфера — аналитическая оболочка
 (поверхностный шейдер, без объёма → без шума), сияния — стопка эмиссионных оболочек-шапок у магнитных полюсов
@@ -37,6 +38,13 @@ KINDS = {
     "phobetor": dict(
         tilt=26.0, rot=75.0, aurora=True,
         atmo=dict(H=0.012, tau=(0.060, 0.066, 0.078), mie=0.65, g=0.72, tw=(-0.15, 0.10), tail=0.16)),
+    # безатмосферные миры (эп. 003+): приливно захваченные — без наклона и суточного вращения по умолчанию
+    "ember": dict(tilt=0.0, rot=1.0e9, atmo=None, aurora=False),        # тёмный вулканический базальт
+    "scorched": dict(tilt=0.0, rot=1.0e9, atmo=None, aurora=False),     # серый кратерированный (как Меркурий)
+    "rust": dict(tilt=0.0, rot=1.0e9, atmo=None, aurora=False),         # ржаво-охристая пустыня
+    "frostrock": dict(tilt=0.0, rot=1.0e9, atmo=None, aurora=False),    # камень с инеем в холодных зонах
+    "grooved": dict(tilt=0.0, rot=1.0e9, atmo=None, aurora=False),      # бороздчатый лёд (как Ганимед)
+    "dirtyice": dict(tilt=0.0, rot=1.0e9, atmo=None, aurora=False),     # тёмный грязный лёд (как Каллисто)
 }
 
 # цвета эмиссии сияний (линейный Rec.709): 557,7 нм, 630 нм, N2+ кайма
@@ -536,7 +544,246 @@ def _mat_phobetor(name, seed, radius, lod=0):
     return mat
 
 
-SURFACE = {"draugr": _mat_draugr, "poltergeist": _mat_poltergeist, "phobetor": _mat_phobetor}
+# --------------------------------------------------------------------------- скалистые и ледяные миры (эп. 003+)
+# Безатмосферные поверхности со своими цветами и морфологией (свет звезды окрашивает их сам). Аналоги из Солнечной
+# системы — только как образец рельефа: базальт (b TRAPPIST-1), Меркурий, Марс, иней в холодных ловушках, Ганимед,
+# Каллисто. Иней (frostrock) зависит от направления на звезду — узел SunCoord, его объект подставляет build_planet.
+
+def _sun_coord(b):
+    """Вектор «звезда → точка» в мире: TexCoord/Object от пустышки SunRef (без вращения)."""
+    tc = b.node("ShaderNodeTexCoord")
+    tc.name = tc.label = "SunCoord"
+    return tc.outputs["Object"]
+
+
+def _day_factor(b):
+    """μ — косинус высоты звезды над местным горизонтом (геометрическая нормаль): 1 — подзвёздная точка, < 0 — ночь.
+    У приливно захваченной планеты эта география постоянна."""
+    geo = b.node("ShaderNodeNewGeometry")
+    d = b.v("NORMALIZE", _sun_coord(b))
+    return b.m("MULTIPLY", b.v("DOT_PRODUCT", geo.outputs["Normal"], d), -1.0)
+
+
+def _mat_ember(name, seed, radius, lod=0):
+    """Тёмный вулканический базальт (горячая безатмосферная планета): лавовые поля разного возраста с лопастными
+    краями, щитовые вулканы с кальдерами, морщинные гряды, редкие кратеры; молодое лавовое стекло — с бликом."""
+    mat, b, vec, bsdf = _surface_base(name)
+    v = b.v("ADD", vec, _seed_off(seed, 3))
+    det = 8 if lod < 2 else 4
+    age = b.noise(v, 1.4, detail=6, rough=0.6, dist=0.6).outputs[0]
+    young = b.ss(age, 0.50, 0.57)
+    lob = b.ss(b.noise(b.v("ADD", v, (2.1, 7.3, 4.4)), 3.2, detail=det, rough=0.62, dist=1.4).outputs[0], 0.53, 0.56)
+    # щиты: Вороной F1 — пологий купол и кальдера у ~40 % ячеек
+    vor = b.node("ShaderNodeTexVoronoi", {"Vector": b.v("ADD", v, (5.5, 1.2, 9.9)), "Scale": 3.0,
+                                           "Randomness": 0.85}, voronoi_dimensions="3D", feature="F1")
+    rr = b.node("ShaderNodeSeparateColor", {0: vor.outputs["Color"]}).outputs
+    has = b.ss(rr[0], 0.58, 0.62)
+    x = b.m("DIVIDE", vor.outputs["Distance"], b.lin(rr[1], 0.0, 1.0, 0.18, 0.34))
+    dome = b.m("MULTIPLY", b.ss(x, 1.0, 0.0), has)
+    cald = b.m("MULTIPLY", b.ss(x, 0.16, 0.10), has)
+    wr = b.lin(b.noise(v, 10.0, detail=4, rough=0.5, typ="RIDGED_MULTIFRACTAL").outputs[0], 0.75, 1.5)
+    layers = _crater_layers([5.0, 9.0, 16.0, 28.0, 50.0, 90.0], 0.30, fresh=0.18, depth_small=0.42,
+                            depth_big=0.14, dup=[13.0, 22.0, 40.0, 70.0], lod=lod)
+    H, halo, floor, _r = _craters(b, vec, layers, seed + 5)
+    height = b.m("MULTIPLY", dome, 0.0055)
+    height = b.m("MULTIPLY_ADD", cald, -0.0045, height)
+    height = b.m("MULTIPLY_ADD", lob, 0.0012, height)
+    height = b.m("MULTIPLY_ADD", wr, 0.0009, height)
+    height = b.m("ADD", height, b.m("MULTIPLY", H, b.m("SUBTRACT", 1.0, b.m("MULTIPLY", young, 0.8))))
+    height = b.m("ADD", height, b.m("MULTIPLY", _nz(b, lod, v, 110.0, detail=4, rough=0.65), 0.0008))
+    # альбедо ~0.04–0.09: молодые потоки чернее и холоднее, старые — буроватые, свежие выбросы светлее
+    var = b.lin(b.noise(v, 6.0, detail=det, rough=0.6).outputs[0], 0.3, 0.7, 0.85, 1.15)
+    old = b.mix(b.ss(b.noise(b.v("ADD", v, (8.8, 0.3, 2.2)), 2.5, detail=4).outputs[0], 0.4, 0.62),
+                (0.055, 0.049, 0.045), (0.067, 0.058, 0.050))
+    col = b.mix(young, old, (0.029, 0.030, 0.034))
+    col = b.mix(b.m("MULTIPLY", lob, 0.35), col, (0.042, 0.041, 0.042))
+    col = b.mix(cald, col, (0.022, 0.021, 0.022))
+    col = b.v("SCALE", col, scale=var)
+    col = b.mix(b.m("MULTIPLY", halo, 0.6), col, (0.10, 0.096, 0.092))
+    _finish(b, bsdf, height, radius, 1.2, col, b.lin(young, 0.0, 1.0, 0.88, 0.62), 0.9, 0.35)
+    return mat
+
+
+def _mat_scorched(name, seed, radius, lod=0):
+    """Серый кратерированный камень (как Меркурий): гладкие межкратерные равнины, насыщенные кратеры, свежие
+    кратеры с яркими лучами, лопастные уступы (сжатие коры), тёмный синеватый «низкоотражающий» материал."""
+    import random
+    mat, b, vec, bsdf = _surface_base(name)
+    v = b.v("ADD", vec, _seed_off(seed, 4))
+    det = 8 if lod < 2 else 4
+    plains = b.ss(b.noise(v, 1.3, detail=5, rough=0.55, dist=0.3).outputs[0], 0.55, 0.63)
+    layers = _crater_layers([1.6, 2.6, 4.2, 6.8, 11.0, 18.0, 30.0, 50.0, 85.0, 140.0], 1.0,
+                            dup=[3.4, 5.5, 9.0, 14.5, 24.0, 40.0, 68.0, 110.0], fresh=0.06,
+                            depth_big=0.18, depth_small=0.46, lod=lod)
+    rays_l = [] if lod == 2 else [(3.2, 0.55, 0.04, 0.07, 0.45, 0.1, 0.0, 0.0, 1.0, 22.0),
+                                  (6.0, 0.45, 0.04, 0.08, 0.45, 0.1, 0.0, 0.0, 1.0, 14.0),
+                                  (11.0, 0.35, 0.05, 0.09, 0.45, 0.1, 0.0, 0.0, 1.0, 9.0)]
+    H, halo, floor, rays = _craters(b, vec, layers, seed + 9, rays_layers=rays_l)
+    # лопастные уступы: длинные дуги малых кругов — пологий подъём и крутой фронт, отрезками
+    rnd = random.Random(900 + seed)
+    wv = b.noise(v, 2.2, detail=2).outputs["Color"]
+    nw = b.v("NORMALIZE", b.v("ADD", vec, b.v("SCALE", b.v("SUBTRACT", wv, (0.5, 0.5, 0.5)), scale=0.06)))
+    scarp = None
+    for k in range(5):
+        a = Vector((rnd.gauss(0, 1), rnd.gauss(0, 1), rnd.gauss(0, 1))).normalized()
+        dd = b.m("SUBTRACT", b.v("DOT_PRODUCT", nw, tuple(a)), rnd.uniform(-0.6, 0.6))
+        h = b.m("MULTIPLY", b.ss(dd, -0.035, 0.0), b.m("SUBTRACT", 1.0, b.ss(dd, 0.0, 0.0025)))
+        h = b.m("MULTIPLY", h, b.ss(b.noise(b.v("ADD", v, _seed_off(seed, 40 + k)), 2.0, detail=2).outputs[0],
+                                    0.48, 0.58))
+        scarp = h if scarp is None else b.m("MAXIMUM", scarp, h)
+    Hm = b.m("MULTIPLY", H, b.m("SUBTRACT", 1.0, b.m("MULTIPLY", plains, 0.6)))
+    height = b.m("ADD", Hm, b.m("MULTIPLY", scarp, 0.0025))
+    height = b.m("ADD", height, b.m("MULTIPLY", _nz(b, lod, v, 120.0, detail=4, rough=0.6), 0.0008))
+    # альбедо ~0.10–0.16, серое; лучи и свежие выбросы ярче, LRM темнее и синее
+    var = b.lin(b.noise(v, 5.0, detail=det, rough=0.62).outputs[0], 0.3, 0.7, 0.86, 1.14)
+    base = b.mix(b.ss(b.noise(b.v("ADD", v, (1.7, 4.4, 8.2)), 2.0, detail=5).outputs[0], 0.42, 0.62),
+                 (0.128, 0.122, 0.114), (0.150, 0.144, 0.134))
+    col = b.mix(plains, base, (0.160, 0.152, 0.140))
+    lrm = b.ss(b.noise(b.v("ADD", v, (6.1, 2.8, 0.5)), 3.0, detail=5, rough=0.6).outputs[0], 0.60, 0.68)
+    col = b.mix(b.m("MULTIPLY", lrm, 0.7), col, (0.085, 0.090, 0.098))
+    col = b.mix(b.m("MULTIPLY", floor, 0.3), col, (0.12, 0.118, 0.115))
+    col = b.v("SCALE", col, scale=var)
+    col = _grey(b, col, b.m("MULTIPLY", rays, 0.11))
+    col = b.mix(b.m("MULTIPLY", halo, 0.6), col, (0.26, 0.255, 0.25))
+    _finish(b, bsdf, height, radius, 1.15, col, 0.95, 1.0, 0.15)
+    return mat
+
+
+def _mat_rust(name, seed, radius, lod=0):
+    """Окисленная каменистая пустыня (ржаво-охристая, без атмосферы): светлые пыльные области и тёмные базальтовые
+    поля с дюнами, каньоны, плато и низины, умеренно кратерированная поверхность, тёмный песок в днищах."""
+    mat, b, vec, bsdf = _surface_base(name)
+    v = b.v("ADD", vec, _seed_off(seed, 6))
+    det = 8 if lod < 2 else 4
+    dark = b.ss(b.noise(v, 1.1, detail=6, rough=0.6, dist=0.8).outputs[0], 0.50, 0.60)
+    rift, flank = _grabens(b, vec, v, seed + 2, lod)
+    layers = _crater_layers([2.4, 4.0, 6.5, 11.0, 18.0, 30.0, 52.0, 90.0], 0.55, dup=[8.5, 14.0, 24.0, 42.0, 70.0],
+                            fresh=0.08, depth_big=0.14, depth_small=0.38, lod=lod)
+    H, halo, floor, _r = _craters(b, vec, layers, seed + 13)
+    height = b.m("ADD", H, b.m("MULTIPLY", _nz(b, lod, v, 100.0, detail=4, rough=0.65), 0.0010))
+    height = b.m("MULTIPLY_ADD", rift, -0.0060, height)
+    height = b.m("MULTIPLY_ADD", flank, 0.0010, height)
+    height = b.m("MULTIPLY_ADD", b.noise(v, 3.0, detail=6, rough=0.55).outputs[0], 0.004, height)  # плато и низины
+    if lod < 2:
+        dn = b.noise(b.v("MULTIPLY", v, (1.0, 1.0, 3.5)), 40.0, detail=2, rough=0.5, typ="RIDGED_MULTIFRACTAL")
+        dunes = b.m("MULTIPLY", b.lin(dn.outputs[0], 0.8, 1.4),
+                    b.m("MULTIPLY", dark, b.ss(b.noise(v, 4.0, detail=2).outputs[0], 0.5, 0.6)))
+        height = b.m("MULTIPLY_ADD", dunes, 0.0004, height)
+    var = b.lin(b.noise(v, 5.0, detail=det, rough=0.62).outputs[0], 0.3, 0.7, 0.85, 1.15)
+    dust = b.mix(b.ss(b.noise(b.v("ADD", v, (3.3, 8.1, 1.4)), 2.4, detail=5).outputs[0], 0.4, 0.62),
+                 (0.31, 0.18, 0.095), (0.37, 0.23, 0.12))
+    col = b.mix(dark, dust, (0.10, 0.072, 0.055))
+    col = b.mix(b.m("MULTIPLY", rift, 0.6), col, (0.16, 0.085, 0.05))
+    col = b.mix(b.m("MULTIPLY", floor, 0.45), col, (0.14, 0.08, 0.05))
+    col = b.v("SCALE", col, scale=var)
+    col = b.mix(b.m("MULTIPLY", halo, 0.5), col, (0.40, 0.26, 0.16))
+    _finish(b, bsdf, height, radius, 1.3, col, 0.92, 0.95, 0.15)
+    return mat
+
+
+def _mat_frostrock(name, seed, radius, lod=0):
+    """Тёмный серо-синий камень с инеем: иней там, где звезда низко или не всходит (μ < ~0.3), пятнами, в днищах
+    кратеров — дальше в день (холодные ловушки). Направление на звезду — SunCoord (см. build_planet)."""
+    mat, b, vec, bsdf = _surface_base(name)
+    v = b.v("ADD", vec, _seed_off(seed, 8))
+    det = 8 if lod < 2 else 4
+    high = b.ss(b.noise(v, 1.5, detail=6, rough=0.58, dist=0.4).outputs[0], 0.50, 0.58)
+    ridges = b.m("MULTIPLY", b.lin(b.noise(v, 5.0, detail=det, rough=0.55, typ="RIDGED_MULTIFRACTAL").outputs[0],
+                                   0.4, 1.6), high)
+    layers = _crater_layers([2.8, 4.6, 7.5, 12.5, 21.0, 36.0, 60.0, 100.0], 0.65, dup=[10.0, 17.0, 29.0, 48.0, 80.0],
+                            fresh=0.10, depth_big=0.15, depth_small=0.40, lod=lod)
+    H, halo, floor, _r = _craters(b, vec, layers, seed + 17)
+    height = b.m("ADD", b.m("MULTIPLY", high, 0.003), b.m("MULTIPLY", ridges, 0.004))
+    height = b.m("ADD", height, b.m("ADD", H, b.m("MULTIPLY", _nz(b, lod, v, 100.0, detail=4, rough=0.65), 0.0009)))
+    patchy = b.lin(b.noise(b.v("ADD", v, (4.2, 9.1, 3.3)), 9.0, detail=det, rough=0.6).outputs[0],
+                   0.35, 0.65, -0.12, 0.12)
+    thr = b.m("ADD", b.m("ADD", _day_factor(b), patchy), b.m("MULTIPLY", floor, -0.18))
+    frost = b.ss(thr, 0.32, 0.08)
+    var = b.lin(b.noise(v, 5.0, detail=det, rough=0.62).outputs[0], 0.3, 0.7, 0.85, 1.15)
+    rock = b.v("SCALE", b.mix(high, (0.085, 0.088, 0.095), (0.13, 0.13, 0.135)), scale=var)
+    rock = b.mix(b.m("MULTIPLY", halo, 0.5), rock, (0.22, 0.22, 0.23))
+    ice = b.v("SCALE", (0.62, 0.66, 0.72), scale=b.lin(_nz(b, lod, v, 30.0, detail=3), 0.3, 0.7, 0.9, 1.05))
+    col = b.mix(frost, rock, ice)
+    _finish(b, bsdf, height, radius, 1.25, col, b.lin(frost, 0.0, 1.0, 0.92, 0.78), 0.85, 0.2)
+    return mat
+
+
+def _mat_grooved(name, seed, radius, lod=0):
+    """Ледяная кора как у Ганимеда: древние тёмные полигоны и светлые полосы бороздчатого льда (параллельные
+    борозды своего направления в каждой полосе, чуть ниже полигонов), кратеры с яркими выбросами."""
+    mat, b, vec, bsdf = _surface_base(name)
+    v = b.v("ADD", vec, _seed_off(seed, 10))
+    det = 8 if lod < 2 else 4
+    wv = b.noise(v, 1.8, detail=3).outputs["Color"]
+    pw = b.v("ADD", v, b.v("SCALE", b.v("SUBTRACT", wv, (0.5, 0.5, 0.5)), scale=0.35))
+    cells = b.node("ShaderNodeTexVoronoi", {"Vector": pw, "Scale": 2.2, "Randomness": 1.0},
+                   voronoi_dimensions="3D", feature="F1")
+    cc = cells.outputs["Color"]
+    cr = b.node("ShaderNodeSeparateColor", {0: cc}).outputs
+    bright = b.ss(cr[0], 0.42, 0.48)
+    edge = b.node("ShaderNodeTexVoronoi", {"Vector": pw, "Scale": 2.2, "Randomness": 1.0},
+                  voronoi_dimensions="3D", feature="DISTANCE_TO_EDGE").outputs["Distance"]
+    rim = b.ss(edge, 0.05, 0.0)
+    if lod < 2:
+        dirc = b.v("NORMALIZE", b.v("SUBTRACT", cc, (0.5, 0.5, 0.5)))
+        ph = b.m("MULTIPLY", b.v("DOT_PRODUCT", pw, dirc), b.lin(cr[1], 0.0, 1.0, 140.0, 260.0))
+        gr = b.m("MULTIPLY", b.m("ADD", b.m("SINE", ph), 1.0), 0.5)
+        grooves = b.m("MULTIPLY", b.m("POWER", gr, 3.0), bright)
+    else:
+        grooves = 0.0
+    layers = _crater_layers([3.0, 5.0, 8.5, 14.0, 24.0, 40.0, 68.0], 0.5, dup=[11.0, 19.0, 32.0, 54.0],
+                            fresh=0.20, depth_big=0.12, depth_small=0.36, lod=lod)
+    H, halo, floor, _r = _craters(b, vec, layers, seed + 23)
+    height = b.m("ADD", b.m("MULTIPLY", grooves, 0.0009), b.m("ADD", H, b.m("MULTIPLY", _nz(b, lod, v, 90.0, detail=4,
+                                                                                             rough=0.6), 0.0007)))
+    height = b.m("MULTIPLY_ADD", bright, -0.0015, height)
+    height = b.m("MULTIPLY_ADD", rim, 0.0010, height)
+    var = b.lin(b.noise(v, 6.0, detail=det, rough=0.6).outputs[0], 0.3, 0.7, 0.88, 1.12)
+    darkt = b.mix(b.ss(b.noise(b.v("ADD", v, (2.2, 5.5, 7.1)), 3.0, detail=5).outputs[0], 0.4, 0.62),
+                  (0.17, 0.15, 0.13), (0.21, 0.185, 0.16))
+    brightt = b.mix(b.m("MULTIPLY", grooves, 0.5), (0.44, 0.44, 0.45), (0.36, 0.36, 0.38))
+    col = b.mix(bright, darkt, brightt)
+    col = b.v("SCALE", col, scale=var)
+    col = b.mix(b.m("MULTIPLY", halo, 0.8), col, (0.62, 0.63, 0.66))
+    _finish(b, bsdf, height, radius, 1.2, col, 0.8, 0.7, 0.35)
+    return mat
+
+
+def _mat_dirtyice(name, seed, radius, lod=0):
+    """Тёмный грязный лёд как у Каллисто: насыщенная кратерами древняя кора, светлые ледяные валы и свежие
+    кратеры, тёмная пыль в низинах и днищах, многокольцевой ударный бассейн."""
+    import random
+    mat, b, vec, bsdf = _surface_base(name)
+    v = b.v("ADD", vec, _seed_off(seed, 12))
+    det = 8 if lod < 2 else 4
+    layers = _crater_layers([2.0, 3.3, 5.4, 9.0, 15.0, 25.0, 42.0, 70.0, 116.0], 1.0,
+                            dup=[4.3, 7.0, 12.0, 20.0, 33.0, 55.0, 92.0], fresh=0.07, depth_big=0.12,
+                            depth_small=0.32, rim_k=0.30, lod=lod)
+    H, halo, floor, _r = _craters(b, vec, layers, seed + 29)
+    rnd = random.Random(1200 + seed)
+    a = Vector((rnd.gauss(0, 1), rnd.gauss(0, 1), rnd.gauss(0, 1))).normalized()
+    rho = b.m("ARCCOSINE", b.m("MINIMUM", b.m("MAXIMUM", b.v("DOT_PRODUCT", vec, tuple(a)), -1.0), 1.0))
+    rho_w = b.m("MULTIPLY_ADD", b.m("SUBTRACT", b.noise(v, 6.0, detail=2).outputs[0], 0.5), 0.03, rho)
+    rings = b.m("MULTIPLY", b.ss(b.m("SINE", b.m("MULTIPLY", rho_w, 60.0)), 0.6, 1.0),
+                b.m("MULTIPLY", b.ss(rho, 0.08, 0.14), b.ss(rho, 0.75, 0.45)))
+    core = b.ss(rho, 0.10, 0.04)
+    height = b.m("ADD", H, b.m("ADD", b.m("MULTIPLY", rings, 0.0012),
+                                b.m("MULTIPLY", _nz(b, lod, v, 100.0, detail=4, rough=0.6), 0.0007)))
+    lows = b.ss(b.noise(b.v("ADD", v, (7.7, 3.1, 5.9)), 2.8, detail=5, rough=0.6).outputs[0], 0.55, 0.40)
+    var = b.lin(b.noise(v, 6.0, detail=det, rough=0.6).outputs[0], 0.3, 0.7, 0.86, 1.14)
+    col = b.mix(lows, (0.10, 0.085, 0.072), (0.15, 0.13, 0.11))
+    col = b.mix(b.m("MULTIPLY", floor, 0.4), col, (0.075, 0.065, 0.057))
+    col = b.mix(b.m("MULTIPLY", rings, 0.6), col, (0.30, 0.29, 0.28))
+    col = b.mix(b.m("MULTIPLY", core, 0.7), col, (0.42, 0.42, 0.43))
+    col = b.v("SCALE", col, scale=var)
+    col = b.mix(b.m("MULTIPLY", halo, 0.7), col, (0.55, 0.56, 0.58))
+    _finish(b, bsdf, height, radius, 1.15, col, 0.85, 0.85, 0.3)
+    return mat
+
+
+SURFACE = {"draugr": _mat_draugr, "poltergeist": _mat_poltergeist, "phobetor": _mat_phobetor,
+           "ember": _mat_ember, "scorched": _mat_scorched, "rust": _mat_rust, "frostrock": _mat_frostrock,
+           "grooved": _mat_grooved, "dirtyice": _mat_dirtyice}
 
 
 # --------------------------------------------------------------------------- солнце (пульсар)
@@ -830,7 +1077,9 @@ TRANSPARENT_BOUNCES = 24
 def build_planet(scene, kind, *, radius=1.0, location=(0, 0, 0), parent=None, detail="close", seed=0,
                  axial_tilt_deg=None, rot_period_s=None, frame_start=1, frame_end=300, aurora_strength=1.0,
                  light=None, name=None, tilt_azimuth_deg=0.0, mag_offset_deg=10.0):
-    """Планета kind ∈ {draugr, poltergeist, phobetor}.
+    """Планета kind ∈ KINDS: draugr, poltergeist, phobetor (PSR B1257+12, с атмосферой/сияниями у двух последних);
+    ember, scorched, rust, frostrock, grooved, dirtyice — безатмосферные миры (базальт, Меркурий, ржавая пустыня,
+    иней в холодных зонах по направлению на звезду, бороздчатый и грязный лёд).
 
     detail: "close" (планета ≥ ~25 % высоты кадра), "mid" (< 25 %: без мелких кратеров/шумов, 3 оболочки
     сияний), "far" (точка/диск: крупные детали, без сияний, сетка 64×32).
@@ -881,6 +1130,9 @@ def build_planet(scene, kind, *, radius=1.0, location=(0, 0, 0), parent=None, de
     planet.parent = root
     planet["pl_root_name"] = root.name
     mat = SURFACE[kind](f"PL_{name}_Surface", seed, R, lod)
+    sc_node = mat.node_tree.nodes.get("SunCoord")        # материалы, зависящие от направления на звезду (иней)
+    if sc_node is not None:
+        sc_node.object = sunref
     me.materials.append(mat)
     _key_rot_z(planet, math.radians(seed * 37.0 % 360.0), 360.0 / rot, frame_start, frame_end)
     mats = {"surface": mat}

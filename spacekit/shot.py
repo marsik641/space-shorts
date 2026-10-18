@@ -24,13 +24,14 @@ from . import sky as SKY
 OPT = {"pct": 100, "samples": 64, "fmt": "16x9", "fps": 30}
 
 
-def base_scene(frames, exposure=0.0, samples=None, bloom_strength=0.6, fmt=None, fps=None, adaptive=0.02):
-    """Чистая сцена: Cycles/OptiX, формат кадра и fps из OPT (или явно), AgX, компоузер с блумом."""
+def base_scene(frames, exposure=0.0, samples=None, bloom_strength=0.6, fmt=None, fps=None, adaptive=0.02,
+               white_balance=None):
+    """Чистая сцена: Cycles/OptiX, формат кадра и fps из OPT (или явно), AgX (+ баланс белого, К), компоузер с блумом."""
     fps = fps or OPT["fps"]
     sc = C.reset_scene(fps=fps)
     R.setup_cycles(sc, samples=samples or OPT["samples"], pct=OPT["pct"],
                    res=R.FORMATS[fmt or OPT["fmt"]], fps=fps, adaptive_threshold=adaptive)
-    R.setup_color(sc, exposure=exposure)
+    R.setup_color(sc, exposure=exposure, white_balance=white_balance)
     R.setup_compositor(sc, dispersion=SKY.STAR_SAFE_DISPERSION, bloom_strength=bloom_strength)
     sc.frame_start, sc.frame_end = 1, frames
     return sc

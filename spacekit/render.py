@@ -80,7 +80,9 @@ def setup_cycles(scene=None, samples=64, res=RES, pct=100, motion_blur=True, shu
     return scene
 
 
-def setup_color(scene=None, exposure=0.0, look="None", view="AgX"):
+def setup_color(scene=None, exposure=0.0, look="None", view="AgX", white_balance=None):
+    """AgX, экспозиция; white_balance — баланс белого камеры, К (None — выкл.): у красной звезды (≈2600 K) камера,
+    выставленная на ~3300 K, оставляет свет тёплым, но не топит собственные цвета поверхностей в оранжевом."""
     scene = scene or bpy.context.scene
     vs = scene.view_settings
     vs.view_transform = view
@@ -90,6 +92,12 @@ def setup_color(scene=None, exposure=0.0, look="None", view="AgX"):
         pass
     vs.exposure = exposure
     vs.gamma = 1.0
+    if white_balance:
+        vs.use_white_balance = True
+        vs.white_balance_temperature = float(white_balance)
+        vs.white_balance_tint = 0.0
+    else:
+        vs.use_white_balance = False
     scene.display_settings.display_device = "sRGB"
 
 
