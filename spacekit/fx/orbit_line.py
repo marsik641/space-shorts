@@ -88,6 +88,23 @@ def key_trail(ob, deg0, deg1, frame_start, frame_end):
     anim.linearize(mat.node_tree)
 
 
+def key_screen_width(ob, cam, px, frame_start, frame_end, step=4, center=None):
+    """Ключи толщины (bevel_depth) так, чтобы линия была ≈ px пикселей при любом удалении камеры
+    (отъезд от орбиты Земли к сотням а.е.). Расстояние — от камеры до center (по умолчанию — начало объекта)."""
+    from mathutils import Vector
+    from . import label as _LB
+    sc = bpy.context.scene
+    cu = ob.data
+    for f in list(range(frame_start, frame_end + 1, step)) + [frame_end]:
+        sc.frame_set(f)
+        c = Vector(center) if center is not None else ob.matrix_world.translation
+        d = (cam.matrix_world.translation - c).length
+        cu.bevel_depth = 0.5 * px * d * _LB.pixel_angle(cam, sc)
+        cu.keyframe_insert("bevel_depth", frame=f)
+    anim.set_interpolation(cu, "LINEAR")
+    sc.frame_set(frame_start)
+
+
 def point_on_orbit(a, e=0.0, mean_anomaly_deg=0.0, omega_deg=0.0):
     """Точка на эллипсе в плоскости орбиты (для постановки тела на линию)."""
     return (*kepler_xy(a, e, math.radians(mean_anomaly_deg), omega_deg), 0.0)

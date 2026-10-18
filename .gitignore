@@ -9,6 +9,7 @@ out/
 # Сгенерированные/скачанные ассеты (восстанавливаются: Млечный Путь — при первом рендере, TTS — см. README)
 assets/milkyway.exr
 assets/milkyway_maps.npz
+assets/voyager_cover_v*.npy
 assets/tts/
 
 # Python

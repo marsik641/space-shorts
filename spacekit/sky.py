@@ -329,11 +329,49 @@ def _mags(rng, n, m0, m1, k=0.45):
     return np.log10(a0 + rng.random(n) * (a1 - a0)) / k
 
 
+# ---------------------------------------------------------------- реальные яркие звёзды
+# ICRS -> галактические (Hipparcos, ESA 1997, т. 1, §1.5.3)
+A_ICRS_GAL = np.array(((-0.0548755604162154, -0.8734370902348850, -0.4838350155487132),
+                       (0.4941094278755837, -0.4448296299600112, 0.7469822444972189),
+                       (-0.8676661490190047, -0.1980763734312015, 0.4559837761750669)))
+# (имя, RA°, Dec° J2000, V, B−V) — Орион и соседи (Yale Bright Star Catalogue / Hipparcos, округлено)
+BRIGHT_ORION = (
+    ("Betelgeuse", 88.793, 7.407, 0.42, 1.85), ("Rigel", 78.634, -8.202, 0.13, -0.03),
+    ("Bellatrix", 81.283, 6.350, 1.64, -0.22), ("Alnilam", 84.053, -1.202, 1.69, -0.18),
+    ("Alnitak", 85.190, -1.943, 1.77, -0.21), ("Mintaka", 83.002, -0.299, 2.23, -0.22),
+    ("Saiph", 86.939, -9.670, 2.09, -0.17), ("Meissa", 83.784, 9.934, 3.33, -0.16),
+    ("Hatysa", 83.858, -5.910, 2.77, -0.24), ("Pi3 Ori", 72.460, 6.961, 3.19, 0.45),
+    ("Sirius", 101.287, -16.716, -1.46, 0.00), ("Procyon", 114.825, 5.225, 0.34, 0.42),
+    ("Aldebaran", 68.980, 16.509, 0.86, 1.54), ("Elnath", 81.573, 28.608, 1.65, -0.13),
+    ("Arneb", 83.183, -17.822, 2.58, 0.21), ("Nihal", 82.061, -20.759, 2.84, 0.82),
+    ("Cursa", 76.963, -5.086, 2.79, 0.13), ("Mirzam", 95.675, -17.956, 1.98, -0.23),
+    ("Adhara", 104.656, -28.972, 1.50, -0.21), ("Wezen", 107.098, -26.393, 1.83, 0.68),
+    ("Eps Lep", 76.365, -22.371, 3.19, 1.46), ("Mu Lep", 78.233, -16.206, 3.31, -0.11),
+)
+
+
+def radec_to_gal(ra_deg, dec_deg):
+    """Единичный вектор в галактической системе (как у звёзд/Млечного Пути) по RA/Dec J2000."""
+    ra, de = np.radians(ra_deg), np.radians(dec_deg)
+    v = np.stack([np.cos(de) * np.cos(ra), np.cos(de) * np.sin(ra), np.sin(de)], -1)
+    return v @ A_ICRS_GAL.T
+
+
+def _bv_temp(bv):
+    """Температура по B−V (Ballesteros 2012)."""
+    bv = np.asarray(bv, float)
+    return 4600.0 * (1.0 / (0.92 * bv + 1.7) + 1.0 / (0.92 * bv + 0.62))
+
+
 def build_starfield(scene, camera=None, n_stars=300000, seed=7, brightness=1.0,
                     galactic_plane_euler=GAL_EULER, band_frac=0.75, mag_limit=11.0, star_px=0.9,
                     contrast=1.0, lens=None, mw_seed=3, mw_strength=1.0, resolved_frac=RESOLVED_FRAC,
-                    band_mag=(7.0, 13.5), coll="Env"):
+                    band_mag=(7.0, 13.5), coll="Env", catalog=None, catalog_cone_deg=40.0, catalog_cut=3.6):
     """Point cloud звёзд на сфере большого радиуса (Copy Location к камере).
+
+    catalog — реальные звёзды [(имя, RA°, Dec°, V, B−V)] (например BRIGHT_ORION): ставятся по настоящим
+    координатам; процедурные звёзды ярче catalog_cut в конусе catalog_cone_deg вокруг центра каталога убираются
+    (созвездие узнаётся без «лишних» ярких). Без catalog поле — как раньше (ep001 не меняется).
 
     Две популяции:
       «поле» (1−band_frac): все величины до mag_limit, изотропно + концентрация к плоскости (сильнее для
@@ -417,6 +455,27 @@ def build_starfield(scene, camera=None, n_stars=300000, seed=7, brightness=1.0,
     sat = 0.35 + 0.30 * np.clip(1.0 - (mag + 1.0) / 8.0, 0, 1)     # у ярких цвет заметнее
     rgb = sat[:, None] * rgb + (1 - sat[:, None]) * (rgb @ _LUMA)[:, None]
     rgb /= (rgb @ _LUMA)[:, None]
+
+    if catalog:
+        # реальные звёзды: убрать процедурные яркие в конусе вокруг каталога, добавить настоящие
+        cat_dirs = radec_to_gal([c[1] for c in catalog], [c[2] for c in catalog])
+        ctr = cat_dirs.mean(0)
+        ctr /= np.linalg.norm(ctr)
+        keep = ~((dirs @ ctr > math.cos(math.radians(catalog_cone_deg))) & (mag < catalog_cut))
+        dirs, flux, mag, rgb, pop, sz = dirs[keep], flux[keep], mag[keep], rgb[keep], pop[keep], sz[keep]
+        cm = np.array([c[3] for c in catalog])
+        csz = 1.0 + 0.6 * np.clip((3.0 - cm) / 4.0, 0.0, 1.0)
+        cflux = 10.0 ** (-0.4 * contrast * (cm - 6.0)) / csz ** 2
+        ts, tab = _bb_table()
+        ct = _bv_temp([c[4] for c in catalog])
+        crgb = np.stack([np.interp(ct, ts, tab[:, k]) for k in range(3)], 1) / np.array(C.blackbody_rgb(6500))
+        csat = 0.35 + 0.30 * np.clip(1.0 - (cm + 1.0) / 8.0, 0, 1)
+        crgb = csat[:, None] * crgb + (1 - csat[:, None]) * (crgb @ _LUMA)[:, None]
+        crgb /= (crgb @ _LUMA)[:, None]
+        dirs = np.concatenate([dirs, cat_dirs]); flux = np.concatenate([flux, cflux])
+        rgb = np.concatenate([rgb, crgb]); pop = np.concatenate([pop, np.zeros(len(catalog))])
+        sz = np.concatenate([sz, csz]); mag = np.concatenate([mag, cm])
+        n = len(dirs)
 
     pc = bpy.data.pointclouds.new("Stars")
     pc.resize(n)
