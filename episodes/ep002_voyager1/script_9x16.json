@@ -1,0 +1,80 @@
+{
+ "title": "Voyager 1 — the first machine a light-day from Earth (Nov 18, 2026)",
+ "duration_s": 59.5,
+ "caption_max_chars": 26,
+ "voices": {
+  "en": {
+   "engine": "kokoro",
+   "voice": "af_heart",
+   "speed": 0.98,
+   "lang": "en-us"
+  }
+ },
+ "segments": [
+  {
+   "at": 0.3,
+   "shot": "v1",
+   "en": "November eighteenth: the first machine ever to be a light-day from Earth.",
+   "en_cap": "Nov 18: | the first machine | ever to be a light-day | from Earth."
+  },
+  {
+   "at": 5.25,
+   "shot": "v2",
+   "en": "Look back. The Sun is just a star, right below Orion."
+  },
+  {
+   "at": 10.15,
+   "shot": "v2",
+   "en": "And Earth? Lost in the glare. The Sun outshines ten full Moons.",
+   "en_cap": "And Earth? | Lost in the glare. | The Sun outshines | 10 full Moons."
+  },
+  {
+   "at": 15.1,
+   "shot": "v3",
+   "en": "A signal from Earth reaches the Sun in eight minutes. Jupiter, forty-three. Saturn, over an hour. Neptune, four hours.",
+   "en_cap": "A signal from Earth | reaches the Sun | in 8 minutes. | Jupiter, 43 min. | Saturn, over an hour. | Neptune, 4 hours."
+  },
+  {
+   "at": 23.9,
+   "shot": "v3",
+   "en": "Voyager one: soon, a full light-day.",
+   "en_cap": "Voyager 1: soon, | a full light-day."
+  },
+  {
+   "at": 26.8,
+   "shot": "v4",
+   "en": "Forty-nine years after launch.",
+   "en_cap": "49 years after launch."
+  },
+  {
+   "at": 29.35,
+   "shot": "v4",
+   "en": "Saturn's gravity bent its path north, out of the plane of the planets.",
+   "en_cap": "Saturn's gravity | bent its path north, | out of the plane | of the planets."
+  },
+  {
+   "at": 34.7,
+   "shot": "v4",
+   "en": "Twenty-twelve: it left the Sun's bubble.",
+   "en_cap": "2012: | it left the Sun's bubble."
+  },
+  {
+   "at": 37.7,
+   "shot": "v4",
+   "en": "Nuclear-powered, yet it calls home with about twenty-three watts: a fridge light bulb.",
+   "en_cap": "Nuclear-powered, | yet it calls home | with about 23 watts: | a fridge light bulb."
+  },
+  {
+   "at": 43.55,
+   "shot": "v5",
+   "en": "All six computers together hold about sixty-eight kilobytes. Bolted to its side: the Golden Record.",
+   "en_cap": "All 6 computers together | hold about 68 kilobytes. | Bolted to its side: | the Golden Record."
+  },
+  {
+   "at": 51.2,
+   "shot": "v6",
+   "en": "In about forty thousand years, it'll drift within two light-years of a small red star. But first, mark the date.",
+   "en_cap": "In about 40,000 years, | it'll drift within | 2 light-years | of a small red star. | But first, mark the date."
+  }
+ ]
+}

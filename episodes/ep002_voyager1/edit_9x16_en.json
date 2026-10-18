@@ -1,0 +1,673 @@
+{
+ "output": "out/ep002_voyager1/9x16/ep002_voyager1_en_1080x1920p60.mp4",
+ "format": {
+  "w": 1080,
+  "h": 1920,
+  "fps": 60
+ },
+ "video": {
+  "bitrate_kbps": 40000,
+  "preset": "BEST"
+ },
+ "crossfade": 0,
+ "fade_in": 0,
+ "fade_out": 0,
+ "tail": 0,
+ "shots": [
+  {
+   "dir": "out/ep002_voyager1/9x16/frames/v1",
+   "frames": 300,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep002_voyager1/9x16/frames/v2",
+   "frames": 600,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep002_voyager1/9x16/frames/v3",
+   "frames": 690,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep002_voyager1/9x16/frames/v4",
+   "frames": 690,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep002_voyager1/9x16/frames/v5",
+   "frames": 760,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep002_voyager1/9x16/frames/v6",
+   "frames": 530,
+   "first": 1,
+   "xfade_in": 0
+  }
+ ],
+ "titles": [
+  {
+   "text": "Scientific visualization · real data",
+   "size": 30,
+   "y": 0.955,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "color": [
+    0.78,
+    0.82,
+    0.9
+   ],
+   "fade": 0,
+   "start": 1,
+   "length": 3570
+  },
+  {
+   "text": "VOYAGER 1",
+   "size": 60,
+   "x": 0.08,
+   "y": 0.885,
+   "align": "LEFT",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.92,
+    0.95,
+    1.0
+   ],
+   "fade": 12,
+   "outline": 5,
+   "fade_in": 0,
+   "fade_out": 12,
+   "start": 1,
+   "length": 270
+  },
+  {
+   "text": "1 light-day from Earth",
+   "size": 32,
+   "x": 0.08,
+   "y": 0.848,
+   "align": "LEFT",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    1.0,
+    0.86,
+    0.62
+   ],
+   "fade": 12,
+   "outline": 5,
+   "fade_in": 0,
+   "fade_out": 12,
+   "start": 1,
+   "length": 270
+  },
+  {
+   "text": "Nov 18, 2026",
+   "size": 32,
+   "x": 0.08,
+   "y": 0.818,
+   "align": "LEFT",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    1.0,
+    0.86,
+    0.62
+   ],
+   "fade": 12,
+   "outline": 5,
+   "fade_in": 0,
+   "fade_out": 12,
+   "start": 1,
+   "length": 270
+  },
+  {
+   "text": "Light time from Earth · Nov 18, 2026",
+   "size": 34,
+   "x": 0.08,
+   "y": 0.915,
+   "align": "LEFT",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.75,
+    0.88,
+    1.0
+   ],
+   "fade": 15,
+   "outline": 5,
+   "start": 919,
+   "length": 657
+  },
+  {
+   "text": "SUN · 8 MIN",
+   "size": 34,
+   "x": 0.08,
+   "y": 0.77,
+   "align": "LEFT",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.92,
+    0.95,
+    1.0
+   ],
+   "fade": 8,
+   "outline": 5,
+   "start": 1031,
+   "length": 545
+  },
+  {
+   "text": "JUPITER · 43 MIN",
+   "size": 34,
+   "x": 0.08,
+   "y": 0.736,
+   "align": "LEFT",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.92,
+    0.95,
+    1.0
+   ],
+   "fade": 8,
+   "outline": 5,
+   "start": 1181,
+   "length": 395
+  },
+  {
+   "text": "SATURN · 1 H 13 MIN",
+   "size": 34,
+   "x": 0.08,
+   "y": 0.702,
+   "align": "LEFT",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.92,
+    0.95,
+    1.0
+   ],
+   "fade": 8,
+   "outline": 5,
+   "start": 1219,
+   "length": 357
+  },
+  {
+   "text": "NEPTUNE · 4 H 04 MIN",
+   "size": 34,
+   "x": 0.08,
+   "y": 0.668,
+   "align": "LEFT",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.92,
+    0.95,
+    1.0
+   ],
+   "fade": 8,
+   "outline": 5,
+   "start": 1308,
+   "length": 268
+  },
+  {
+   "text": "VOYAGER 1 · 24 H",
+   "size": 40,
+   "x": 0.08,
+   "y": 0.628,
+   "align": "LEFT",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    1.0,
+    0.86,
+    0.62
+   ],
+   "fade": 8,
+   "outline": 5,
+   "start": 1440,
+   "length": 136
+  },
+  {
+   "text": "time scale: logarithmic",
+   "size": 26,
+   "x": 0.08,
+   "y": 0.585,
+   "align": "LEFT",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.7,
+    0.76,
+    0.86
+   ],
+   "fade": 15,
+   "outline": 5,
+   "start": 937,
+   "length": 639
+  },
+  {
+   "text": "Real trajectory · NASA/JPL Horizons",
+   "size": 30,
+   "x": 0.08,
+   "y": 0.885,
+   "align": "LEFT",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    1.0,
+    0.86,
+    0.62
+   ],
+   "fade": 15,
+   "outline": 5,
+   "start": 1609,
+   "length": 444
+  },
+  {
+   "text": "time scale: non-linear",
+   "size": 26,
+   "x": 0.08,
+   "y": 0.855,
+   "align": "LEFT",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.7,
+    0.76,
+    0.86
+   ],
+   "fade": 15,
+   "outline": 5,
+   "start": 1615,
+   "length": 438
+  },
+  {
+   "text": "3 plutonium-238 generators",
+   "size": 36,
+   "x": 0.465,
+   "y": 0.8,
+   "align": "CENTER",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.92,
+    0.95,
+    1.0
+   ],
+   "fade": 12,
+   "outline": 5,
+   "start": 2293,
+   "length": 114
+  },
+  {
+   "text": "~470 W at launch · about half today",
+   "size": 30,
+   "x": 0.465,
+   "y": 0.77,
+   "align": "CENTER",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.7,
+    0.76,
+    0.86
+   ],
+   "fade": 12,
+   "outline": 5,
+   "start": 2299,
+   "length": 108
+  },
+  {
+   "text": "68 KB of memory",
+   "size": 36,
+   "x": 0.465,
+   "y": 0.8,
+   "align": "CENTER",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.92,
+    0.95,
+    1.0
+   ],
+   "fade": 12,
+   "outline": 5,
+   "start": 2725,
+   "length": 114
+  },
+  {
+   "text": "less than one phone photo",
+   "size": 30,
+   "x": 0.465,
+   "y": 0.77,
+   "align": "CENTER",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.7,
+    0.76,
+    0.86
+   ],
+   "fade": 12,
+   "outline": 5,
+   "start": 2731,
+   "length": 108
+  },
+  {
+   "text": "GOLDEN RECORD",
+   "size": 40,
+   "x": 0.465,
+   "y": 0.8,
+   "align": "CENTER",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    1.0,
+    0.86,
+    0.62
+   ],
+   "fade": 10,
+   "outline": 5,
+   "start": 2881,
+   "length": 156
+  },
+  {
+   "text": "115 images · 55 languages",
+   "size": 30,
+   "x": 0.465,
+   "y": 0.77,
+   "align": "CENTER",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.92,
+    0.95,
+    1.0
+   ],
+   "fade": 10,
+   "outline": 5,
+   "start": 2887,
+   "length": 150
+  },
+  {
+   "text": "GLIESE 445 · red dwarf",
+   "size": 34,
+   "x": 0.08,
+   "y": 0.8,
+   "align": "LEFT",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    1.0,
+    0.72,
+    0.6
+   ],
+   "fade": 10,
+   "outline": 5,
+   "start": 3319,
+   "length": 126
+  },
+  {
+   "text": "VOYAGER 1",
+   "size": 60,
+   "x": 0.08,
+   "y": 0.885,
+   "align": "LEFT",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.92,
+    0.95,
+    1.0
+   ],
+   "fade": 12,
+   "outline": 5,
+   "fade_in": 12,
+   "fade_out": 0,
+   "start": 3457,
+   "length": 114
+  },
+  {
+   "text": "1 light-day from Earth",
+   "size": 32,
+   "x": 0.08,
+   "y": 0.848,
+   "align": "LEFT",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    1.0,
+    0.86,
+    0.62
+   ],
+   "fade": 12,
+   "outline": 5,
+   "fade_in": 12,
+   "fade_out": 0,
+   "start": 3457,
+   "length": 114
+  },
+  {
+   "text": "Nov 18, 2026",
+   "size": 32,
+   "x": 0.08,
+   "y": 0.818,
+   "align": "LEFT",
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    1.0,
+    0.86,
+    0.62
+   ],
+   "fade": 12,
+   "outline": 5,
+   "fade_in": 12,
+   "fade_out": 0,
+   "start": 3457,
+   "length": 114
+  }
+ ],
+ "captions": {
+  "size": 62,
+  "x": 0.465,
+  "y": 0.25,
+  "wrap": 0.74,
+  "font": "C:/Windows/Fonts/bahnschrift.ttf",
+  "outline": 9,
+  "color": [
+   1.0,
+   0.95,
+   0.86
+  ],
+  "items": [
+   {
+    "text": "Nov 18:",
+    "start": 19,
+    "end": 93
+   },
+   {
+    "text": "the first machine",
+    "start": 106,
+    "end": 158
+   },
+   {
+    "text": "ever to be a light-day",
+    "start": 158,
+    "end": 225
+   },
+   {
+    "text": "from Earth.",
+    "start": 225,
+    "end": 267
+   },
+   {
+    "text": "Look back.",
+    "start": 316,
+    "end": 352
+   },
+   {
+    "text": "The Sun is just a star,",
+    "start": 352,
+    "end": 439
+   },
+   {
+    "text": "right below Orion.",
+    "start": 443,
+    "end": 511
+   },
+   {
+    "text": "And Earth?",
+    "start": 610,
+    "end": 644
+   },
+   {
+    "text": "Lost in the glare.",
+    "start": 644,
+    "end": 709
+   },
+   {
+    "text": "The Sun outshines",
+    "start": 723,
+    "end": 788
+   },
+   {
+    "text": "10 full Moons.",
+    "start": 788,
+    "end": 849
+   },
+   {
+    "text": "A signal from Earth",
+    "start": 907,
+    "end": 971
+   },
+   {
+    "text": "reaches the Sun",
+    "start": 971,
+    "end": 1023
+   },
+   {
+    "text": "in 8 minutes.",
+    "start": 1023,
+    "end": 1075
+   },
+   {
+    "text": "Jupiter, 43 min.",
+    "start": 1091,
+    "end": 1181
+   },
+   {
+    "text": "Saturn, over an hour.",
+    "start": 1184,
+    "end": 1270
+   },
+   {
+    "text": "Neptune, 4 hours.",
+    "start": 1285,
+    "end": 1381
+   },
+   {
+    "text": "Voyager 1: soon,",
+    "start": 1435,
+    "end": 1494
+   },
+   {
+    "text": "a full light-day.",
+    "start": 1495,
+    "end": 1579
+   },
+   {
+    "text": "49 years after launch.",
+    "start": 1609,
+    "end": 1722
+   },
+   {
+    "text": "Saturn's gravity",
+    "start": 1762,
+    "end": 1821
+   },
+   {
+    "text": "bent its path north,",
+    "start": 1821,
+    "end": 1901
+   },
+   {
+    "text": "out of the plane",
+    "start": 1911,
+    "end": 1953
+   },
+   {
+    "text": "of the planets.",
+    "start": 1953,
+    "end": 2000
+   },
+   {
+    "text": "2012:",
+    "start": 2083,
+    "end": 2140
+   },
+   {
+    "text": "it left the Sun's bubble.",
+    "start": 2140,
+    "end": 2219
+   },
+   {
+    "text": "Nuclear-powered,",
+    "start": 2263,
+    "end": 2328
+   },
+   {
+    "text": "yet it calls home",
+    "start": 2331,
+    "end": 2396
+   },
+   {
+    "text": "with about 23 watts:",
+    "start": 2396,
+    "end": 2480
+   },
+   {
+    "text": "a fridge light bulb.",
+    "start": 2493,
+    "end": 2567
+   },
+   {
+    "text": "All 6 computers together",
+    "start": 2614,
+    "end": 2711
+   },
+   {
+    "text": "hold about 68 kilobytes.",
+    "start": 2711,
+    "end": 2816
+   },
+   {
+    "text": "Bolted to its side:",
+    "start": 2831,
+    "end": 2916
+   },
+   {
+    "text": "the Golden Record.",
+    "start": 2924,
+    "end": 2989
+   },
+   {
+    "text": "In about 40,000 years,",
+    "start": 3073,
+    "end": 3183
+   },
+   {
+    "text": "it'll drift within",
+    "start": 3184,
+    "end": 3246
+   },
+   {
+    "text": "2 light-years",
+    "start": 3246,
+    "end": 3291
+   },
+   {
+    "text": "of a small red star.",
+    "start": 3291,
+    "end": 3367
+   },
+   {
+    "text": "But first, mark the date.",
+    "start": 3389,
+    "end": 3489
+   }
+  ]
+ },
+ "audio": [
+  {
+   "path": "out/ep002_voyager1/9x16/audio/mix_en.wav",
+   "start": 1,
+   "volume": 1.0
+  }
+ ]
+}
