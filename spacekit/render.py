@@ -13,6 +13,38 @@ RES = (1920, 1080)
 FORMATS = {"16x9": (1920, 1080), "9x16": (1080, 1920)}
 
 
+DEVICE_ORDER = ("OPTIX", "CUDA", "HIP", "ONEAPI", "METAL")
+_DEVICE = None
+
+
+def pick_device():
+    """Устройство Cycles: env SPACEKIT_DEVICE (OPTIX|CUDA|HIP|ONEAPI|METAL|CPU) или первое доступное по DEVICE_ORDER
+    (на RTX 3060 — OptiX, как раньше). Выбор печатается один раз: «[render] device …»."""
+    global _DEVICE
+    if _DEVICE:
+        return _DEVICE
+    prefs = bpy.context.preferences.addons["cycles"].preferences
+    want = os.environ.get("SPACEKIT_DEVICE", "").strip().upper()
+    order = (want,) if want else DEVICE_ORDER
+    _DEVICE = "CPU"
+    for t in order:
+        if t == "CPU":
+            break
+        try:
+            prefs.compute_device_type = t
+        except TypeError:
+            continue
+        prefs.get_devices()
+        if any(d.type == t for d in prefs.devices):
+            for d in prefs.devices:
+                d.use = d.type == t
+            _DEVICE = t
+            break
+    names = [d.name for d in prefs.devices if d.use] if _DEVICE != "CPU" else ["CPU"]
+    print(f"[render] device {_DEVICE}: {', '.join(names)}")
+    return _DEVICE
+
+
 def setup_cycles(scene=None, samples=64, res=RES, pct=100, motion_blur=True, shutter=0.5,
                  denoise=True, adaptive_threshold=0.02, fps=None):
     scene = scene or bpy.context.scene
@@ -20,19 +52,19 @@ def setup_cycles(scene=None, samples=64, res=RES, pct=100, motion_blur=True, shu
     scene.render.compositor_device = "GPU"      # блум 2 Мпикс на CPU стоит ~1 с/кадр
     if fps is not None:
         scene.render.fps, scene.render.fps_base = int(fps), 1.0
-    prefs = bpy.context.preferences.addons["cycles"].preferences
-    prefs.compute_device_type = "OPTIX"
-    prefs.get_devices()
-    for d in prefs.devices:
-        d.use = d.type == "OPTIX"
+    dev = pick_device()
+    if dev == "CPU":
+        scene.render.compositor_device = "CPU"
     cy = scene.cycles
-    cy.device = "GPU"
+    cy.device = "CPU" if dev == "CPU" else "GPU"
     cy.samples = samples
     cy.use_adaptive_sampling = True
     cy.adaptive_threshold = adaptive_threshold
     cy.use_denoising = denoise
     if denoise:
-        cy.denoiser = "OPTIX"
+        # OptiX-денойзер — только на NVIDIA; на другом железе — OIDN (вид чуть другой: шоты одного ролика
+        # рендерить на одной машине)
+        cy.denoiser = "OPTIX" if dev == "OPTIX" else "OPENIMAGEDENOISE"
     cy.max_bounces = 4
     cy.diffuse_bounces = 2
     cy.glossy_bounces = 2
