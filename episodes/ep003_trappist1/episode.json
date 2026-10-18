@@ -1,0 +1,36 @@
+{
+ "id": "ep003_trappist1",
+ "object": "TRAPPIST-1 (2MASS J23062928-0502285) and planets b–h",
+ "series": "ALIEN WORLDS",
+ "format_name": "9x16",
+ "format": {"w": 1080, "h": 1920, "fps": 60},
+ "languages": ["en"],
+ "output": "out/{id}/9x16/{id}_{lang}_1080x1920p60.mp4",
+ "video": {"bitrate_kbps": 40000, "preset": "BEST"},
+ "edit": [
+  {"shot": "v1", "frames": 330},
+  {"shot": "v2", "frames": 632},
+  {"shot": "v3", "frames": 688},
+  {"shot": "v4", "frames": 720},
+  {"shot": "v5", "frames": 720},
+  {"shot": "v6", "frames": 480}
+ ],
+ "caption_style": {"size": 58, "x": 0.465, "y": 0.245, "wrap": 0.74, "font": "C:/Windows/Fonts/corbelb.ttf",
+                   "outline": 6, "color": [0.86, 0.93, 1.0]},
+ "overlays": {
+  "en": [
+   {"text": "Scientific visualization · real data", "size": 30, "y": 0.955, "font": "C:/Windows/Fonts/segoeui.ttf",
+    "color": [0.78, 0.82, 0.9], "fade": 0},
+   {"text": "TRAPPIST-1", "start_s": 0.0, "length_s": 5.0, "size": 56, "y": 0.885,
+    "font": "C:/Windows/Fonts/corbel.ttf", "fade": 12},
+   {"text": "planet c rising over planet b · real sizes", "start_s": 1.2, "length_s": 4.1, "size": 30, "y": 0.848,
+    "font": "C:/Windows/Fonts/corbel.ttf", "color": [0.78, 0.86, 1.0], "fade": 12},
+   {"text": "1 day = 2 seconds", "start_s": 5.8, "length_s": 21.5, "size": 30, "y": 0.885,
+    "font": "C:/Windows/Fonts/corbel.ttf", "color": [0.78, 0.86, 1.0], "fade": 12},
+   {"text": "TRAPPIST-1e", "start_s": 27.8, "length_s": 5.0, "size": 50, "y": 0.885,
+    "font": "C:/Windows/Fonts/corbel.ttf", "fade": 12},
+   {"text": "sizes to scale · lineup for comparison", "start_s": 39.8, "length_s": 11.5, "size": 30, "y": 0.885,
+    "font": "C:/Windows/Fonts/corbel.ttf", "color": [0.78, 0.86, 1.0], "fade": 12}
+  ]
+ }
+}

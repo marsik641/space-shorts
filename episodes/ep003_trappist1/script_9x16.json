@@ -1,0 +1,87 @@
+{
+ "title": "TRAPPIST-1 — seven Earth-sized worlds, so close each hangs in its neighbor's sky",
+ "duration_s": 59.5,
+ "caption_max_chars": 24,
+ "voices": {
+  "en": {
+   "engine": "kokoro",
+   "voice": "af_heart",
+   "speed": 0.98,
+   "lang": "en-us"
+  }
+ },
+ "segments": [
+  {
+   "at": 0.3,
+   "shot": "v1",
+   "en": "Not a moon: the next planet. At its closest, it looks almost two and a half Moons wide.",
+   "en_cap": "Not a moon: | the next planet. | At its closest, | almost 2.5 Moons wide."
+  },
+  {
+   "at": 5.55,
+   "shot": "v2",
+   "en": "TRAPPIST-1: seven Earth-sized worlds around one small red star, forty light-years away.",
+   "en_cap": "TRAPPIST-1: | 7 Earth-sized worlds | around one | small red star, | 40 light-years away."
+  },
+  {
+   "at": 11.25,
+   "shot": "v2",
+   "en": "Each beat is one planet crossing its star, sped up forty-three thousand times.",
+   "en_cap": "Each beat: | one planet | crossing its star, | sped up 43,000×."
+  },
+  {
+   "at": 16.25,
+   "shot": "v3",
+   "en": "The star itself is barely bigger than Jupiter.",
+   "en_cap": "The star itself | is barely bigger | than Jupiter."
+  },
+  {
+   "at": 19.3,
+   "shot": "v3",
+   "en": "Their years last from a day and a half to nineteen days.",
+   "en_cap": "Their years last | from 1.5 days | to 19 days."
+  },
+  {
+   "at": 23.3,
+   "shot": "v3",
+   "en": "And all seven orbits would fit inside Mercury's, six times over.",
+   "en_cap": "All 7 orbits | would fit | inside Mercury's, | 6 times over."
+  },
+  {
+   "at": 28.0,
+   "shot": "v4",
+   "en": "Planet E orbits where water could stay liquid. Its sun looks four times wider than ours.",
+   "en_cap": "Planet e orbits | where water | could stay liquid. | Its sun looks | 4× wider than ours."
+  },
+  {
+   "at": 34.3,
+   "shot": "v4",
+   "en": "A year there lasts six days, and one side likely never sees night.",
+   "en_cap": "A year there | lasts 6 days, | and one side | likely never sees night."
+  },
+  {
+   "at": 39.9,
+   "shot": "v5",
+   "en": "Webb's first look at B and C: likely bare rock, with no thick air.",
+   "en_cap": "Webb's first look | at b and c: | likely bare rock, | no thick air."
+  },
+  {
+   "at": 44.2,
+   "shot": "v5",
+   "en": "E is still undecided. More Webb data are on the way.",
+   "en_cap": "Planet e: | still undecided. | More Webb data | are on the way."
+  },
+  {
+   "at": 47.6,
+   "shot": "v5",
+   "en": "Earth for scale: all seven are within twenty-five percent of its width.",
+   "en_cap": "Earth for scale: | all 7 are within | 25% of its width."
+  },
+  {
+   "at": 54.2,
+   "shot": "v6",
+   "en": "Seven worlds, so close that each one hangs in its neighbor's sky.",
+   "en_cap": "7 worlds, so close | that each one hangs | in its neighbor's sky."
+  }
+ ]
+}
