@@ -142,6 +142,9 @@ def main():
     ap.add_argument("--lufs", type=float, default=-14.0)
     ap.add_argument("--ceiling", type=float, default=-1.0, help="потолок пика, dBTP (dBFS при --no-tp)")
     ap.add_argument("--no-tp", action="store_true", help="потолок по сэмплам, без true-peak")
+    ap.add_argument("--max-seconds", type=float, default=None,
+                    help="обрезать итог до этой длины с затуханием 30 мс (AAC добавляет ~10 мс заполнения: "
+                         "для ролика 60.0 с давать 59.97, чтобы дорожка в MP4 не вышла за 60.0)")
     a = ap.parse_args()
     tp = not a.no_tp
 
@@ -179,6 +182,11 @@ def main():
             break
         ceil_db -= pk - a.ceiling + 0.05
         print(f"WARN пик {pk:.2f} > {a.ceiling:.1f}: потолок лимитера -> {ceil_db:.2f}")
+    if a.max_seconds is not None and len(mix) > int(a.max_seconds * SR):
+        mix = mix[: int(a.max_seconds * SR)].copy()
+        nf = int(0.03 * SR)
+        mix[-nf:] *= np.linspace(1.0, 0.0, nf)[:, None]
+        n = len(mix)
     final = meter.integrated_loudness(mix)
     sf.write(a.out, mix.astype(np.float32), SR, subtype="PCM_24")
     print(f"MIX {a.out}: {final:.1f} LUFS, peak {20 * np.log10(np.abs(mix).max()):.1f} dBFS, "

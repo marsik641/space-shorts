@@ -46,7 +46,7 @@
   },
   {
    "dir": "out/ep001_psr_b1257/9x16/frames/v6",
-   "frames": 360,
+   "frames": 359,
    "first": 1,
    "xfade_in": 0
   }
@@ -64,7 +64,7 @@
    ],
    "fade": 0,
    "start": 1,
-   "length": 3600
+   "length": 3599
   },
   {
    "text": "PSR B1257+12",

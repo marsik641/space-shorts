@@ -1,6 +1,6 @@
 # Ep. 001 — publish pack (EN, Neutron Frames)
 
-**File:** `ep001_psr_b1257_en_1080x1920p60.mp4` (60.0 s, 1080×1920, 60 fps)
+**File:** `ep001_psr_b1257_en_1080x1920p60.mp4` (59.98 s, 1080×1920, 60 fps)
 Duration is at the hard limit: a Short > 60 s with any copyright claim (Content ID or manual) is blocked worldwide. Next episodes: target 59–59.5 s.
 
 ## Title (pick one)

@@ -36,7 +36,7 @@ _MW_GAIN = 0.06         # strength=1 -> ядро полосы ~0.06 лин. (д�
 _REDDEN = (0.88, 1.0, 1.15)  # относительная экстинкция R,G,B (покраснение за пылью)
 DUST_CAP = 2.5          # насыщение пыли: tau_eff = cap·(1−exp(−tau/cap)) -> в прожилках остаётся ~5–10% света
 RESOLVED_FRAC = 0.35    # доля света полосы, отданная разрешённым звёздам (диффузный фон слабее на столько же)
-# дисперсия компоузера, безопасная для звёзд: common.setup_compositor(dispersion=0.012) превращает
+# дисперсия компоузера, безопасная для звёзд: render.setup_compositor(dispersion=0.012) превращает
 # звёзды у краёв кадра в радужные штрихи 5–7 px. В шотах со звёздами: render.setup_compositor(sc, dispersion=sky.STAR_SAFE_DISPERSION)
 STAR_SAFE_DISPERSION = 0.002
 
@@ -483,7 +483,7 @@ def update_starfield(scene, stars, camera=None, lens=None):
                    for o in scene.objects
                    if o.type in ("MESH", "LIGHT", "CURVES", "VOLUME", "CURVE") and o != stars] or [0.0])
         if clip < 1.0e4 or R < 20.0 * far:
-            print(f"[environment] WARNING: звёздная сфера R={R:.0f} близко (clip_end={clip:.0f}, "
+            print(f"[sky] WARNING: звёздная сфера R={R:.0f} близко (clip_end={clip:.0f}, "
                   f"дальний объект {far:.0f}); поднимите camera.clip_end")
     px = _pixel_angle(scene, lens)
     star_px = float(stars.get("star_px", 0.9))

@@ -216,7 +216,7 @@ def build_dust_ring(scene, parent=None, inner=48.0, outer=72.0, thickness=6.0, d
         ob["ring_k"] = k
         if biased and not scene.cycles.volume_biased:
             scene.cycles.volume_biased = True
-            print("[environment] build_dust_ring: scene.cycles.volume_biased = True (ray marching)")
+            print("[dust_ring] build_dust_ring: scene.cycles.volume_biased = True (ray marching)")
     ob["ring_lights"] = ", ".join(lo.name for lo in (lights or []))
     me.materials.append(mat)
 

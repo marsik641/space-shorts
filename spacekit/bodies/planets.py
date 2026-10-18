@@ -8,7 +8,7 @@
 Яркость/цвет света для атмосферы — узлы sun_power/sun_color: при вспышках лампы и проходе лучей-прожекторов
 их ключует key_sun_power (вызывать после add_orbit).
 
-    import planets as PL
+    from spacekit.bodies import planets as PL
     o = PL.build_planet(sc, "poltergeist", radius=1.0, light=psr["light"], frame_start=1, frame_end=360)
     PL.add_orbit(sc, o["root"], center_parent=psr["root"], a=30, period_s=40, phase_deg=20,
                  frame_start=1, frame_end=360)

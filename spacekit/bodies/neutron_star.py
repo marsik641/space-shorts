@@ -5,7 +5,7 @@
               > PSR_Mag (наклон alpha вокруг X; его +Z = северный магнитный полюс/луч)
 Поверхность, лучи, прожекторы, линии поля и частицы — дети PSR_Mag (коротируют).
 
-Импорт:  import neutron_star as NS;  objs = NS.build_pulsar(scene, ...)
+Импорт:  from spacekit.bodies import neutron_star as NS;  objs = NS.build_pulsar(scene, ...)
 """
 import math
 import random
@@ -631,7 +631,7 @@ def beam_frame_for_azimuth(objs, azimuth_deg, after_frame=None):
 def key_pulse_flash(objs, camera, frame_start, frame_end, width_deg=None, substeps=4, gamma=0.7,
                     light_gain=0.0):
     """Ключи вспышки (узлы PSR_Flash в материалах поверхности и лучей), когда ось луча проходит
-    около направления на камеру. Значение — (среднее по выдержке (shutter 0.5) гауссианы угла)^gamma.
+    около направления на камеру. Значение — (среднее по выдержке сцены (motion_blur_shutter) гауссианы угла)^gamma.
     width_deg по умолчанию 1.6·beam_half_angle — совпадает с видимой шириной объёма луча.
     Вне [frame_start, frame_end] значение 0 (ключи-нули на краях).
     light_gain > 0 — ещё и ключи энергии PSR_Light ×(1 + light_gain·v) (по умолчанию выкл.:
@@ -641,11 +641,12 @@ def key_pulse_flash(objs, camera, frame_start, frame_end, width_deg=None, subste
     w = math.radians(width_deg if width_deg is not None else p["beam_half_angle_deg"] * 1.6)
     sc = bpy.context.scene
     keep = (sc.frame_current, sc.frame_subframe)
+    sh = sc.render.motion_blur_shutter if sc.render.use_motion_blur else 0.0
     vals_n, vals_s = [], []
     for f in range(frame_start, frame_end + 1):
         an = as_ = 0.0
         for s in range(substeps):
-            ff = f - 0.25 + 0.5 * (s + 0.5) / substeps
+            ff = f + sh * ((s + 0.5) / substeps - 0.5)       # окно выдержки сцены, центр — кадр
             fi = int(math.floor(ff))
             sc.frame_set(fi, subframe=ff - fi)
             mw = objs["mag"].matrix_world
