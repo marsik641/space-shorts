@@ -27,7 +27,7 @@ Faststart/BT.709 Blender не пишет — сознательно без ре�
    3–5 хэштегов (`#space #astronomy #<объект>`).
 3. **Теги**: 5–8 (роль минимальная): объект, тип объекта, space, astronomy, science visualization, 3D render.
 4. **Закреплённый комментарий**: источники коротко + вопрос зрителю (выбор следующей темы).
-5. **Studio**: не для детей; категория Science & Technology; язык English; плейлист/серия; **Related video**
+5. **Studio**: не для детей; категория Science & Technology; язык English; плейлист/серия (с ~30 роликов, `docs/channel.md`); **Related video**
    (long-form или прошлый эпизод по теме). «Altered or synthetic content» — **добровольно**: по справке обязательно
    для GenAI, Blender-рендер формально не GenAI; консервативно отмечать для фотореалистичных сцен, которых не было
    (метка не режет охват). TTS-озвучка может получить автометку YouTube.
