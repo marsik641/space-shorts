@@ -69,7 +69,8 @@ Which spacecraft should we render next: Voyager 2, New Horizons or Parker Solar 
   can't be filmed. Required by the help page for GenAI; a Blender render is formally not GenAI. The label doesn't reduce
   reach or monetization. The TTS voice may get an automatic AI label in the description — fine.
 - Playlist / series: **FRESH FROM ORBIT** (Orbitfall). Related video: ep. 001 (PSR B1257+12) until a long-form exists.
-- Publish: steady evening slot for US viewers (e.g. 18:00 ET), **before Nov 18, 2026**.
+- Publish: **Mon Nov 16, 2026, 14:00 ET** (fallback Sun Nov 15) — not earlier: ~95% of a Short's views come in
+  the first week, which must overlap the Nov 17–20 news wave; not after Nov 18 10:16 UTC (future-tense VO).
 
 ## Cross-post (clean master, no watermarks, no YouTube links)
 - TikTok: `Nov 18, 2026: Voyager 1 becomes the first machine a full light-day from Earth. From there, the Sun is just a star next to Orion. 🛰️ Real data, rendered. #space #voyager1 #nasa` (upload from RU blocked since 03.2022 — check; Creator Rewards only for > 60 s → reach only)

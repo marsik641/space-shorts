@@ -52,7 +52,7 @@ This is the first episode of DEAD STARS — one series of many across the whole 
 - Audience: **Not made for kids**. Category: **Science & Technology**. Language: English.
 - **Altered or synthetic content: YES (voluntary, conservative)** — photorealistic rendering of a scene that can't be filmed (planets, beams, auroras). Required by the help page for GenAI; a Blender render is formally not GenAI. The label doesn't reduce reach or monetization. The TTS voice may also get an automatic AI label in the description (C2PA/detection) — fine.
 - Playlist / series: **DEAD STARS** (Orbitfall). Related video: the long-form version when it exists.
-- Publish: steady evening slot for US viewers (e.g. 18:00 ET), same slot for the series.
+- Publish: next free Tue/Thu/Sat slot, 14:00 ET (docs/publish.md, «Расписание»).
 
 ## Cross-post (clean master, no watermarks)
 - **TikTok / Reels:** `A dead star spins 161 times per second — and the first confirmed exoplanets orbit it. 🌌 Real data, rendered. #space #astronomy #pulsar`

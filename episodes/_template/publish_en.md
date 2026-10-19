@@ -41,7 +41,7 @@ space, astronomy, <object>, <object type>, science visualization, 3D render
 - Audience: **Not made for kids**. Category: **Science & Technology**. Language: English.
 - Altered or synthetic content: <YES/NO> — voluntary (Blender render is not GenAI); why.
 - Playlist / series: <series>. Related video: <long-form or previous episode on the topic, if any>.
-- Publish: <day, time> — steady evening slot for US viewers, same slot for the series.
+- Publish: <date>, 14:00 ET — next free Tue/Thu/Sat slot (docs/publish.md, «Расписание»); event-tied episodes — by the event date.
 
 ## Cross-post (clean master, no watermarks, no YouTube links)
 - TikTok: <caption> (upload from RU blocked since 03.2022 — check; Creator Rewards only for > 60 s → reach only)
