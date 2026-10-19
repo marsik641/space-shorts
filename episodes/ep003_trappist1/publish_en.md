@@ -3,7 +3,7 @@
 Rules — `docs/publish.md`. Release folder — `out/ep003_trappist1/release/`.
 
 **Files:** `ep003_trappist1_en_1080x1920p60.mp4` (master, upload this; 59.5 s, 1080×1920, 60 fps) and this file.
-*(Draft written before the final render — duration and frames re-checked after QA.)*
+QA PASS 2026-10-19: 3570 frames, video 59.50 s, audio 59.52 s, −14 LUFS, true-peak −1 dBTP.
 
 ## Title (pick one)
 1. **Not a Moon — the Next Planet Over (TRAPPIST-1)** ← recommended
