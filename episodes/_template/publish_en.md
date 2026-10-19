@@ -1,4 +1,4 @@
-# Ep. NNN — publish pack (EN, Orbitfall)
+# Ep. NNN — publish pack (EN, The Universe Inside Out)
 
 Rules — `docs/publish.md`. Release folder — `out/epNNN_slug/release/`.
 

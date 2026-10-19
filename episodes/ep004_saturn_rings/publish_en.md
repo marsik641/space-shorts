@@ -1,6 +1,6 @@
-# Ep. 004 — publish pack (EN, Orbitfall)
+# Ep. 004 — publish pack (EN, The Universe Inside Out)
 
-Channel: **Orbitfall** (`@Orbitfall`) · series **TRUE SCALE** · release folder: `out/ep004_saturn_rings/release/`
+Channel: **The Universe Inside Out** (`@TheUniverseInsideOut`) · series **TRUE SCALE** · release folder: `out/ep004_saturn_rings/release/`
 
 **Files:**
 - `ep004_saturn_rings_en_1080x1920p60.mp4` — master for YouTube and cross-posts (59.5 s = 3570 frames, 1080×1920, 60 fps)
@@ -69,7 +69,7 @@ What should we put to true scale next: Jupiter's Great Red Spot, Olympus Mons or
 - **Altered or synthetic content: YES (voluntary, conservative)** — photorealistic views of places no camera has been
   (inside the rings). A Blender render is formally not GenAI; the label doesn't reduce reach. The TTS voice may get an
   automatic AI label in the description — fine.
-- Playlist / series: **TRUE SCALE** (Orbitfall). Related video: ep. 002 (Voyager 1 — flew past Saturn in 1980) until a long-form exists.
+- Playlist / series: **TRUE SCALE** (The Universe Inside Out). Related video: ep. 002 (Voyager 1 — flew past Saturn in 1980) until a long-form exists.
 - Publish: steady evening slot for US viewers (e.g. 18:00 ET).
 
 ## Cross-post (clean master, no watermarks, no YouTube links)

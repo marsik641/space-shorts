@@ -18,7 +18,7 @@
 
 | Канал | Язык | Где | Зачем |
 |---|---|---|---|
-| **Orbitfall** | EN | YouTube; TikTok, Instagram Reels — только охват¹ | Глобальная аудитория, высокий CPM, рост |
+| **The Universe Inside Out** | EN | YouTube; TikTok, Instagram Reels — только охват¹ | Глобальная аудитория, высокий CPM, рост |
 
 Конвейер выпускает **только EN-версию** (`episode.json` → `languages: ["en"]`). Инструменты технически поддерживают
 другие языки (озвучка, субтитры, титры) — RU-версию можно вернуть позже, сейчас на неё время не тратим.
@@ -32,35 +32,53 @@ Wibes). Факты по их монетизации сохранены в `docs/
 
 ## Название
 
-**Orbitfall** — `@Orbitfall` (выбрано). Короткое придуманное слово, не привязано к одному типу объектов: орбиты,
-падения, столкновения, планеты — подходит под любую тему; легко зарегистрировать как марку.
-Перед регистрацией: проверить хэндл на youtube.com/@Orbitfall, домен `.com`, одноимённые аккаунты TikTok/Instagram.
-Отброшены: Neutron Frames (сужает канал до нейтронных звёзд), ExoAtlas (занято платформой визуализации),
-Redshift Frames (рендерер Maxon), Light-Year Lab (фонд).
+**The Universe Inside Out** — хэндл **`@TheUniverseInsideOut`** (выбрано владельцем 19.10.2026). Смысл: разбираем
+реальные объекты до цифр и показываем, что внутри — устройство, масштаб, механику; подходит под любую тему канала.
+Проверка 19.10.2026: хэндл свободен; на YouTube есть мелкий канал «Universe Inside Out» (`@Theuniverse-pc2gn`,
+~70 подписчиков, без «The»), в Google — выставка и картина с тем же названием, крупных брендов нет.
+Отброшены: **Orbitfall** (хэндл и одноимённые аккаунты заняты), Vacuum и Among the Stars (заняты, есть каналы до
+415 тыс. и 55 тыс. подписчиков), Neutron Frames, ExoAtlas, Redshift Frames, Light-Year Lab.
+Технические имена в инфраструктуре рендера (`D:\orbitfall`, ключ `orbitfall_render`, задача `OrbitfallRender`)
+остались прежними: это не бренд, переименование сломает настройку rinat-pc.
+
+## Канал на YouTube
+
+Канал — **переоформленный старый основной канал владельца** на аккаунте с подтверждённым телефоном (длинные
+описания, свои обложки, ссылки). Старые видео **скрыты** (доступ ограничен) — так и оставить:
+- не открывать их обратно: другая тематика путает, кому показывать новые ролики;
+- удалять не обязательно: ограниченные видео не попадают в рекомендации и не видны зрителям;
+- старые подписчики — не целевая аудитория. Shorts раздаются по реакции зрителей на конкретный ролик, а не по
+  подписчикам, поэтому новый канал с нуля не обгонит этот; первые недели доля «досмотрел» может быть ниже
+  у тех, кто подписывался на старое, — сравнивать ролики между собой (`docs/metrics.md`);
+- проверить и вычистить: главную вкладку (разделы, трейлер), старые плейлисты, ссылки, посты, ключевые слова канала,
+  страну, предупреждения и страйки (Studio → «Контент» и «Ограничения»): страйки за старые видео остаются за каналом;
+- имя и хэндл можно менять ограниченно (у YouTube — до 2 раз за 14 дней): после установки больше не трогать.
 
 ## Тексты
 
-**Слоган:** «Real objects. Real numbers. Rendered.»
+**Слоган:** «Real objects. Real numbers. Turned inside out.»
 
 **Описание канала (EN):**
-> Orbitfall turns real astronomical data into cinematic 60-second visualizations of the universe — planets and
-> moons, stars living and dead, black holes, galaxies, alien worlds, comets and the missions that explore them.
-> Every object here is real: sizes, masses, orbits, speeds and temperatures come from published measurements
-> (NASA, ESA, the NASA Exoplanet Archive, peer-reviewed papers), with sources in every description.
+> The Universe Inside Out takes real astronomical data and turns it into cinematic 60-second visualizations —
+> planets and moons, stars living and dead, black holes, galaxies, alien worlds, comets and the missions that
+> explore them. Every object here is real: sizes, masses, orbits, speeds and temperatures come from published
+> measurements (NASA, ESA, JPL, the NASA Exoplanet Archive, peer-reviewed papers), and every description lists
+> its sources. We take the numbers apart and show what's inside.
 > Rendered in Blender Cycles; all visuals are scientific visualizations / artist's impressions based on data.
-> New Shorts every week.
+> New Shorts every Tuesday, Thursday and Saturday.
 
 ## Оформление
 
 Генерирует `tools/brand.py` (`blender -b --factory-startup -P tools/brand.py -- avatar|plate|banner`, banner — после
-plate) → `out/brand/` (`avatar_800.png`, `banner_plate.png`, `banner_2560x1440.png`).
-Общий космический образ, **не пульсар**: канал не должен читаться как «канал про нейтронные звёзды».
+plate) → `out/brand/` (`avatar_800.png`, `banner_plate.png`, `banner_2560x1440.png`); рендер — секунды на кадр.
+Общий космический образ, **не пульсар** и не конкретный объект.
 
-- **Аватар:** серп ледяной планеты в контровом свете далёкой звезды + наклонная светящаяся орбита со следом и
-  маленький спутник на ней («падение по орбите»). Крупная форма — читается в круге на 48 px. Без текста.
-- **Баннер** 2560×1440 (безопасная зона 1546×423): тот же мотив широким планом — серп планеты, дуга орбиты через
-  кадр, спутники со следами; словесный знак **ORBITFALL** и слоган в безопасной зоне, строка
-  «Cinematic space visualizations · new Shorts every week».
+- **Аватар:** каменная планета в контровом свете далёкой звезды, из неё вырезан сектор (октант) — в разрезе
+  светятся слои: тёмная кора, красная мантия, оранжевое внешнее ядро, бело-жёлтое внутреннее. Буквально
+  «наизнанку»; в круге 48 px читается как тёмный диск с ярким клином. Без текста.
+- **Баннер** 2560×1440 (безопасная зона 1546×423): та же планета в разрезе — в левой части безопасной зоны
+  (видна и на телефоне), справа в две строки **THE UNIVERSE / INSIDE OUT**, слоган и строка
+  «Cinematic space visualizations · 3 new Shorts a week».
 - **В каждом ролике:** сверху мелко «Scientific visualization · real data», название объекта в первые секунды,
   вшитые субтитры, бесшовная петля конец→начало. Без интро/логотипа (первая секунда — самый сильный кадр).
 

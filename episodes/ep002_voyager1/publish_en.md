@@ -1,6 +1,6 @@
-# Ep. 002 — publish pack (EN, Orbitfall)
+# Ep. 002 — publish pack (EN, The Universe Inside Out)
 
-Channel: **Orbitfall** (`@Orbitfall`) · series **FRESH FROM ORBIT** · release folder: `out/ep002_voyager1/release/`
+Channel: **The Universe Inside Out** (`@TheUniverseInsideOut`) · series **FRESH FROM ORBIT** · release folder: `out/ep002_voyager1/release/`
 
 **Files:**
 - `ep002_voyager1_en_1080x1920p60.mp4` — master for YouTube and cross-posts (59.5 s = 3570 frames, 1080×1920, 60 fps)
@@ -68,7 +68,7 @@ Which spacecraft should we render next: Voyager 2, New Horizons or Parker Solar 
 - **Altered or synthetic content: YES (voluntary, conservative)** — photorealistic rendering of a spacecraft scene that
   can't be filmed. Required by the help page for GenAI; a Blender render is formally not GenAI. The label doesn't reduce
   reach or monetization. The TTS voice may get an automatic AI label in the description — fine.
-- Playlist / series: **FRESH FROM ORBIT** (Orbitfall). Related video: ep. 001 (PSR B1257+12) until a long-form exists.
+- Playlist / series: **FRESH FROM ORBIT** (The Universe Inside Out). Related video: ep. 001 (PSR B1257+12) until a long-form exists.
 - Publish: **Mon Nov 16, 2026, 14:00 ET** (fallback Sun Nov 15) — not earlier: ~95% of a Short's views come in
   the first week, which must overlap the Nov 17–20 news wave; not after Nov 18 10:16 UTC (future-tense VO).
 

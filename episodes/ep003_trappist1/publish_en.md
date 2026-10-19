@@ -1,4 +1,4 @@
-# Ep. 003 — publish pack (EN, Orbitfall)
+# Ep. 003 — publish pack (EN, The Universe Inside Out)
 
 Rules — `docs/publish.md`. Release folder — `out/ep003_trappist1/release/`.
 
