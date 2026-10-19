@@ -1,0 +1,75 @@
+{
+ "title": "Saturn's rings — 270,000 km across, about 10 meters thick",
+ "duration_s": 59.5,
+ "caption_max_chars": 26,
+ "voices": {
+  "en": {"engine": "kokoro", "voice": "af_heart", "speed": 0.98, "lang": "en-us"}
+ },
+ "segments": [
+  {
+   "at": 0.15,
+   "shot": "v1",
+   "en": "Saturn's rings are about ten meters thick,",
+   "en_cap": "Saturn's rings are | about 10 meters thick,"
+  },
+  {
+   "at": 2.75,
+   "shot": "v1",
+   "en": "yet two hundred seventy thousand kilometers across.",
+   "en_cap": "yet 270,000 km | across."
+  },
+  {
+   "at": 6.0,
+   "shot": "v2",
+   "en": "Between Earth and the Moon, they'd span seventy percent of the gap.",
+   "en_cap": "Between Earth | and the Moon, | they'd span 70% | of the gap."
+  },
+  {
+   "at": 10.6,
+   "shot": "v2",
+   "en": "Shrink them to paper thickness, and they'd still be almost three kilometers across.",
+   "en_cap": "Shrink them | to paper thickness, | and they'd still be | almost 3 km across."
+  },
+  {
+   "at": 16.0,
+   "shot": "v3",
+   "en": "Up close, they split into ringlets and gaps, one kept open by a moon just twenty-eight kilometers wide.",
+   "en_cap": "Up close, they split | into ringlets and gaps, | one kept open by a moon | just 28 km wide."
+  },
+  {
+   "at": 24.9,
+   "shot": "v3",
+   "en": "They're not solid:"
+  },
+  {
+   "at": 26.6,
+   "shot": "v4",
+   "en": "countless chunks of almost pure water ice, from specks of dust to blocks as big as a house.",
+   "en_cap": "countless chunks | of almost pure water ice, | from specks of dust | to blocks | as big as a house."
+  },
+  {
+   "at": 32.5,
+   "shot": "v4",
+   "en": "Each circles Saturn at about sixty thousand kilometers an hour, yet neighbors drift by at a snail's pace: millimeters per second.",
+   "en_cap": "Each circles Saturn | at about 60,000 km/h, | yet neighbors drift by | at a snail's pace: | millimeters per second."
+  },
+  {
+   "at": 40.9,
+   "shot": "v5",
+   "en": "Crush all that ice into one ball, and it would be about three hundred twenty kilometers wide: smaller than Saturn's little moon Mimas.",
+   "en_cap": "Crush all that ice | into one ball: | about 320 km wide, | smaller than | Saturn's little moon | Mimas."
+  },
+  {
+   "at": 49.9,
+   "shot": "v6",
+   "en": "And it's raining onto Saturn: an Olympic pool's worth every half hour.",
+   "en_cap": "And it's raining | onto Saturn: | an Olympic pool's worth | every half hour."
+  },
+  {
+   "at": 55.8,
+   "shot": "v6",
+   "en": "In a few hundred million years, the rings may be gone.",
+   "en_cap": "In a few hundred | million years, | the rings may be gone."
+  }
+ ]
+}

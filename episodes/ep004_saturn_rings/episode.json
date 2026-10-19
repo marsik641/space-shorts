@@ -1,0 +1,149 @@
+{
+ "id": "ep004_saturn_rings",
+ "object": "Saturn's main rings (D, C, B, Cassini Division, A, F)",
+ "series": "TRUE SCALE",
+ "format_name": "9x16",
+ "format": {
+  "w": 1080,
+  "h": 1920,
+  "fps": 60
+ },
+ "languages": [
+  "en"
+ ],
+ "output": "out/{id}/9x16/{id}_{lang}_1080x1920p60.mp4",
+ "video": {
+  "bitrate_kbps": 40000,
+  "preset": "BEST"
+ },
+ "edit": [
+  {
+   "shot": "v1",
+   "frames": 330
+  },
+  {
+   "shot": "v2",
+   "frames": 600
+  },
+  {
+   "shot": "v3",
+   "frames": 660
+  },
+  {
+   "shot": "v4",
+   "frames": 840
+  },
+  {
+   "shot": "v5",
+   "frames": 540
+  },
+  {
+   "shot": "v6",
+   "frames": 600
+  }
+ ],
+ "caption_style": {
+  "size": 64,
+  "x": 0.465,
+  "y": 0.255,
+  "wrap": 0.74,
+  "font": "C:/Windows/Fonts/Candarab.ttf",
+  "outline": 8,
+  "color": [
+   1.0,
+   0.93,
+   0.76
+  ]
+ },
+ "overlays": {
+  "en": [
+   {
+    "text": "Scientific visualization · real data",
+    "size": 30,
+    "y": 0.955,
+    "font": "C:/Windows/Fonts/segoeui.ttf",
+    "color": [
+     0.78,
+     0.82,
+     0.9
+    ],
+    "fade": 0
+   },
+   {
+    "text": "SATURN'S RINGS",
+    "start_s": 0.0,
+    "length_s": 5.3,
+    "size": 58,
+    "y": 0.885,
+    "font": "C:/Windows/Fonts/Candara.ttf",
+    "color": [
+     1.0,
+     0.95,
+     0.84
+    ],
+    "fade": 12
+   },
+   {
+    "text": "edge-on: the rings all but disappear",
+    "start_s": 0.6,
+    "length_s": 2.6,
+    "size": 30,
+    "y": 0.848,
+    "font": "C:/Windows/Fonts/Candara.ttf",
+    "color": [
+     0.86,
+     0.88,
+     0.94
+    ],
+    "fade": 12,
+    "outline": 3
+   },
+   {
+    "text": "true scale · real sizes and distances",
+    "start_s": 5.8,
+    "length_s": 9.4,
+    "size": 30,
+    "y": 0.885,
+    "font": "C:/Windows/Fonts/Candara.ttf",
+    "color": [
+     0.86,
+     0.88,
+     0.94
+    ],
+    "fade": 12,
+    "outline": 3
+   },
+   {
+    "text": "inside the A ring · true-scale model",
+    "start_s": 26.8,
+    "length_s": 6.0,
+    "size": 30,
+    "y": 0.92,
+    "font": "C:/Windows/Fonts/Candara.ttf",
+    "color": [
+     0.86,
+     0.88,
+     0.94
+    ],
+    "fade": 12,
+    "outline": 3
+   },
+   {
+    "text": "all ring mass as solid ice · true sizes",
+    "start_s": 41.0,
+    "length_s": 8.2,
+    "size": 30,
+    "y": 0.885,
+    "font": "C:/Windows/Fonts/Candara.ttf",
+    "color": [
+     0.86,
+     0.88,
+     0.94
+    ],
+    "fade": 12,
+    "outline": 3,
+    "x": 0.42
+   }
+  ]
+ }
+}

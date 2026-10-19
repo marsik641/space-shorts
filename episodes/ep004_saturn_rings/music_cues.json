@@ -1,0 +1,118 @@
+{
+ "duration_s": 59.5,
+ "seed": 37,
+ "key": "Eb",
+ "chords": [
+  [
+   -2.5,
+   "Ebmaj9"
+  ],
+  [
+   5.5,
+   "Gm7"
+  ],
+  [
+   10.6,
+   "Abmaj9"
+  ],
+  [
+   15.5,
+   "Fm9"
+  ],
+  [
+   21.0,
+   "Cm9"
+  ],
+  [
+   26.5,
+   "Abmaj9"
+  ],
+  [
+   33.0,
+   "Ebadd9"
+  ],
+  [
+   40.5,
+   "Gm7"
+  ],
+  [
+   45.5,
+   "Fm9"
+  ],
+  [
+   49.5,
+   "Cm9"
+  ],
+  [
+   54.5,
+   "Abm6"
+  ],
+  [
+   57.5,
+   "Bb7sus4"
+  ]
+ ],
+ "pulses": [
+  2.483,
+  16.417,
+  19.8,
+  24.183,
+  25.283,
+  29.383
+ ],
+ "risers": [
+  26.5
+ ],
+ "fade_out_s": 0.05,
+ "layers": {
+  "drone": 0.6,
+  "pad": 1.0,
+  "sparks": 0.85,
+  "wind": 0.35,
+  "pulse": 0.7,
+  "riser": 0.6
+ },
+ "pad": {
+  "harmonics": 4,
+  "rolloff": 2.2,
+  "detune": 0.16,
+  "attack": 3.6,
+  "release": 4.0,
+  "octave": -1
+ },
+ "sparks": {
+  "mode": "major",
+  "every_s": 1.9,
+  "octave": 2
+ },
+ "wind": {
+  "lo_hz": 220,
+  "hi_hz": 1600,
+  "rate_hz": 0.04
+ },
+ "pulse": {
+  "freq_hz": 1244.5,
+  "sweep_hz": 0,
+  "decay": 16.0,
+  "click": 0.22,
+  "length_s": 0.35
+ },
+ "riser": {
+  "length_s": 2.2
+ },
+ "reverb": {
+  "seconds": 6.0,
+  "mix": 0.5
+ },
+ "bpm": 66,
+ "grid": {
+  "subdiv": 2,
+  "offset_s": 0.0,
+  "pulses": false
+ },
+ "mix": {
+  "music_db": -16.0,
+  "duck_db": -6.5
+ },
+ "note": "Эп. 004: ми-бемоль мажор, 66 bpm, без оборота I–vi–IV–V (ep001: vi–IV–I–V): Ebmaj9–Gm7–Abmaj9–Fm9–Cm9…, под «the rings may be gone» — заимствованная минорная субдоминанта Abm6, затем Bb7sus4 → Ebmaj9 начала (петля, аккорд с −2.5 с). Тембр «лёд»: искры на 2 октавы вверх, пэд 4 гармоники с широкой расстройкой, реверб 6 с. Удары — короткий «звон» E♭6 (1244.5 Гц) на EVENT: раскрытие колец v1 (open), щели под камерой v3 (gap: Энке с Паном, края деления Кассини), выход из слоя v4 (emerge); tools/cues.py --events-to pulses. Подъём — один, к склейке «They're not solid:» → поле частиц (26.5 с)."
+}
