@@ -22,3 +22,5 @@ secrets/
 token.json
 *.token.json
 client_secret*.json
+assets/gas_giant/
+assets/rings/

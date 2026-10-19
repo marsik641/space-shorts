@@ -1,5 +1,5 @@
 """Процедурные планеты: kind PSR B1257+12 (Драугр, Полтергейст, Фобетор) и безатмосферные миры эп. 003+
-(ember, scorched, rust, frostrock, grooved, dirtyice — см. KINDS).
+(ember, scorched, rust, frostrock, grooved, dirtyice — см. KINDS; brightice и add_big_crater — эп. 004).
 
 Процедурные материалы (Principled + шумы/Вороной + bump), атмосфера — аналитическая оболочка
 (поверхностный шейдер, без объёма → без шума), сияния — стопка эмиссионных оболочек-шапок у магнитных полюсов
@@ -45,6 +45,7 @@ KINDS = {
     "frostrock": dict(tilt=0.0, rot=1.0e9, atmo=None, aurora=False),    # камень с инеем в холодных зонах
     "grooved": dict(tilt=0.0, rot=1.0e9, atmo=None, aurora=False),      # бороздчатый лёд (как Ганимед)
     "dirtyice": dict(tilt=0.0, rot=1.0e9, atmo=None, aurora=False),     # тёмный грязный лёд (как Каллисто)
+    "brightice": dict(tilt=0.0, rot=1.0e9, atmo=None, aurora=False),    # яркий чистый лёд (как Мимас, Тефия) — эп. 004
 }
 
 # цвета эмиссии сияний (линейный Rec.709): 557,7 нм, 630 нм, N2+ кайма
@@ -781,9 +782,30 @@ def _mat_dirtyice(name, seed, radius, lod=0):
     return mat
 
 
+def _mat_brightice(name, seed, radius, lod=0):
+    """Яркий чистый лёд, как у Мимаса, Тефии, Реи: альбедо ~0.7–0.8, кора насыщена кратерами с оплывшими валами,
+    днища чуть темнее (осевшая пыль), свежие выбросы голубоватые."""
+    mat, b, vec, bsdf = _surface_base(name)
+    v = b.v("ADD", vec, _seed_off(seed, 21))
+    det = 8 if lod < 2 else 4
+    layers = _crater_layers([2.2, 3.6, 6.0, 10.0, 16.0, 27.0, 45.0, 75.0, 125.0], 1.0,
+                            dup=[4.6, 7.6, 12.8, 21.0, 35.0, 58.0, 98.0], fresh=0.05, depth_big=0.14,
+                            depth_small=0.36, rim_k=0.26, lod=lod)
+    H, halo, floor, _r = _craters(b, vec, layers, seed + 41)
+    height = b.m("ADD", H, b.m("MULTIPLY", _nz(b, lod, v, 90.0, detail=4, rough=0.6), 0.0008))
+    var = b.lin(b.noise(v, 5.0, detail=det, rough=0.6).outputs[0], 0.3, 0.7, 0.93, 1.05)
+    tint = b.lin(b.noise(b.v("ADD", v, (2.2, 6.1, 3.3)), 1.4, detail=3).outputs[0], 0.35, 0.65, 0.0, 1.0)
+    col = b.mix(tint, (0.72, 0.73, 0.75), (0.76, 0.77, 0.80))
+    col = b.mix(b.m("MULTIPLY", floor, 0.35), col, (0.62, 0.62, 0.63))
+    col = b.v("SCALE", col, scale=var)
+    col = b.mix(b.m("MULTIPLY", halo, 0.6), col, (0.80, 0.84, 0.90))
+    _finish(b, bsdf, height, radius, 1.1, col, 0.80, 0.90, 0.35)
+    return mat
+
+
 SURFACE = {"draugr": _mat_draugr, "poltergeist": _mat_poltergeist, "phobetor": _mat_phobetor,
            "ember": _mat_ember, "scorched": _mat_scorched, "rust": _mat_rust, "frostrock": _mat_frostrock,
-           "grooved": _mat_grooved, "dirtyice": _mat_dirtyice}
+           "grooved": _mat_grooved, "dirtyice": _mat_dirtyice, "brightice": _mat_brightice}
 
 
 # --------------------------------------------------------------------------- солнце (пульсар)
@@ -1181,6 +1203,41 @@ def build_planet(scene, kind, *, radius=1.0, location=(0, 0, 0), parent=None, de
         cy.transparent_max_bounces = max(cy.transparent_max_bounces, TRANSPARENT_BOUNCES)
     return dict(root=root, planet=planet, atmosphere=atmo, aurora=aur, aurora_shells=shells,
                 sunref=sunref, materials=mats, kind=kind, radius=R)
+
+
+def add_big_crater(objs, direction, *, radius_km, rim_km, floor_km, peak_km=0.0, unit_km=1.0, flat=0.42,
+                   peak_r=0.12, segments=(768, 384)):
+    """Крупный ударный кратер геометрией (Гершель на Мимасе, Одиссей на Тефии, Стикни на Фобосе): меш тела
+    пересобирается плотнее (segments), вершины смещаются по профилю: плоское днище (−floor_km) с центральной горкой
+    (peak_km над днищем, радиус peak_r·R_кр), стенка до вала (+rim_km на краю), валы и выбросы гаснут за краем.
+    direction — центр кратера из центра тела (в мире), размеры — км, unit_km — км в 1 ед. сцены. Кратеры материала
+    (bump) остаются поверх. Вызывать после build_planet; кадр — текущий (поворот тела берётся из matrix_world)."""
+    planet = objs["planet"]
+    R = objs["radius"]
+    bpy.context.view_layer.update()
+    c = (planet.matrix_world.to_3x3().inverted() @ Vector(direction)).normalized()
+    rc = radius_km / unit_km / R                         # угловой радиус кратера (рад)
+    k = 1.0 / unit_km
+    me = _sphere_mesh(planet.data.name + "_crater", R, *segments)
+    for vt in me.vertices:
+        n = vt.co.normalized()
+        x = math.acos(max(-1.0, min(1.0, n.dot(c)))) / rc
+        if x < flat:
+            h = -floor_km + peak_km * math.exp(-(x / peak_r) ** 2)
+        elif x < 1.0:
+            t = (x - flat) / (1.0 - flat)
+            h = -floor_km + (rim_km + floor_km) * t ** 1.7
+        else:
+            h = rim_km * math.exp(-((x - 1.0) / 0.32) ** 2)
+        vt.co = n * (R + h * k)
+    me.update()
+    for m in planet.data.materials:
+        me.materials.append(m)
+    old = planet.data
+    planet.data = me
+    if old.users == 0:
+        bpy.data.meshes.remove(old)
+    return me
 
 
 def _atmo_nodes(objs):
