@@ -27,7 +27,7 @@ CASA = [(0.00, (0.20, 0.45, 1.00)), (0.17, (0.30, 0.90, 1.00)), (0.33, (1.00, 0.
         (0.48, (0.40, 1.00, 0.30)), (0.63, (1.00, 0.55, 0.12)), (0.80, (1.00, 0.16, 0.22)),
         (1.00, (0.70, 0.22, 1.00))]
 INNER_RGB = (0.35, 0.55, 1.0)
-VALUES = ("glow", "flow", "hot", "haze", "thick", "inner")
+VALUES = ("glow", "flow", "hot", "haze", "thick", "inner", "cover")
 
 
 def _value(b, name, v):
@@ -47,13 +47,13 @@ def _material(name, seed, palette, radial, fil_scale, sharp, step):
     p0 = tc.outputs["Object"]
     p = b.v("ADD", p0, _seed_off(seed))
     vals = {k: _value(b, k, v) for k, v in (("glow", 10.0), ("flow", seed * 0.23), ("hot", 0.5), ("haze", 1.0),
-                                             ("thick", 0.32), ("inner", 0.0))}
+                                             ("thick", 0.32), ("inner", 0.0), ("cover", 0.32))}
     fw = vals["flow"]
     r = b.v("LENGTH", p0)
-    w1 = b.noise(p, 1.3, detail=2.0, rough=0.5, w=b.m("MULTIPLY", fw, 0.5)).outputs["Color"]
+    w1 = b.noise(p, 1.3, detail=1.0, rough=0.5, w=b.m("MULTIPLY", fw, 0.5)).outputs["Color"]
     pw = b.v("ADD", p, b.v("SCALE", b.v("SUBTRACT", w1, (0.5, 0.5, 0.5)), scale=0.55))
     # неровный внешний край
-    knob = b.noise(b.v("NORMALIZE", pw), 2.5, detail=4.0, rough=0.6, w=b.m("MULTIPLY", fw, 0.4)).outputs["Fac"]
+    knob = b.noise(b.v("NORMALIZE", pw), 2.5, detail=2.0, rough=0.6, w=b.m("MULTIPLY", fw, 0.4)).outputs["Fac"]
     rb = b.m("ADD", 0.93, b.m("MULTIPLY", b.m("SUBTRACT", knob, 0.5), 0.24))
     th = vals["thick"]
     band = b.m("MULTIPLY",
@@ -63,16 +63,20 @@ def _material(name, seed, palette, radial, fil_scale, sharp, step):
                                                                   2: b.m("ADD", rb, 0.05), 3: 0.0, 4: 1.0},
                                            interpolation_type="SMOOTHSTEP", clamp=True).outputs[0]))
     # нити двух масштабов + сгустки
-    n1 = b.noise(pw, fil_scale[0], detail=4.0, rough=0.55, dist=0.4, w=fw).outputs["Fac"]
-    n2 = b.noise(b.v("ADD", pw, (2.7, 1.3, 4.1)), fil_scale[1], detail=3.0, rough=0.5,
+    n1 = b.noise(pw, fil_scale[0], detail=3.0, rough=0.55, dist=0.4, w=fw).outputs["Fac"]
+    n2 = b.noise(b.v("ADD", pw, (2.7, 1.3, 4.1)), fil_scale[1], detail=2.0, rough=0.5,
                  w=b.m("MULTIPLY", fw, 1.4)).outputs["Fac"]
     f1 = _ridge(b, n1, sharp)
     f2 = _ridge(b, n2, sharp * 1.3)
-    cl = b.ss(b.noise(pw, 1.8, detail=3.0, rough=0.55, w=b.m("MULTIPLY", fw, 0.6)).outputs["Fac"], 0.32, 0.7)
-    fil = b.m("MULTIPLY", b.m("ADD", f1, b.m("MULTIPLY", f2, 0.55)), b.m("ADD", 0.25, b.m("MULTIPLY", cl, 1.1)))
+    # покрытие: нити есть не везде — клочья с просветами (cover — порог, выше — реже)
+    cn = b.noise(pw, 1.8, detail=2.0, rough=0.55, w=b.m("MULTIPLY", fw, 0.6)).outputs["Fac"]
+    cv = vals["cover"]
+    cl = b.node("ShaderNodeMapRange", {0: cn, 1: cv, 2: b.m("ADD", cv, 0.28), 3: 0.0, 4: 1.0},
+                interpolation_type="SMOOTHSTEP", clamp=True).outputs[0]
+    fil = b.m("MULTIPLY", b.m("ADD", f1, b.m("MULTIPLY", f2, 0.55)), b.m("ADD", 0.04, b.m("MULTIPLY", cl, 1.3)))
     dens = b.m("MULTIPLY", band, b.m("ADD", fil, b.m("MULTIPLY", vals["haze"], 0.06)))
     # цвет: палитра по шуму (+ радиус), к пикам нитей — добела по hot
-    nc = b.noise(pw, 1.1, detail=3.0, rough=0.5, w=b.m("MULTIPLY", fw, 0.3)).outputs["Fac"]
+    nc = b.noise(pw, 1.1, detail=1.0, rough=0.5, w=b.m("MULTIPLY", fw, 0.3)).outputs["Fac"]
     ci = b.m("ADD", b.m("MULTIPLY", b.m("DIVIDE", r, rb), radial),
              b.m("MULTIPLY", b.m("SUBTRACT", nc, 0.5), 1.0 - radial + 0.35), clamp=True)
     if radial < 0.5:
@@ -96,12 +100,17 @@ def _material(name, seed, palette, radial, fil_scale, sharp, step):
 
 
 def build_shell_nebula(name, radius=1.0, location=(0, 0, 0), parent=None, seed=1, palette=FIRE, radial=0.7,
-                       fil_scale=(3.2, 8.0), sharp=7.0, stretch=(1, 1, 1), step=0.08, coll="FX", **values):
+                       fil_scale=(3.2, 8.0), sharp=7.0, stretch=(1, 1, 1), step=0.08, hollow=0.0, coll="FX", **values):
     """Объём-оболочка: домен — икосфера радиуса 1.1 (ед. объекта), объект масштабирован на radius·stretch.
     radial — доля радиуса в индексе палитры (FIRE: 0.7 — белое внутри, красное снаружи; CASA: 0.2 — пятнами).
-    values — начальные значения VALUES. Возвращает dict(ob, mat, stretch)."""
+    values — начальные значения VALUES. hollow > 0 — полый домен (внутренняя сфера радиуса hollow с вывернутыми
+    нормалями): луч шагает только в слое нитей — в разы дешевле; inner (сияние внутри) тогда не работает — свет
+    центра давать спрайтом. Возвращает dict(ob, mat, stretch)."""
     bm = bmesh.new()
     bmesh.ops.create_icosphere(bm, subdivisions=3, radius=1.1)
+    if hollow > 0:
+        res = bmesh.ops.create_icosphere(bm, subdivisions=3, radius=hollow)
+        bmesh.ops.reverse_faces(bm, faces=[f for f in bm.faces if all(v in res["verts"] for v in f.verts)])
     me = bpy.data.meshes.new(f"{name}_Dom")
     bm.to_mesh(me)
     bm.free()

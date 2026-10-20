@@ -121,7 +121,9 @@ def _spot_material(name, color, rise, decay, flare):
     es = b.m("MULTIPLY", b.m("MULTIPLY", b.m("MULTIPLY", on, burst), b.m("MULTIPLY", amp, core)),
              b.m("MULTIPLY", vals["strength"], vals["fade"]))
     em = b.node("ShaderNodeEmission", {"Color": (*color, 1.0), "Strength": es})
-    L.new(em.outputs[0], out.inputs["Surface"])
+    tr = b.node("ShaderNodeBsdfTransparent")                  # до загорания пятно не видно (не чёрная точка)
+    ad = b.node("ShaderNodeAddShader", {0: em.outputs[0], 1: tr.outputs[0]})
+    L.new(ad.outputs[0], out.inputs["Surface"])
     mat.cycles.emission_sampling = "NONE"
     return mat
 

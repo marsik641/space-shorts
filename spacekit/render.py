@@ -140,7 +140,7 @@ def _vignette_image(scene, amount, power=2.2, name="Vignette"):
 
 def setup_compositor(scene=None, bloom_strength=0.6, bloom_size=0.6, bloom_threshold=1.0,
                      fog_strength=0.25, dispersion=0.012, streaks=0.0, streaks_n=2, streaks_angle_deg=0.0,
-                     streaks_threshold=None, streaks_fade=0.9, vignette=0.0):
+                     streaks_threshold=None, streaks_fade=0.9, streaks_tint=None, vignette=0.0):
     """Блум (Bloom) + мягкое гало (Fog Glow) + лёгкая хроматическая аберрация.
     streaks > 0 — анаморфные лучи (Glare Streaks, только яркое выше streaks_threshold, сложением);
     vignette — затемнение углов (доля, 0.25 — мягко)."""
@@ -178,6 +178,8 @@ def setup_compositor(scene=None, bloom_strength=0.6, bloom_size=0.6, bloom_thres
         _set_in(g3, "Streaks", int(streaks_n))
         _set_in(g3, "Streaks Angle", math.radians(streaks_angle_deg))
         _set_in(g3, "Fade", streaks_fade)
+        if streaks_tint is not None:
+            _set_in(g3, "Tint", (*streaks_tint, 1.0))
         L.new(rl.outputs["Image"], g3.inputs["Image"])
         gl = g3.outputs.get("Glare")
         if gl is None:
