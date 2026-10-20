@@ -214,4 +214,4 @@ if __name__ == "__main__":
     elif mode == "banner":
         banner(_arg("--name", "THE UNIVERSE|INSIDE OUT"),
                _arg("--tagline", "Real objects. Real numbers. Turned inside out."),
-               _arg("--sub", "Cinematic space visualizations · 3 new Shorts a week"))
+               _arg("--sub", "Cinematic space visualizations · a new Short every day"))
