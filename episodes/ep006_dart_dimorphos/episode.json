@@ -1,0 +1,323 @@
+{
+ "id": "ep006_dart_dimorphos",
+ "object": "DART impact on Dimorphos, 26 September 2022",
+ "series": "ORBITS & COLLISIONS",
+ "format_name": "9x16",
+ "format": {
+  "w": 1080,
+  "h": 1920,
+  "fps": 60
+ },
+ "languages": [
+  "en"
+ ],
+ "output": "out/{id}/9x16/{id}_{lang}_1080x1920p60.mp4",
+ "video": {
+  "bitrate_kbps": 40000,
+  "preset": "BEST"
+ },
+ "edit": [
+  {
+   "shot": "v1",
+   "frames": 300
+  },
+  {
+   "shot": "v2",
+   "frames": 360
+  },
+  {
+   "shot": "v3",
+   "frames": 420
+  },
+  {
+   "shot": "v4",
+   "frames": 420
+  },
+  {
+   "shot": "v5",
+   "frames": 540
+  },
+  {
+   "shot": "v6",
+   "frames": 480
+  }
+ ],
+ "caption_style": {
+  "size": 60,
+  "x": 0.455,
+  "y": 0.255,
+  "wrap": 0.73,
+  "font": "C:/Windows/Fonts/bahnschrift.ttf",
+  "outline": 7,
+  "color": [
+   1,
+   0.95,
+   0.86
+  ]
+ },
+ "overlays": {
+  "en": [
+   {
+    "text": "Scientific visualization · real data",
+    "size": 28,
+    "y": 0.955,
+    "font": "C:/Windows/Fonts/segoeui.ttf",
+    "color": [
+     0.75,
+     0.79,
+     0.86
+    ],
+    "fade": 0
+   },
+   {
+    "text": "DART / DIMORPHOS",
+    "start_s": 0,
+    "length_s": 4.8,
+    "size": 34,
+    "x": 0.455,
+    "y": 0.915,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     1,
+     0.9,
+     0.68
+    ],
+    "fade": 10,
+    "outline": 3
+   },
+   {
+    "text": "APPROACH SLOWED · ARTIST'S IMPRESSION",
+    "start_s": 4.0,
+    "length_s": 6.7,
+    "size": 24,
+    "x": 0.455,
+    "y": 0.85,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.8,
+     0.84,
+     0.9
+    ],
+    "fade": 10
+   },
+   {
+    "text": "26 SEP 2022  /  6.1 km/s",
+    "start_s": 5.2,
+    "length_s": 5.4,
+    "size": 40,
+    "x": 0.455,
+    "y": 0.89,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     1,
+     0.92,
+     0.77
+    ],
+    "fade": 10
+   },
+   {
+    "text": "IMPACT + EJECTA · TIME RESCALED",
+    "start_s": 11,
+    "length_s": 13.7,
+    "size": 24,
+    "x": 0.455,
+    "y": 0.89,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.8,
+     0.84,
+     0.9
+    ],
+    "fade": 10
+   },
+   {
+    "text": "-33 min 15 s",
+    "start_s": 27,
+    "length_s": 6.7,
+    "size": 76,
+    "x": 0.455,
+    "y": 0.88,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     1,
+     0.71,
+     0.32
+    ],
+    "fade": 10,
+    "outline": 3
+   },
+   {
+    "text": "SHORTER ORBITAL PERIOD",
+    "start_s": 27.3,
+    "length_s": 6.4,
+    "size": 22,
+    "x": 0.455,
+    "y": 0.83,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.8,
+     0.84,
+     0.9
+    ],
+    "fade": 10
+   },
+   {
+    "text": "NOMINAL SCALE · TIME ACCELERATED",
+    "start_s": 25.2,
+    "length_s": 8.5,
+    "size": 22,
+    "x": 0.455,
+    "y": 0.76,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.8,
+     0.84,
+     0.9
+    ],
+    "fade": 10
+   },
+   {
+    "text": "PLANETARY DEFENSE / FIRST KINETIC IMPACT TEST",
+    "start_s": 34.3,
+    "length_s": 7.1,
+    "size": 28,
+    "x": 0.455,
+    "y": 0.89,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     1,
+     0.9,
+     0.7
+    ],
+    "fade": 10
+   },
+   {
+    "text": "WE MOVED\nAN ASTEROID",
+    "start_s": 0,
+    "length_s": 3.8,
+    "size": 66,
+    "x": 0.455,
+    "y": 0.83,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     1,
+     0.92,
+     0.77
+    ],
+    "fade": 0,
+    "outline": 4
+   },
+   {
+    "text": "BEFORE",
+    "start_s": 25.2,
+    "length_s": 8.5,
+    "size": 31,
+    "x": 0.3,
+    "y": 0.7,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.38,
+     0.65,
+     1
+    ],
+    "fade": 10,
+    "outline": 2
+   },
+   {
+    "text": "AFTER",
+    "start_s": 25.2,
+    "length_s": 8.5,
+    "size": 31,
+    "x": 0.65,
+    "y": 0.7,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     1,
+     0.57,
+     0.2
+    ],
+    "fade": 10,
+    "outline": 2
+   },
+   {
+    "text": "DIDYMOS",
+    "start_s": 25.2,
+    "length_s": 8.5,
+    "size": 28,
+    "x": 0.455,
+    "y": 0.585,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.9,
+     0.9,
+     0.9
+    ],
+    "fade": 10,
+    "outline": 3
+   },
+   {
+    "text": "DIMORPHOS ORBIT",
+    "start_s": 25.2,
+    "length_s": 8.5,
+    "size": 26,
+    "x": 0.455,
+    "y": 0.355,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.85,
+     0.88,
+     0.95
+    ],
+    "fade": 10,
+    "outline": 2
+   },
+   {
+    "text": "BEFORE IMPACT",
+    "start_s": 34.1,
+    "length_s": 7.5,
+    "size": 25,
+    "x": 0.455,
+    "y": 0.84,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.78,
+     0.83,
+     0.91
+    ],
+    "fade": 10
+   },
+   {
+    "text": "↑",
+    "start_s": 20.0,
+    "length_s": 4.7,
+    "size": 110,
+    "x": 0.155,
+    "y": 0.59,
+    "font": "C:/Windows/Fonts/segoeui.ttf",
+    "color": [
+     1,
+     0.65,
+     0.28
+    ],
+    "fade": 10,
+    "outline": 2
+   },
+   {
+    "text": "RECOIL",
+    "start_s": 20.0,
+    "length_s": 4.7,
+    "size": 29,
+    "x": 0.155,
+    "y": 0.525,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     1,
+     0.65,
+     0.28
+    ],
+    "fade": 10,
+    "outline": 3
+   }
+  ]
+ }
+}

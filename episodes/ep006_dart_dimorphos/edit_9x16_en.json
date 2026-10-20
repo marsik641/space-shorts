@@ -1,0 +1,471 @@
+{
+ "output": "out/ep006_dart_dimorphos/9x16/ep006_dart_dimorphos_en_1080x1920p60.mp4",
+ "format": {
+  "w": 1080,
+  "h": 1920,
+  "fps": 60
+ },
+ "video": {
+  "bitrate_kbps": 40000,
+  "preset": "BEST"
+ },
+ "crossfade": 0,
+ "fade_in": 0,
+ "fade_out": 0,
+ "tail": 0,
+ "shots": [
+  {
+   "dir": "out/ep006_dart_dimorphos/9x16/frames/v1",
+   "frames": 300,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep006_dart_dimorphos/9x16/frames/v2",
+   "frames": 360,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep006_dart_dimorphos/9x16/frames/v3",
+   "frames": 420,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep006_dart_dimorphos/9x16/frames/v4",
+   "frames": 420,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep006_dart_dimorphos/9x16/frames/v5",
+   "frames": 540,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep006_dart_dimorphos/9x16/frames/v6",
+   "frames": 480,
+   "first": 1,
+   "xfade_in": 0
+  }
+ ],
+ "titles": [
+  {
+   "text": "Scientific visualization · real data",
+   "size": 28,
+   "y": 0.955,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "color": [
+    0.75,
+    0.79,
+    0.86
+   ],
+   "fade": 0,
+   "start": 1,
+   "length": 2520
+  },
+  {
+   "text": "DART / DIMORPHOS",
+   "size": 34,
+   "x": 0.455,
+   "y": 0.915,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    1,
+    0.9,
+    0.68
+   ],
+   "fade": 10,
+   "outline": 3,
+   "start": 1,
+   "length": 288
+  },
+  {
+   "text": "APPROACH SLOWED · ARTIST'S IMPRESSION",
+   "size": 24,
+   "x": 0.455,
+   "y": 0.85,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.8,
+    0.84,
+    0.9
+   ],
+   "fade": 10,
+   "start": 241,
+   "length": 402
+  },
+  {
+   "text": "26 SEP 2022  /  6.1 km/s",
+   "size": 40,
+   "x": 0.455,
+   "y": 0.89,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    1,
+    0.92,
+    0.77
+   ],
+   "fade": 10,
+   "start": 313,
+   "length": 324
+  },
+  {
+   "text": "IMPACT + EJECTA · TIME RESCALED",
+   "size": 24,
+   "x": 0.455,
+   "y": 0.89,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.8,
+    0.84,
+    0.9
+   ],
+   "fade": 10,
+   "start": 661,
+   "length": 822
+  },
+  {
+   "text": "-33 min 15 s",
+   "size": 76,
+   "x": 0.455,
+   "y": 0.88,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    1,
+    0.71,
+    0.32
+   ],
+   "fade": 10,
+   "outline": 3,
+   "start": 1621,
+   "length": 402
+  },
+  {
+   "text": "SHORTER ORBITAL PERIOD",
+   "size": 22,
+   "x": 0.455,
+   "y": 0.83,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.8,
+    0.84,
+    0.9
+   ],
+   "fade": 10,
+   "start": 1639,
+   "length": 384
+  },
+  {
+   "text": "NOMINAL SCALE · TIME ACCELERATED",
+   "size": 22,
+   "x": 0.455,
+   "y": 0.76,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.8,
+    0.84,
+    0.9
+   ],
+   "fade": 10,
+   "start": 1513,
+   "length": 510
+  },
+  {
+   "text": "PLANETARY DEFENSE / FIRST KINETIC IMPACT TEST",
+   "size": 28,
+   "x": 0.455,
+   "y": 0.89,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    1,
+    0.9,
+    0.7
+   ],
+   "fade": 10,
+   "start": 2059,
+   "length": 426
+  },
+  {
+   "text": "WE MOVED\nAN ASTEROID",
+   "size": 66,
+   "x": 0.455,
+   "y": 0.83,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    1,
+    0.92,
+    0.77
+   ],
+   "fade": 0,
+   "outline": 4,
+   "start": 1,
+   "length": 228
+  },
+  {
+   "text": "BEFORE",
+   "size": 31,
+   "x": 0.3,
+   "y": 0.7,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.38,
+    0.65,
+    1
+   ],
+   "fade": 10,
+   "outline": 2,
+   "start": 1513,
+   "length": 510
+  },
+  {
+   "text": "AFTER",
+   "size": 31,
+   "x": 0.65,
+   "y": 0.7,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    1,
+    0.57,
+    0.2
+   ],
+   "fade": 10,
+   "outline": 2,
+   "start": 1513,
+   "length": 510
+  },
+  {
+   "text": "DIDYMOS",
+   "size": 28,
+   "x": 0.455,
+   "y": 0.585,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.9,
+    0.9,
+    0.9
+   ],
+   "fade": 10,
+   "outline": 3,
+   "start": 1513,
+   "length": 510
+  },
+  {
+   "text": "DIMORPHOS ORBIT",
+   "size": 26,
+   "x": 0.455,
+   "y": 0.355,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.85,
+    0.88,
+    0.95
+   ],
+   "fade": 10,
+   "outline": 2,
+   "start": 1513,
+   "length": 510
+  },
+  {
+   "text": "BEFORE IMPACT",
+   "size": 25,
+   "x": 0.455,
+   "y": 0.84,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.78,
+    0.83,
+    0.91
+   ],
+   "fade": 10,
+   "start": 2047,
+   "length": 450
+  },
+  {
+   "text": "↑",
+   "size": 110,
+   "x": 0.155,
+   "y": 0.59,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "color": [
+    1,
+    0.65,
+    0.28
+   ],
+   "fade": 10,
+   "outline": 2,
+   "start": 1201,
+   "length": 282
+  },
+  {
+   "text": "RECOIL",
+   "size": 29,
+   "x": 0.155,
+   "y": 0.525,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    1,
+    0.65,
+    0.28
+   ],
+   "fade": 10,
+   "outline": 3,
+   "start": 1201,
+   "length": 282
+  }
+ ],
+ "captions": {
+  "size": 60,
+  "x": 0.455,
+  "y": 0.255,
+  "wrap": 0.73,
+  "font": "C:/Windows/Fonts/bahnschrift.ttf",
+  "outline": 7,
+  "color": [
+   1,
+   0.95,
+   0.86
+  ],
+  "items": [
+   {
+    "text": "We crashed a spacecraft",
+    "start": 12,
+    "end": 85
+   },
+   {
+    "text": "into an asteroid.",
+    "start": 85,
+    "end": 147
+   },
+   {
+    "text": "And moved it.",
+    "start": 158,
+    "end": 207
+   },
+   {
+    "text": "In 2022,",
+    "start": 307,
+    "end": 380
+   },
+   {
+    "text": "DART closed in at",
+    "start": 392,
+    "end": 470
+   },
+   {
+    "text": "6.1 kilometers per second.",
+    "start": 470,
+    "end": 593
+   },
+   {
+    "text": "Contact.",
+    "start": 670,
+    "end": 720
+   },
+   {
+    "text": "A spray of rock and dust",
+    "start": 731,
+    "end": 819
+   },
+   {
+    "text": "blasted out",
+    "start": 819,
+    "end": 861
+   },
+   {
+    "text": "from the surface",
+    "start": 861,
+    "end": 920
+   },
+   {
+    "text": "into open space.",
+    "start": 920,
+    "end": 987
+   },
+   {
+    "text": "Those escaping fragments",
+    "start": 1090,
+    "end": 1169
+   },
+   {
+    "text": "pushed back",
+    "start": 1169,
+    "end": 1206
+   },
+   {
+    "text": "against the asteroid.",
+    "start": 1206,
+    "end": 1283
+   },
+   {
+    "text": "Their recoil amplified",
+    "start": 1300,
+    "end": 1377
+   },
+   {
+    "text": "the spacecraft's shove.",
+    "start": 1377,
+    "end": 1465
+   },
+   {
+    "text": "Over the following weeks,",
+    "start": 1510,
+    "end": 1592
+   },
+   {
+    "text": "its orbit around Didymos",
+    "start": 1598,
+    "end": 1685
+   },
+   {
+    "text": "settled into",
+    "start": 1685,
+    "end": 1730
+   },
+   {
+    "text": "a faster loop.",
+    "start": 1730,
+    "end": 1790
+   },
+   {
+    "text": "33 minutes",
+    "start": 1819,
+    "end": 1864
+   },
+   {
+    "text": "and 15 seconds shorter.",
+    "start": 1864,
+    "end": 1970
+   },
+   {
+    "text": "This asteroid posed",
+    "start": 2050,
+    "end": 2116
+   },
+   {
+    "text": "no threat to Earth.",
+    "start": 2116,
+    "end": 2189
+   },
+   {
+    "text": "This was humanity's first",
+    "start": 2260,
+    "end": 2355
+   },
+   {
+    "text": "planetary defense test.",
+    "start": 2355,
+    "end": 2449
+   }
+  ]
+ },
+ "audio": [
+  {
+   "path": "out/ep006_dart_dimorphos/9x16/audio/mix_en.wav",
+   "start": 1,
+   "volume": 1.0
+  }
+ ]
+}

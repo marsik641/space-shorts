@@ -1,0 +1,96 @@
+{
+ "duration_s": 42.0,
+ "seed": 606,
+ "key": "G",
+ "chords": [
+  [
+   -2.0,
+   "Gmadd9"
+  ],
+  [
+   5.0,
+   "Ebmaj7"
+  ],
+  [
+   11.0,
+   "Cm9"
+  ],
+  [
+   18.0,
+   "Dm7"
+  ],
+  [
+   25.0,
+   "Bbmaj9"
+  ],
+  [
+   30.0,
+   "Ebmaj7"
+  ],
+  [
+   34.0,
+   "Cm9"
+  ],
+  [
+   39.0,
+   "D7sus4"
+  ]
+ ],
+ "pulses": [
+  5.0,
+  11.3167,
+  20.15,
+  27.0,
+  34.0
+ ],
+ "risers": [
+  11.0,
+  25.0
+ ],
+ "fade_out_s": 0.05,
+ "layers": {
+  "drone": 0.8,
+  "pad": 0.8,
+  "sparks": 0.12,
+  "wind": 0.25,
+  "pulse": 0.95,
+  "riser": 0.45
+ },
+ "pad": {
+  "harmonics": 6,
+  "rolloff": 2.8,
+  "detune": 0.08,
+  "attack": 1.7,
+  "release": 2.4,
+  "octave": -1
+ },
+ "sparks": {
+  "mode": "minor",
+  "every_s": 3.6,
+  "octave": 1
+ },
+ "wind": {
+  "lo_hz": 120,
+  "hi_hz": 1500,
+  "rate_hz": 0.07
+ },
+ "pulse": {
+  "freq_hz": 98.0,
+  "sweep_hz": 42.0,
+  "decay": 10.0,
+  "click": 0.3,
+  "length_s": 0.65
+ },
+ "riser": {
+  "length_s": 1.6
+ },
+ "reverb": {
+  "seconds": 3.2,
+  "mix": 0.28
+ },
+ "mix": {
+  "music_db": -17.5,
+  "duck_db": -6.0
+ },
+ "note": "Эп006: соль минор, без темповой сетки; низкий импульс, сухой контакт v3f20. Все эффекты — недиегетическая музыка. Gmadd9–Ebmaj7–Cm9–Dm7→Bbmaj9; D7sus4 к петле."
+}

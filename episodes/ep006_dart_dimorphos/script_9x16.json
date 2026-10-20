@@ -1,0 +1,58 @@
+{
+ "title": "DART — the crash that changed an asteroid's orbit",
+ "duration_s": 42.0,
+ "caption_max_chars": 26,
+ "voices": {
+  "en": {"engine": "kokoro", "voice": "af_heart", "speed": 0.98, "lang": "en-us"}
+ },
+ "segments": [
+  {
+   "at": 0.18,
+   "shot": "v1",
+   "en": "We crashed a spacecraft into an asteroid. And moved it.",
+   "en_cap": "We crashed a spacecraft | into an asteroid. | And moved it."
+  },
+  {
+   "at": 5.10,
+   "shot": "v2",
+   "en": "In twenty twenty-two, DART closed in at six point one kilometers per second.",
+   "en_cap": "In 2022, | DART closed in at | 6.1 kilometers per second."
+  },
+  {
+   "at": 11.15,
+   "shot": "v3",
+   "en": "Contact. A spray of rock and dust blasted out from the surface into open space.",
+   "en_cap": "Contact. | A spray of rock and dust | blasted out | from the surface | into open space."
+  },
+  {
+   "at": 18.15,
+   "shot": "v4",
+   "en": "Those escaping fragments pushed back against the asteroid. Their recoil amplified the spacecraft's shove.",
+   "en_cap": "Those escaping fragments | pushed back | against the asteroid. | Their recoil amplified | the spacecraft's shove."
+  },
+  {
+   "at": 25.15,
+   "shot": "v5",
+   "en": "Over the following weeks, its orbit around Didymos settled into a faster loop.",
+   "en_cap": "Over the following weeks, | its orbit around Didymos | settled into | a faster loop."
+  },
+  {
+   "at": 30.30,
+   "shot": "v5",
+   "en": "Thirty-three minutes and fifteen seconds shorter.",
+   "en_cap": "33 minutes | and 15 seconds shorter."
+  },
+  {
+   "at": 34.15,
+   "shot": "v6",
+   "en": "This asteroid posed no threat to Earth.",
+   "en_cap": "This asteroid posed | no threat to Earth."
+  },
+  {
+   "at": 37.65,
+   "shot": "v6",
+   "en": "This was humanity's first planetary defense test.",
+   "en_cap": "This was humanity's first | planetary defense test."
+  }
+ ]
+}
