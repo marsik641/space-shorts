@@ -3,6 +3,7 @@
 Форматы: FORMATS["16x9"] = 1920×1080, FORMATS["9x16"] = 1080×1920 (Shorts). fps задаётся в setup_cycles(fps=...)
 или core.reset_scene(fps=...); все модули берут fps из сцены.
 """
+import math
 import os
 
 import bpy
@@ -101,9 +102,48 @@ def setup_color(scene=None, exposure=0.0, look="None", view="AgX", white_balance
     scene.display_settings.display_device = "sRGB"
 
 
+def _set_in(node, name, value):
+    """Вход узла по имени (Blender 5: параметры узлов компоузера — сокеты); нет такого — предупреждение."""
+    sock = node.inputs.get(name)
+    if sock is None:
+        print(f"[render] WARNING: у {node.bl_idname} нет входа {name!r}")
+        return
+    sock.default_value = value
+
+
+def _vignette_image(scene, amount, power=2.2, name="Vignette"):
+    """Картинка-виньетка под размер кадра (с процентом): 1 в центре → 1 − amount в углах (по эллипсу кадра)."""
+    import numpy as np
+    r = scene.render
+    w = max(2, int(r.resolution_x * r.resolution_percentage / 100))
+    h = max(2, int(r.resolution_y * r.resolution_percentage / 100))
+    img = bpy.data.images.get(name)
+    if img is not None:
+        bpy.data.images.remove(img)
+    img = bpy.data.images.new(name, w, h, alpha=False, float_buffer=True)
+    img.colorspace_settings.name = "Non-Color"
+    yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
+    u = (xx + 0.5) / w * 2.0 - 1.0
+    v = (yy + 0.5) / h * 2.0 - 1.0
+    d = np.clip(np.sqrt(u * u + v * v) / np.sqrt(2.0), 0.0, 1.0)
+    g = 1.0 - amount * d ** power
+    px = np.ones((h, w, 4), np.float32)
+    px[..., 0] = px[..., 1] = px[..., 2] = g
+    img.pixels.foreach_set(px.ravel())
+    img.update()
+    try:
+        img.pack()                                   # пиксели живут в .blend (save) и при перезагрузке
+    except RuntimeError:
+        pass
+    return img
+
+
 def setup_compositor(scene=None, bloom_strength=0.6, bloom_size=0.6, bloom_threshold=1.0,
-                     fog_strength=0.25, dispersion=0.012):
-    """Блум (Bloom) + мягкое гало (Fog Glow) + лёгкая хроматическая аберрация."""
+                     fog_strength=0.25, dispersion=0.012, streaks=0.0, streaks_n=2, streaks_angle_deg=0.0,
+                     streaks_threshold=None, streaks_fade=0.9, vignette=0.0):
+    """Блум (Bloom) + мягкое гало (Fog Glow) + лёгкая хроматическая аберрация.
+    streaks > 0 — анаморфные лучи (Glare Streaks, только яркое выше streaks_threshold, сложением);
+    vignette — затемнение углов (доля, 0.25 — мягко)."""
     scene = scene or bpy.context.scene
     ng = bpy.data.node_groups.new(f"Comp_{scene.name}", "CompositorNodeTree")
     ng.interface.new_socket("Image", in_out="OUTPUT", socket_type="NodeSocketColor")
@@ -128,7 +168,39 @@ def setup_compositor(scene=None, bloom_strength=0.6, bloom_size=0.6, bloom_thres
     out = N.new("NodeGroupOutput"); out.location = (400, 0)
     L.new(rl.outputs["Image"], g1.inputs["Image"])
     L.new(g1.outputs[0], g2.inputs["Image"])
-    L.new(g2.outputs[0], ld.inputs["Image"])
+    last = g2.outputs[0]
+    if streaks > 0:
+        g3 = N.new("CompositorNodeGlare"); g3.location = (-350, -300)
+        _set_in(g3, "Type", "Streaks")
+        _set_in(g3, "Quality", "High")
+        _set_in(g3, "Threshold", streaks_threshold if streaks_threshold is not None else bloom_threshold * 3.0)
+        _set_in(g3, "Strength", 1.0)
+        _set_in(g3, "Streaks", int(streaks_n))
+        _set_in(g3, "Streaks Angle", math.radians(streaks_angle_deg))
+        _set_in(g3, "Fade", streaks_fade)
+        L.new(rl.outputs["Image"], g3.inputs["Image"])
+        gl = g3.outputs.get("Glare")
+        if gl is None:
+            print("[render] WARNING: у Glare нет выхода 'Glare' — лучи не добавлены")
+        else:
+            mx = N.new("ShaderNodeMix"); mx.location = (0, -300)
+            mx.data_type = "RGBA"
+            mx.blend_type = "ADD"
+            mx.inputs["Factor"].default_value = streaks
+            L.new(last, mx.inputs[6])
+            L.new(gl, mx.inputs[7])
+            last = mx.outputs[2]
+    if vignette > 0:
+        im = N.new("CompositorNodeImage"); im.location = (0, -550)
+        im.image = _vignette_image(scene, vignette)
+        mv = N.new("ShaderNodeMix"); mv.location = (150, -300)
+        mv.data_type = "RGBA"
+        mv.blend_type = "MULTIPLY"
+        mv.inputs["Factor"].default_value = 1.0
+        L.new(last, mv.inputs[6])
+        L.new(im.outputs["Image"], mv.inputs[7])
+        last = mv.outputs[2]
+    L.new(last, ld.inputs["Image"])
     L.new(ld.outputs[0], out.inputs[0])
     return ng
 

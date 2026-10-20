@@ -104,7 +104,7 @@ def _apply_size(ob, cam, frame, insert=False):
     dist = (cam.matrix_world.translation - anchor.matrix_world.translation).length
     pa = pixel_angle(cam, sc)
     unit = dist * pa                                   # мир на 1 пиксель на этом расстоянии
-    size = ob["px"] * unit / CAP_H
+    size = ob["px"] * unit / CAP_H / max(anchor.matrix_world.to_scale()[0], 1e-12)   # родитель может быть масштабирован
     ob.data.size = 1.0
     ob.scale = (size, size, size)
     # сдвиг в плоскости кадра: оси камеры

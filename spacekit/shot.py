@@ -25,14 +25,17 @@ OPT = {"pct": 100, "samples": 64, "fmt": "16x9", "fps": 30}
 
 
 def base_scene(frames, exposure=0.0, samples=None, bloom_strength=0.6, fmt=None, fps=None, adaptive=0.02,
-               white_balance=None):
-    """Чистая сцена: Cycles/OptiX, формат кадра и fps из OPT (или явно), AgX (+ баланс белого, К), компоузер с блумом."""
+               white_balance=None, look="None", comp=None):
+    """Чистая сцена: Cycles/OptiX, формат кадра и fps из OPT (или явно), AgX (+ look, баланс белого, К), компоузер
+    с блумом (comp — доп. параметры render.setup_compositor: streaks, vignette, fog_strength, …)."""
     fps = fps or OPT["fps"]
     sc = C.reset_scene(fps=fps)
     R.setup_cycles(sc, samples=samples or OPT["samples"], pct=OPT["pct"],
                    res=R.FORMATS[fmt or OPT["fmt"]], fps=fps, adaptive_threshold=adaptive)
-    R.setup_color(sc, exposure=exposure, white_balance=white_balance)
-    R.setup_compositor(sc, dispersion=SKY.STAR_SAFE_DISPERSION, bloom_strength=bloom_strength)
+    R.setup_color(sc, exposure=exposure, white_balance=white_balance, look=look)
+    kw = dict(dispersion=SKY.STAR_SAFE_DISPERSION, bloom_strength=bloom_strength)
+    kw.update(comp or {})
+    R.setup_compositor(sc, **kw)
     sc.frame_start, sc.frame_end = 1, frames
     return sc
 
