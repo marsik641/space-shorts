@@ -1,0 +1,868 @@
+{
+ "output": "out/ep005_sn1987a/9x16/ep005_sn1987a_en_1080x1920p60.mp4",
+ "format": {
+  "w": 1080,
+  "h": 1920,
+  "fps": 60
+ },
+ "video": {
+  "bitrate_kbps": 40000,
+  "preset": "BEST"
+ },
+ "crossfade": 0,
+ "fade_in": 0,
+ "fade_out": 0,
+ "tail": 0,
+ "shots": [
+  {
+   "dir": "out/ep005_sn1987a/9x16/frames/v1",
+   "frames": 300,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep005_sn1987a/9x16/frames/v2",
+   "frames": 540,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep005_sn1987a/9x16/frames/v3",
+   "frames": 420,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep005_sn1987a/9x16/frames/v4",
+   "frames": 480,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep005_sn1987a/9x16/frames/v5",
+   "frames": 600,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep005_sn1987a/9x16/frames/v6",
+   "frames": 600,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep005_sn1987a/9x16/frames/v7",
+   "frames": 630,
+   "first": 1,
+   "xfade_in": 0
+  }
+ ],
+ "titles": [
+  {
+   "text": "Scientific visualization · real data",
+   "size": 30,
+   "y": 0.955,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "color": [
+    0.78,
+    0.82,
+    0.9
+   ],
+   "fade": 0,
+   "start": 1,
+   "length": 3570
+  },
+  {
+   "text": "SN 1987A",
+   "size": 76,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    1.0,
+    0.97,
+    0.92
+   ],
+   "fade": 12,
+   "start": 13,
+   "length": 270
+  },
+  {
+   "text": "Large Magellanic Cloud · 168,000 light-years",
+   "size": 32,
+   "y": 0.843,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.8,
+    0.87,
+    1.0
+   ],
+   "fade": 12,
+   "start": 37,
+   "length": 246
+  },
+  {
+   "text": "Sanduleak −69° 202 · blue supergiant",
+   "size": 36,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.8,
+    0.87,
+    1.0
+   ],
+   "fade": 12,
+   "start": 313,
+   "length": 228
+  },
+  {
+   "text": "about 20 Suns of mass · 40× wider than the Sun",
+   "size": 30,
+   "y": 0.848,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.8,
+    0.87,
+    1.0
+   ],
+   "fade": 12,
+   "start": 331,
+   "length": 210
+  },
+  {
+   "text": "collapse: under 1 second · slowed down",
+   "size": 34,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    1.0,
+    0.92,
+    0.8
+   ],
+   "fade": 10,
+   "start": 901,
+   "length": 180
+  },
+  {
+   "text": "falling at ¼ the speed of light",
+   "size": 30,
+   "y": 0.848,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    1.0,
+    0.92,
+    0.8
+   ],
+   "fade": 10,
+   "start": 937,
+   "length": 144
+  },
+  {
+   "text": "~10⁵⁸",
+   "size": 96,
+   "y": 0.875,
+   "font": "C:/Windows/Fonts/segoeuib.ttf",
+   "color": [
+    0.82,
+    0.76,
+    1.0
+   ],
+   "fade": 8,
+   "start": 1093,
+   "length": 162
+  },
+  {
+   "text": "neutrinos · 99% of the energy",
+   "size": 32,
+   "y": 0.825,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.82,
+    0.76,
+    1.0
+   ],
+   "fade": 8,
+   "start": 1105,
+   "length": 150
+  },
+  {
+   "text": "+1 second",
+   "size": 40,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    1.0,
+    0.97,
+    0.92
+   ],
+   "fade": 6,
+   "start": 1267,
+   "length": 90
+  },
+  {
+   "text": "+2 minutes",
+   "size": 40,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    1.0,
+    0.97,
+    0.92
+   ],
+   "fade": 6,
+   "start": 1357,
+   "length": 96
+  },
+  {
+   "text": "+1 hour",
+   "size": 40,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    1.0,
+    0.97,
+    0.92
+   ],
+   "fade": 6,
+   "start": 1453,
+   "length": 228
+  },
+  {
+   "text": "~2 hours · shock breakout",
+   "size": 40,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    1.0,
+    0.97,
+    0.92
+   ],
+   "fade": 6,
+   "start": 1681,
+   "length": 60
+  },
+  {
+   "text": "KAMIOKANDE-II · Japan · 1 km underground",
+   "size": 34,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.8,
+    0.87,
+    1.0
+   ],
+   "fade": 10,
+   "start": 1753,
+   "length": 276
+  },
+  {
+   "text": "23 Feb 1987 · 07:35:35 UT",
+   "size": 30,
+   "y": 0.848,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.8,
+    0.87,
+    1.0
+   ],
+   "fade": 10,
+   "start": 1753,
+   "length": 576
+  },
+  {
+   "text": "fast-forward ×3",
+   "size": 28,
+   "y": 0.715,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.7,
+    0.75,
+    0.85
+   ],
+   "fade": 6,
+   "start": 1951,
+   "length": 228
+  },
+  {
+   "text": "1",
+   "size": 120,
+   "y": 0.79,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.82,
+    0.88,
+    1.0
+   ],
+   "fade": 0,
+   "start": 1831,
+   "length": 6
+  },
+  {
+   "text": "2",
+   "size": 120,
+   "y": 0.79,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.82,
+    0.88,
+    1.0
+   ],
+   "fade": 0,
+   "start": 1837,
+   "length": 12
+  },
+  {
+   "text": "3",
+   "size": 120,
+   "y": 0.79,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.82,
+    0.88,
+    1.0
+   ],
+   "fade": 0,
+   "start": 1849,
+   "length": 1
+  },
+  {
+   "text": "4",
+   "size": 120,
+   "y": 0.79,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.82,
+    0.88,
+    1.0
+   ],
+   "fade": 0,
+   "start": 1850,
+   "length": 11
+  },
+  {
+   "text": "5",
+   "size": 120,
+   "y": 0.79,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.82,
+    0.88,
+    1.0
+   ],
+   "fade": 0,
+   "start": 1861,
+   "length": 11
+  },
+  {
+   "text": "6",
+   "size": 120,
+   "y": 0.79,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.82,
+    0.88,
+    1.0
+   ],
+   "fade": 0,
+   "start": 1872,
+   "length": 51
+  },
+  {
+   "text": "7",
+   "size": 120,
+   "y": 0.79,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.82,
+    0.88,
+    1.0
+   ],
+   "fade": 0,
+   "start": 1923,
+   "length": 12
+  },
+  {
+   "text": "8",
+   "size": 120,
+   "y": 0.79,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.82,
+    0.88,
+    1.0
+   ],
+   "fade": 0,
+   "start": 1935,
+   "length": 11
+  },
+  {
+   "text": "9",
+   "size": 120,
+   "y": 0.79,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.82,
+    0.88,
+    1.0
+   ],
+   "fade": 0,
+   "start": 1946,
+   "length": 149
+  },
+  {
+   "text": "10",
+   "size": 120,
+   "y": 0.79,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.82,
+    0.88,
+    1.0
+   ],
+   "fade": 0,
+   "start": 2095,
+   "length": 25
+  },
+  {
+   "text": "11",
+   "size": 120,
+   "y": 0.79,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.82,
+    0.88,
+    1.0
+   ],
+   "fade": 0,
+   "start": 2120,
+   "length": 40
+  },
+  {
+   "text": "12",
+   "size": 120,
+   "y": 0.79,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.82,
+    0.88,
+    1.0
+   ],
+   "fade": 0,
+   "start": 2160,
+   "length": 181
+  },
+  {
+   "text": "events",
+   "size": 30,
+   "y": 0.748,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.7,
+    0.78,
+    0.95
+   ],
+   "fade": 0,
+   "start": 1831,
+   "length": 510
+  },
+  {
+   "text": "Feb 1987 · seen by naked eye",
+   "size": 36,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    1.0,
+    0.97,
+    0.92
+   ],
+   "fade": 10,
+   "start": 2389,
+   "length": 216
+  },
+  {
+   "text": "the debris hits the ring · a string of pearls",
+   "size": 34,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    1.0,
+    0.97,
+    0.92
+   ],
+   "fade": 10,
+   "start": 2617,
+   "length": 312
+  },
+  {
+   "text": "1995",
+   "size": 40,
+   "y": 0.843,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    1.0,
+    0.85,
+    0.8
+   ],
+   "fade": 0,
+   "start": 2617,
+   "length": 114
+  },
+  {
+   "text": "2003",
+   "size": 40,
+   "y": 0.843,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    1.0,
+    0.85,
+    0.8
+   ],
+   "fade": 0,
+   "start": 2731,
+   "length": 84
+  },
+  {
+   "text": "2009 · brightest",
+   "size": 40,
+   "y": 0.843,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    1.0,
+    0.85,
+    0.8
+   ],
+   "fade": 0,
+   "start": 2815,
+   "length": 114
+  },
+  {
+   "text": "2024 · James Webb Space Telescope",
+   "size": 34,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.8,
+    0.87,
+    1.0
+   ],
+   "fade": 10,
+   "start": 2959,
+   "length": 270
+  },
+  {
+   "text": "glowing argon at the center",
+   "size": 30,
+   "y": 0.848,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    0.8,
+    0.87,
+    1.0
+   ],
+   "fade": 10,
+   "start": 3037,
+   "length": 192
+  },
+  {
+   "text": "2024",
+   "size": 44,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    1.0,
+    0.97,
+    0.92
+   ],
+   "fade": 0,
+   "start": 3241,
+   "length": 78
+  },
+  {
+   "text": "2010",
+   "size": 44,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    1.0,
+    0.97,
+    0.92
+   ],
+   "fade": 0,
+   "start": 3319,
+   "length": 42
+  },
+  {
+   "text": "2000",
+   "size": 44,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    1.0,
+    0.97,
+    0.92
+   ],
+   "fade": 0,
+   "start": 3361,
+   "length": 42
+  },
+  {
+   "text": "1990",
+   "size": 44,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    1.0,
+    0.97,
+    0.92
+   ],
+   "fade": 0,
+   "start": 3403,
+   "length": 36
+  },
+  {
+   "text": "1987",
+   "size": 44,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/framd.ttf",
+   "color": [
+    1.0,
+    0.97,
+    0.92
+   ],
+   "fade": 8,
+   "start": 3439,
+   "length": 84
+  }
+ ],
+ "captions": {
+  "size": 60,
+  "x": 0.465,
+  "y": 0.285,
+  "wrap": 0.74,
+  "font": "C:/Windows/Fonts/framd.ttf",
+  "outline": 8,
+  "color": [
+   1.0,
+   0.97,
+   0.92
+  ],
+  "items": [
+   {
+    "text": "In 1987, Earth felt",
+    "start": 19,
+    "end": 120
+   },
+   {
+    "text": "a star explode,",
+    "start": 120,
+    "end": 207
+   },
+   {
+    "text": "hours before",
+    "start": 217,
+    "end": 260
+   },
+   {
+    "text": "anyone saw it.",
+    "start": 260,
+    "end": 316
+   },
+   {
+    "text": "It burned hydrogen",
+    "start": 322,
+    "end": 393
+   },
+   {
+    "text": "for ~10 million years,",
+    "start": 393,
+    "end": 487
+   },
+   {
+    "text": "and silicon for only",
+    "start": 500,
+    "end": 574
+   },
+   {
+    "text": "about 2 weeks,",
+    "start": 574,
+    "end": 635
+   },
+   {
+    "text": "down to an iron core",
+    "start": 647,
+    "end": 715
+   },
+   {
+    "text": "the size of Earth.",
+    "start": 715,
+    "end": 784
+   },
+   {
+    "text": "Iron can't burn.",
+    "start": 841,
+    "end": 921
+   },
+   {
+    "text": "In under a second,",
+    "start": 944,
+    "end": 999
+   },
+   {
+    "text": "the core collapsed",
+    "start": 999,
+    "end": 1053
+   },
+   {
+    "text": "to the size of a city,",
+    "start": 1053,
+    "end": 1127
+   },
+   {
+    "text": "and fired out",
+    "start": 1135,
+    "end": 1180
+   },
+   {
+    "text": "ten to the fifty-eight",
+    "start": 1180,
+    "end": 1254
+   },
+   {
+    "text": "neutrinos.",
+    "start": 1254,
+    "end": 1297
+   },
+   {
+    "text": "They flew straight",
+    "start": 1351,
+    "end": 1401
+   },
+   {
+    "text": "through the star.",
+    "start": 1401,
+    "end": 1455
+   },
+   {
+    "text": "The shockwave took",
+    "start": 1470,
+    "end": 1528
+   },
+   {
+    "text": "about 2 hours",
+    "start": 1528,
+    "end": 1570
+   },
+   {
+    "text": "to reach the surface.",
+    "start": 1570,
+    "end": 1644
+   },
+   {
+    "text": "168,000 years later,",
+    "start": 1747,
+    "end": 1904
+   },
+   {
+    "text": "they came up through",
+    "start": 1905,
+    "end": 1997
+   },
+   {
+    "text": "over 4,000 km of rock,",
+    "start": 1997,
+    "end": 2105
+   },
+   {
+    "text": "into a water tank",
+    "start": 2113,
+    "end": 2177
+   },
+   {
+    "text": "in Japan.",
+    "start": 2177,
+    "end": 2220
+   },
+   {
+    "text": "It caught 12.",
+    "start": 2246,
+    "end": 2315
+   },
+   {
+    "text": "Hours later",
+    "start": 2347,
+    "end": 2384
+   },
+   {
+    "text": "came the light:",
+    "start": 2384,
+    "end": 2441
+   },
+   {
+    "text": "the first naked-eye",
+    "start": 2457,
+    "end": 2552
+   },
+   {
+    "text": "supernova since 1604.",
+    "start": 2552,
+    "end": 2664
+   },
+   {
+    "text": "Then its debris",
+    "start": 2685,
+    "end": 2746
+   },
+   {
+    "text": "hit a ring the star",
+    "start": 2746,
+    "end": 2823
+   },
+   {
+    "text": "had shed 20,000",
+    "start": 2823,
+    "end": 2885
+   },
+   {
+    "text": "years before.",
+    "start": 2885,
+    "end": 2946
+   },
+   {
+    "text": "In 2024, Webb found",
+    "start": 2953,
+    "end": 3047
+   },
+   {
+    "text": "its likely heart:",
+    "start": 3047,
+    "end": 3138
+   },
+   {
+    "text": "a neutron star,",
+    "start": 3153,
+    "end": 3228
+   },
+   {
+    "text": "hidden in the dust.",
+    "start": 3228,
+    "end": 3299
+   },
+   {
+    "text": "The one whose neutrinos",
+    "start": 3318,
+    "end": 3392
+   },
+   {
+    "text": "got here first.",
+    "start": 3392,
+    "end": 3449
+   }
+  ]
+ },
+ "audio": [
+  {
+   "path": "out/ep005_sn1987a/9x16/audio/mix_en.wav",
+   "start": 1,
+   "volume": 1.0
+  }
+ ]
+}

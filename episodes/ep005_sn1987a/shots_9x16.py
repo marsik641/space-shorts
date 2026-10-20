@@ -255,6 +255,8 @@ def shot_v1():
     BU.key_strength(sp, [(f0 + 4, 0.0), (f0 + 14, 9.0), (n, 6.0)])
     event("v1", "breakout", [f0])
     event("v1", "blast", [f0 + 12])
+    event("v1", "disk_off", [f0 + 30])                   # диск звезды гаснет — открывается ядро (framecheck: скачок)
+    event("v1", "core_off", [f0 + 122])
     S.finish(sc, stars, denoise="far", star_samples=16)
     return sc, n
 
@@ -715,6 +717,7 @@ def shot_v5():
     BU.key_head(nu, [(1, far - 25.0), (n, far + 95.0)])
     BU.key_strength(nu, [(1, 0.0), (40, 3.0), (frames[-1] + 40, 3.0), (n, 1.0)])
     event("v5", "nu", [f for f, e in zip(frames, events) if not e["skip"]])
+    event("v5", "nu_bg", [f for f, e in zip(frames, events) if e["skip"]])     # №6 — фон: тусклая вспышка без удара
     R.setup_volume_denoise(sc, "far")
     sc.cycles.transparent_max_bounces = 24
     return sc, n
