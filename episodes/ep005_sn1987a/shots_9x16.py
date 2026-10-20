@@ -60,7 +60,8 @@ SHOTS = {"v1": 300, "v2": 540, "v3": 420, "v4": 480, "v5": 600, "v6": 600, "v7":
 LOOK = "AgX - Punchy"
 LABEL_COL = (0.92, 0.95, 1.0)
 COMP = dict(streaks=0.0, vignette=0.28, fog_strength=0.32)
-COMP_PT = dict(COMP, streaks=0.7, streaks_n=2, streaks_angle_deg=0.0, streaks_threshold=20.0, streaks_fade=0.985)
+COMP_PT = dict(COMP, streaks=0.9, streaks_n=2, streaks_angle_deg=0.0, streaks_threshold=300.0, streaks_fade=0.993,
+               streaks_tint=(0.62, 0.78, 1.0))
 # анаморфный луч — только от точечной вспышки (v6/v7): от диска Glare Streaks даёт толстую полосу
 NU_RGB = (0.55, 0.40, 1.0)
 
@@ -140,7 +141,8 @@ def event(shot, name, frames):
     print(f"EVENT {shot} {name}: " + ", ".join(str(int(f)) for f in frames))
 
 
-def scene(n, ex, samples=24, adaptive=0.03, comp=COMP, lens=LENS_E, clip=(0.01, 1.0e6)):
+def scene(n, ex, samples=16, adaptive=0.03, comp=COMP, lens=LENS_E, clip=(0.01, 1.0e6)):
+    """16 spp: всё эмиссионное (объёмы без рассеяния) + денойз OptiX — шум как у 24, финал ≈ 5 ч вместо 7."""
     sc = S.base_scene(n, exposure=ex, samples=samples, adaptive=adaptive, look=LOOK, comp=comp)
     cam, tgt = CAM.camera_rig("Cam", lens=lens, clip_start=clip[0], clip_end=clip[1])
     return sc, cam, tgt
@@ -199,12 +201,15 @@ def v1_dist(f, n=300):
     return lerp(D_E - 0.2, 24.0, smooth((f - BREAK_F) / (n - BREAK_F)) ** 0.8)
 
 
+V1_STEP = 0.16                                    # шаг луча по оболочке (0.07 — 99 с/кадр на 100 %, нити те же)
+
+
 def shot_v1():
     """Выход ударной волны → вспышка → волокнистая огненная оболочка (FIRE) вокруг раскалённого клубящегося ядра,
     в центре — ослепительная точка с анаморфным лучом, наружу летят искры-обломки (референсы владельца, 20.10.2026)."""
     n = SHOTS["v1"]
     ex = EX_E
-    sc, cam, tgt = scene(n, ex, comp=COMP_PT)
+    sc, cam, tgt = scene(n, ex, comp=COMP_PT, samples=12)
     key_path(cam, tgt, 1, n, lambda f: earth_pose(v1_dist(f, n)))
     stars = earth_sky(sc, cam)
     st, bdir = progenitor(n, lambda f: FLOW0 + FLOW_RATE * (f - 1), cam)
@@ -216,25 +221,29 @@ def shot_v1():
     R_of = ej_radius_v1
     # волокнистая оболочка: яркость ∝ 1/R (путь луча в объёме ∝ R) — поверхностная яркость держится
     sh = SS.build_shell_nebula("Blast", radius=1.0, seed=SY.SEEDS["ej"], palette=SS.FIRE, radial=0.7,
-                               fil_scale=(3.2, 8.5), sharp=7.0, step=0.07, glow=0.0, hot=1.0, haze=1.0,
-                               thick=0.34, inner=0.0)
+                               fil_scale=(1.8, 4.5), sharp=16.0, step=V1_STEP, glow=0.0, hot=1.0, haze=0.3,
+                               thick=0.12, inner=0.0, cover=0.45, hollow=0.62)
     SS.key_radius(sh, lambda f: R_of(f) * 1.02, 1, n, step=2)
-    SS.key_value(sh, "glow", [(f0 + 4, 0.0), (f0 + 12, 60.0)] +
-                 [(f, 26.0 / R_of(f) + 4.0) for f in range(f0 + 40, n + 1, 20)])
-    SS.key_value(sh, "hot", [(f0, 1.0), (f0 + 60, 0.9), (n, 0.35)])
-    SS.key_value(sh, "inner", [(f0 + 10, 0.0), (f0 + 40, 1.4), (n, 0.5)])
+    SS.key_value(sh, "glow", [(f0 + 4, 0.0), (f0 + 12, 50.0)] +
+                 [(f, 24.0 / R_of(f)) for f in range(f0 + 40, n + 1, 20)])
+    SS.key_value(sh, "hot", [(f0, 1.0), (f0 + 60, 0.8), (n, 0.4)])
+    # голубое сияние внутри — спрайт (оболочка полая: объём только в слое нитей)
+    cg = core_glow("BlastGlow", cam, (0.40, 0.58, 1.0))
+    key_scale(cg, lambda f: R_of(f) * 0.75, 1, n, step=2)
+    key_values(cg.data.materials[0].node_tree, "strength", [(f0 + 10, 0.0), (f0 + 40, 0.9), (n, 0.45)])
     SS.key_value(sh, "flow", [(1, 0.0), (n, 0.7)], ipo="LINEAR")
     ST.key_visible(sh["ob"], [(1, False), (f0 + 4, True)])
     # раскалённое клубящееся ядро взрыва (корка/трещины, без тяжёлого поглощения — светит насквозь)
     ej = EX.build_explosion("Ej", radius=1.0, seed=SY.SEEDS["ej"], cells=7.5, fingers_max=0.6, step=0.25,
                             heat=1.0, glow=0.0, absorb=2.0, fingers=0.35, shell=0.6, core=0.6, rim=0.0)
-    EX.key_radius(ej, lambda f: R_of(f) * 0.6, 1, n, step=2)
-    EX.key_value(ej, "glow", [(1, 0.0), (f0 + 5, 0.0), (f0 + 14, 40.0)] +
-                 [(f, 30.0 / R_of(f)) for f in range(f0 + 40, n + 1, 20)])
-    EX.key_value(ej, "heat", [(f0, 1.0), (n, 0.85)])
-    EX.key_value(ej, "absorb", [(f0, 12.0)] + [(f, 7.0 / R_of(f)) for f in range(f0 + 40, n + 1, 20)])
+    EX.key_radius(ej, lambda f: R_of(f) * 0.32, 1, n, step=2)
+    EX.key_value(ej, "glow", [(1, 0.0), (f0 + 5, 0.0), (f0 + 14, 20.0)] +
+                 [(f, 6.0 / R_of(f)) for f in range(f0 + 40, f0 + 81, 20)])
+    EX.key_value(ej, "heat", [(f0, 1.0), (n, 0.8)])
+    EX.key_value(ej, "absorb", [(f0, 10.0)] + [(f, 6.0 / R_of(f)) for f in range(f0 + 40, n + 1, 20)])
     EX.key_value(ej, "flow", [(1, 0.0), (n, 0.9)], ipo="LINEAR")
-    ST.key_visible(ej["ob"], [(1, False), (f0 + 5, True)])
+    EX.key_value(ej, "glow", [(f0 + 90, 30.0 / R_of(f0 + 90)), (f0 + 120, 0.0)])          # ядро гаснет — дальше сияние
+    ST.key_visible(ej["ob"], [(1, False), (f0 + 5, True), (f0 + 122, False)])           # оболочки (inner) и точка
     # ослепительная точка в центре (анаморфный луч — COMP_PT, только от точки)
     pt = _glow_sphere("Core", 0.03, (0.80, 0.88, 1.0), 0.0)
     key_values(pt.data.materials[0].node_tree, "strength",
@@ -330,6 +339,7 @@ def shot_v2():
     cut = cutaway(world)
     star_glow(world, cam, SY.layer_radii()[-1])
     SL.key_values(cut, "flow", [(1, 0.0), (n, 0.6)], ipo="LINEAR")
+    SL.key_values(cut, "hot", [(1, 0.35)], which=["Fe"])                       # ядро раскалено (бело-жёлтое)
     ST.key_value(None, "flow", [(1, FLOW0), (n, FLOW0 + 0.4)], ipo="LINEAR", mat=cut["photo"])
     # подписи слоёв (на верхних гранях, середина полосы — среднее геометрическое): видны, пока полоса — 18–85 % кадра
     radii = cut["radii"]
@@ -342,13 +352,16 @@ def shot_v2():
         fr = [f for f in range(1, n + 1) if 0.18 * HH_CUT < rm * v2_scale(f, n) < 0.85 * HH_CUT]
         if len(fr) < 50:
             continue
+        f_out = min(n - 135, fr[-1] - 12)                    # до подписи ядра (n − 110) — без наложений
+        if f_out - max(1, fr[0] - 6) < 40:
+            continue
         label(f"Lbl_{name}", SY.LAYER_NAMES[name], p, cam, n, px=40, parent=world,
-              fade=(max(1, fr[0] - 6), min(n - 20, fr[-1] - 12)))
+              fade=(max(1, fr[0] - 6), f_out))
     # ядро: подпись и контур Земли того же масштаба (кольцо ⟂ взгляду)
     rfe = radii[0]
-    lift = Vector((1.0, 1.0, 1.0)).normalized() * rfe * 1.6
+    lift = Vector((1.0, 1.0, 1.0)).normalized() * rfe * 3.0
     label("Lbl_Fe", "Iron core\n~1.5 Suns of mass", lift + Vector((0, 0, rfe)), cam, n, px=36, off=(0, 110),
-          parent=world, fade=(n - 150, n + 40))
+          parent=world, fade=(n - 110, n + 40))
     er = SY.EARTH_R_KM / SY.CUT_UNIT_KM
     ring = SH.build_ring("EarthRing", cam, radius=er, location=tuple(lift), color=(0.55, 0.85, 1.0), strength=0.0,
                          fill=0.0, parent=world)
@@ -362,7 +375,7 @@ def shot_v2():
     up = (Vector((0, 0, 1)) - fwd * fwd.z).normalized()
     label("Lbl_Earth", "Earth, same scale", lift - up * er, cam, n, px=30, off=(0, -30), parent=world,
           color=(0.55, 0.85, 1.0), fade=(n - 90, n + 40))
-    event("v2", "core", [n - 150])
+    event("v2", "core", [n - 110])
     S.finish(sc, stars, denoise="far", star_samples=16)
     return sc, n
 
@@ -408,7 +421,7 @@ def shot_v3():
         core.scale = (s, s, s)
         core.keyframe_insert("scale", frame=f)
     A.set_interpolation(core, "LINEAR", path_contains="scale")
-    SL.key_values(cut, "hot", [(1, 0.0), (V3_COL0, 0.3), (V3_COL1 - 10, 1.0), (V3_COL1 + 4, 3.0), (n, 1.2)],
+    SL.key_values(cut, "hot", [(1, 0.35), (V3_COL0, 0.5), (V3_COL1 - 10, 1.0), (V3_COL1 + 4, 3.0), (n, 1.2)],
                   which=["Fe"])
     # отскок: пузырь ударной волны (до ~150 км и стоит) и нейтринный всплеск сквозь камеру
     rns = SY.PNS_R_KM / SY.CUT_UNIT_KM
@@ -418,7 +431,7 @@ def shot_v3():
                   1, n, step=2)
     SH.key_strength(bub, [(V3_BOUNCE - 1, 0.0), (V3_BOUNCE + 3, 30.0), (V3_BOUNCE + 60, 9.0), (n, 6.0)])
     # нейтрино: поток игл, головы разбросаны (lag) — всё время что-то летит через кадр и мимо камеры
-    nu = BU.build_burst("Nu", n=1800, r_min=rns, r_max=60.0, cam=cam, px=1.0, color=NU_RGB, strength=6.0,
+    nu = BU.build_burst("Nu", n=1300, r_min=rns, r_max=60.0, cam=cam, px=1.0, color=NU_RGB, strength=6.0,
                         trail=2.5, lag=45.0, seed=SY.SEEDS["nu"], parent=world, k=32)
     BU.key_head(nu, [(V3_BOUNCE, 0.0), (n, 45.0)])            # излучение идёт секундами: головы всё время у центра
     event("v3", "bounce", [V3_BOUNCE])
@@ -467,7 +480,20 @@ def shot_v4():
     # выход ударной волны на поверхность: вспышка фотосферы (front — от точки на краю ко всему диску)
     pm = cut["photo"].node_tree
     key_values(pm, "front", [(V4_BREAK - 4, 0.0), (V4_BREAK + 14, 1.0)])
-    key_values(pm, "flash", [(V4_BREAK - 4, 0.0), (V4_BREAK + 4, 30.0), (n, 18.0)])
+    key_values(pm, "flash", [(V4_BREAK - 4, 0.0), (V4_BREAK + 4, 16.0), (n, 6.0)])
+    # выход на поверхность: из звезды вырывается огненная оболочка и искры (рифма с холодным стартом v1)
+    R = rs[-1]
+    sh = SS.build_shell_nebula("Blast4", radius=R, seed=SY.SEEDS["ej"] + 5, palette=SS.FIRE, radial=0.7,
+                               fil_scale=(1.8, 4.5), sharp=16.0, step=0.07, glow=0.0, hot=1.0, haze=0.3, thick=0.12,
+                               inner=0.0, cover=0.45, parent=world)
+    SS.key_radius(sh, lambda f: R * (1.0 + 0.45 * smooth((f - V4_BREAK) / (n - V4_BREAK))), 1, n, step=2)
+    SS.key_value(sh, "glow", [(V4_BREAK, 0.0), (V4_BREAK + 8, 40.0 / (R * s)), (n, 22.0 / (R * s))])
+    ST.key_visible(sh["ob"], [(1, False), (V4_BREAK, True)])
+    sp = BU.build_burst("Sparks4", n=900, r_min=R * 0.98, r_max=R * 2.6, cam=cam, px=0.7, color=(1.0, 0.70, 0.30),
+                        strength=9.0, trail=R * 0.05, lag=R * 0.6, amp=(0.15, 1.0), seed=SY.SEEDS["ej"] + 6,
+                        parent=world, k=20)
+    BU.key_head(sp, [(V4_BREAK, R * 0.98), (n, R * 2.4)])
+    BU.key_strength(sp, [(V4_BREAK, 0.0), (V4_BREAK + 6, 9.0), (n, 7.0)])
     event("v4", "nu_exit", [V4_NU_EXIT])
     event("v4", "breakout", [V4_BREAK])
     S.finish(sc, stars, denoise="far", star_samples=16)
@@ -519,9 +545,9 @@ def _pmt_material(events, strength=40.0):
     for k, e in enumerate(events):
         w = b.v("NORMALIZE", b.v("SUBTRACT", ctr, tuple(e["v"])))
         c = b.v("DOT_PRODUCT", w, tuple(e["d"]))
-        x = b.m("DIVIDE", b.m("SUBTRACT", c, cth), 0.045)
+        x = b.m("DIVIDE", b.m("SUBTRACT", c, cth), 0.032)
         ring = b.m("EXPONENT", b.m("MULTIPLY", b.m("MULTIPLY", x, x), -1.0))
-        inner = b.m("MULTIPLY", b.ss(c, cth, cth + 0.15), 0.25)            # слабая засветка внутри кольца
+        inner = b.m("MULTIPLY", b.ss(c, cth, cth + 0.15), 0.07)            # слабая засветка внутри кольца
         a = b.node("ShaderNodeValue", name=f"e{k}", label=f"e{k}")
         a.outputs[0].default_value = 0.0
         term = b.m("MULTIPLY", b.m("ADD", ring, inner), b.m("MULTIPLY", a.outputs[0], e["amp"]))
@@ -548,22 +574,35 @@ def _cyl(name, r, h, seg, inward=False, caps=True):
 
 def build_tank(events, frames):
     Rt, H = SY.TANK_R_M, SY.TANK_H_M
-    # ФЭУ — колпаки (полусферы от стены внутрь), один меш с атрибутом центра
-    bm = bmesh.new()
-    ctr_l = bm.verts.layers.float_vector.new("ctr")
+    # ФЭУ — колпаки (полусферы от стены внутрь), один меш с атрибутом центра. Без bmesh: сотни create_uvsphere в
+    # один bmesh со своим слоем роняют Blender 5.2 (access violation) — шаблон колпака и копии через from_pydata
+    nu_, nv_ = 18, 6
+    tv = [(0.0, 0.0, SY.PMT_R_M * 0.85)]
+    for i in range(1, nv_ + 1):
+        th = 0.5 * math.pi * i / nv_
+        for j in range(nu_):
+            a = 2.0 * math.pi * j / nu_
+            tv.append((SY.PMT_R_M * math.sin(th) * math.cos(a), SY.PMT_R_M * math.sin(th) * math.sin(a),
+                       SY.PMT_R_M * math.cos(th) * 0.85))
+    tf = [(0, 1 + j, 1 + (j + 1) % nu_) for j in range(nu_)]
+    for i in range(nv_ - 1):
+        r0, r1 = 1 + i * nu_, 1 + (i + 1) * nu_
+        tf += [(r0 + j, r1 + j, r1 + (j + 1) % nu_, r0 + (j + 1) % nu_) for j in range(nu_)]
+    verts, faces, ctr = [], [], []
     for p, nrm in _pmt_positions():
-        res = bmesh.ops.create_uvsphere(bm, u_segments=18, v_segments=10, radius=SY.PMT_R_M)
-        # rotation_difference для противоположных векторов (крышка, нормаль −Z) роняет Blender — разворот явно
         q = (Quaternion((1.0, 0.0, 0.0), math.pi) if nrm.z < -0.999 else
              Quaternion() if nrm.z > 0.999 else Vector((0, 0, 1)).rotation_difference(nrm))
-        for v in res["verts"]:
-            co = v.co.copy()
-            co.z = max(co.z, -0.02) * 0.85                          # нижняя половина прижата к стене
-            v.co = q @ co + p
-            v[ctr_l] = p + nrm * 0.1
+        base = len(verts)
+        c = p + nrm * 0.1
+        for co in tv:
+            verts.append(tuple(q @ Vector(co) + p))
+            ctr.extend(c)
+        faces += [tuple(base + k for k in f) for f in tf]
     me = bpy.data.meshes.new("PMTs")
-    bm.to_mesh(me)
-    bm.free()
+    me.from_pydata(verts, [], faces)
+    at = me.attributes.new("ctr", "FLOAT_VECTOR", "POINT")
+    at.data.foreach_set("vector", ctr)
+    me.update()
     me.shade_smooth()
     me.materials.append(_pmt_material(events))
     pm = bpy.data.objects.new("PMTs", me)
@@ -610,9 +649,9 @@ def build_tank(events, frames):
         z = bc.sep(tc.outputs["Object"])[2]
         a = bc.node("ShaderNodeValue", name="amp", label="amp")
         a.outputs[0].default_value = 0.0
-        fall = bc.m("MULTIPLY", bc.ss(z, Lc, 0.0), bc.ss(z, 0.0, 0.3))
-        em = bc.node("ShaderNodeEmission", {"Color": (0.45, 0.70, 1.0, 1.0),
-                                            "Strength": bc.m("MULTIPLY", fall, bc.m("MULTIPLY", a.outputs[0], 3.0))})
+        fall = bc.m("MULTIPLY", bc.m("POWER", bc.ss(z, Lc, 0.0), 2.0), bc.ss(z, 0.0, 0.3))
+        em = bc.node("ShaderNodeEmission", {"Color": (0.40, 0.62, 1.0, 1.0),
+                                            "Strength": bc.m("MULTIPLY", fall, bc.m("MULTIPLY", a.outputs[0], 0.6))})
         tr = bc.node("ShaderNodeBsdfTransparent")
         ad = bc.node("ShaderNodeAddShader", {0: em.outputs[0], 1: tr.outputs[0]})
         L.new(ad.outputs[0], out.inputs["Surface"])
@@ -631,15 +670,15 @@ def build_tank(events, frames):
     nt = pm.data.materials[0].node_tree
     for k, (e, f) in enumerate(zip(events, frames)):
         peak = 0.45 if e["skip"] else 1.0
-        key_values(nt, f"e{k}", [(f - 1, 0.0), (f + 1, peak), (f + 10, 0.35 * peak), (f + 40, 0.0)])
-        key_values(cones[k].data.materials[0].node_tree, "amp", [(f - 1, 0.0), (f + 1, peak), (f + 8, 0.0)])
+        key_values(nt, f"e{k}", [(f - 1, 0.0), (f + 1, peak), (f + 6, 0.3 * peak), (f + 22, 0.0)])
+        key_values(cones[k].data.materials[0].node_tree, "amp", [(f - 1, 0.0), (f + 1, peak), (f + 5, 0.0)])
     return pm, cones
 
 
 def shot_v5():
     n = SHOTS["v5"]
     ex = 0.6
-    sc, cam, tgt = scene(n, ex, samples=32, comp=dict(COMP, vignette=0.38), lens=18.0,
+    sc, cam, tgt = scene(n, ex, samples=16, comp=dict(COMP, vignette=0.38), lens=18.0,
                          clip=(0.05, 200.0))
     wd = sc.world or bpy.data.worlds.new("World")
     sc.world = wd
@@ -671,10 +710,10 @@ def shot_v5():
     dirs = [(-sdir + Vector((rnd.uniform(-1, 1), rnd.uniform(-1, 1), rnd.uniform(-1, 1))) * (Rt * 1.1 / far))
             .normalized() for _ in range(420)]
     nu = BU.build_burst("NuRain", n=len(dirs), dirs=dirs, r_min=far - 30.0, r_max=far + 30.0, cam=cam, px=0.8,
-                        color=NU_RGB, strength=6.0, trail=2.5, lag=60.0, seed=SY.SEEDS["nu"] + 5,
+                        color=NU_RGB, strength=3.0, trail=2.5, lag=60.0, seed=SY.SEEDS["nu"] + 5,
                         location=tuple(sdir * far), k=24)
     BU.key_head(nu, [(1, far - 25.0), (n, far + 95.0)])
-    BU.key_strength(nu, [(1, 0.0), (40, 6.0), (frames[-1] + 40, 6.0), (n, 1.5)])
+    BU.key_strength(nu, [(1, 0.0), (40, 3.0), (frames[-1] + 40, 3.0), (n, 1.0)])
     event("v5", "nu", [f for f, e in zip(frames, events) if not e["skip"]])
     R.setup_volume_denoise(sc, "far")
     sc.cycles.transparent_max_bounces = 24
@@ -682,7 +721,7 @@ def shot_v5():
 
 
 # ================================================================ v6–v7: остаток «с Земли»
-V6_S = 0.74 / SY.ER_A                              # ER: поперечник ≈ 0.4 ширины кадра, внешние кольца — почти во всю
+V6_S = 0.62 / SY.ER_A                              # ER: поперечник ≈ 0.34 ширины кадра, внешние кольца — в кадре
 LIGHT_F = 45
 YEAR0, YEAR1 = 1987.15, 2016.0
 
@@ -720,7 +759,7 @@ def remnant(parent, n, year_of_f, glow_of_f, scale_of_f):
                                ("SOR", SY.OR_SCALE[1], SY.OR_INCL[1], -1.0, SY.SEEDS["or_s"])):
         ao = a * k
         rg = RG.build_ring(nm, a=ao, width=0.028 * ao, thick=0.022 * ao, color=(1.0, 0.18, 0.55),
-                           edge_color=(0.75, 0.30, 1.0), strength=6.0, seed=sd, clumps=7.0, step=0.03,
+                           edge_color=(0.75, 0.30, 1.0), strength=3.2, seed=sd, clumps=7.0, step=0.03,
                            location=tuple(nrm * a * SY.OR_OFFSET * sg),
                            rotation=SY.ring_basis(incl_deg=inc).to_euler("XYZ"), parent=parent)
         outer.append(rg)
@@ -737,9 +776,9 @@ def remnant(parent, n, year_of_f, glow_of_f, scale_of_f):
     RG.key_time(hs, [(f, year_of_f(f)) for f in range(1, n + 1, 2)])
     RG.key_value(hs, "fade", [(f, ring_fade(year_of_f(f))) for f in range(1, n + 1, 4)], ipo="LINEAR")
     # выброс внутри кольца — многоцветные нити (палитра «линий элементов», как композитные снимки остатков)
-    ej = SS.build_shell_nebula("Ej", radius=1.0, seed=SY.SEEDS["ej"] + 1, palette=SS.CASA, radial=0.2,
-                               fil_scale=(3.0, 7.5), sharp=6.0, stretch=(0.78, 0.78, 1.25), step=0.07, glow=0.0,
-                               hot=0.25, haze=1.4, thick=0.55, inner=0.0, parent=parent)
+    ej = SS.build_shell_nebula("Ej", radius=1.0, seed=SY.SEEDS["ej"] + 1, palette=SS.CASA, radial=0.4,
+                               fil_scale=(2.0, 5.0), sharp=12.0, stretch=(0.72, 0.72, 1.3), step=0.07, glow=0.0,
+                               hot=0.0, haze=0.0, thick=0.3, inner=0.0, cover=0.42, parent=parent)
     ej["ob"].rotation_euler = (math.radians(12.0), math.radians(-18.0), 0.0)
     SS.key_radius(ej, lambda f: max(ej_frac_of_year(year_of_f(f)), 1e-5) * a, 1, n, step=2)
     SS.key_value(ej, "flow", [(1, 0.0), (n, 0.35)], ipo="LINEAR")
@@ -766,7 +805,11 @@ def _glow_sphere(name, r, color, strength, parent=None):
     k.name = k.label = "strength"
     k.outputs[0].default_value = strength
     L.new(k.outputs[0], em.inputs["Strength"])
-    L.new(em.outputs[0], out.inputs["Surface"])
+    tr = N.new("ShaderNodeBsdfTransparent")                    # при нулевой яркости — невидима (не чёрный кружок)
+    ad = N.new("ShaderNodeAddShader")
+    L.new(em.outputs[0], ad.inputs[0])
+    L.new(tr.outputs[0], ad.inputs[1])
+    L.new(ad.outputs[0], out.inputs["Surface"])
     mt.cycles.emission_sampling = "NONE"
     me.materials.append(mt)
     ob = bpy.data.objects.new(name, me)
@@ -775,6 +818,37 @@ def _glow_sphere(name, r, color, strength, parent=None):
         ob.parent = parent
     ob.visible_shadow = False
     ob.visible_diffuse = ob.visible_glossy = False
+    return ob
+
+
+def core_glow(name, cam, color, strength=0.0, parent=None):
+    """Сияние-спрайт ⟂ камере: яркость exp(−(ρ/0.45)²) (ρ — радиус диска), прозрачное; радиус — масштабом объекта."""
+    me = bpy.data.meshes.new(name)
+    bm = bmesh.new()
+    bmesh.ops.create_circle(bm, cap_ends=True, cap_tris=False, segments=64, radius=1.0)
+    bm.to_mesh(me)
+    bm.free()
+    mt, N, L, out = C.new_material(f"{name}_Mat")
+    b = _NB(mt.node_tree)
+    tc = b.node("ShaderNodeTexCoord")
+    rho = b.m("DIVIDE", b.v("LENGTH", tc.outputs["Object"]), 0.45)
+    k = b.node("ShaderNodeValue", name="strength", label="strength")
+    k.outputs[0].default_value = strength
+    br = b.m("MULTIPLY", b.m("EXPONENT", b.m("MULTIPLY", b.m("MULTIPLY", rho, rho), -1.0)), k.outputs[0])
+    em = b.node("ShaderNodeEmission", {"Color": (*color, 1.0), "Strength": br})
+    tr = b.node("ShaderNodeBsdfTransparent")
+    ad = b.node("ShaderNodeAddShader", {0: em.outputs[0], 1: tr.outputs[0]})
+    L.new(ad.outputs[0], out.inputs["Surface"])
+    mt.cycles.emission_sampling = "NONE"
+    me.materials.append(mt)
+    ob = bpy.data.objects.new(name, me)
+    C.link(ob, "FX")
+    if parent is not None:
+        ob.parent = parent
+    con = ob.constraints.new("COPY_ROTATION")
+    con.target = cam
+    ob.visible_shadow = False
+    ob.visible_diffuse = ob.visible_glossy = ob.visible_transmission = ob.visible_volume_scatter = False
     return ob
 
 
@@ -802,7 +876,7 @@ def shot_v6():
         return smooth((f - LIGHT_F - 40) / 150.0) * lerp(0.85, 1.25, smooth((y - 1995.0) / 14.0)) * ring_fade(y)
 
     rem = remnant(world, n, v6_year, ring_glow, lambda f: v6_scale(f, n))
-    SS.key_value(rem["ej"], "glow", [(LIGHT_F, 0.0), (LIGHT_F + 60, 40.0), (n, 16.0)])
+    SS.key_value(rem["ej"], "glow", [(LIGHT_F, 0.0), (LIGHT_F + 60, 14.0), (n, 6.0)])
     SS.key_value(rem["ej"], "inner", [(LIGHT_F, 0.0), (LIGHT_F + 60, 0.8), (n, 0.3)])
     pt = _glow_sphere("SNPoint", SN_PT_R, (0.85, 0.90, 1.0), 3.0)
     key_values(pt.data.materials[0].node_tree, "strength",
@@ -861,7 +935,7 @@ def shot_v7():
         return 1.25 * smooth((y - 1987.4) / 3.0) * lerp(0.68, 1.0, smooth((y - 1995.0) / 14.0)) * ring_fade(y)
 
     rem = remnant(world, n, v7_year, ring_glow, lambda f: v7_scale(f, n))
-    SS.key_value(rem["ej"], "glow", [(1, 16.0), (V7_REW0, 16.0), (V7_REW1 - 20, 30.0), (V7_REW1 + 20, 0.0)])
+    SS.key_value(rem["ej"], "glow", [(1, 6.0), (V7_REW0, 6.0), (V7_REW1 - 20, 14.0), (V7_REW1 + 20, 0.0)])
     SS.key_value(rem["ej"], "inner", [(1, 0.3), (V7_REW0, 0.3), (V7_REW1, 1.0), (V7_REW1 + 20, 0.0)])
     ST.key_visible(rem["ej"]["ob"], [(1, True), (V7_REW1 + 24, False)])
     for nb in rem["neigh"]:
@@ -872,7 +946,7 @@ def shot_v7():
     ns = _glow_sphere("NSGlow", a * 0.008, (0.75, 0.85, 1.0), 0.0, world)
     key_values(ns.data.materials[0].node_tree, "strength",
                [(V7_NS - 10, 0.0), (V7_NS + 20, 40.0), (V7_REW0, 40.0), (V7_REW0 + 60, 0.0)])
-    label("Lbl_NS", "likely neutron star\nJWST, 2024", Vector((0, 0, 0)), cam, n, px=32, off=(185, 110),
+    label("Lbl_NS", "likely neutron star\nJWST, 2024", Vector((0, 0, 0)), cam, n, px=32, off=(250, 330),
           parent=world, fade=(V7_NS + 10, V7_REW0 - 10))
     # вспышка «назад»: точка разгорается и уходит в звезду (звезда — уже до взрыва)
     pt = _glow_sphere("SNPoint", SN_PT_R, (0.85, 0.90, 1.0), 0.0)

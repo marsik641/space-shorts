@@ -9,11 +9,11 @@
   {
    "at": 0.3,
    "shot": "v1",
-   "en": "In nineteen eighty-seven, Earth felt a star explode, hours before anyone could see it.",
-   "en_cap": "In 1987, Earth felt | a star explode, | hours before anyone | could see it."
+   "en": "In nineteen eighty-seven, Earth felt a star explode, hours before anyone saw it.",
+   "en_cap": "In 1987, Earth felt | a star explode, | hours before | anyone saw it."
   },
   {
-   "at": 5.0,
+   "at": 5.35,
    "shot": "v2",
    "en": "It burned hydrogen for some ten million years, and silicon for only about two weeks, down to an iron core the size of Earth.",
    "en_cap": "It burned hydrogen | for ~10 million years, | and silicon for only | about 2 weeks, | down to an iron core | the size of Earth."
@@ -37,7 +37,7 @@
    "en_cap": "168,000 years later, | they came up through | over 4,000 km of rock, | into a water tank | in Japan. | It caught 12."
   },
   {
-   "at": 39.2,
+   "at": 39.1,
    "shot": "v6",
    "en": "Hours later came the light: the first supernova seen by eye since sixteen-oh-four. Then its debris hit a ring the star had shed twenty thousand years before.",
    "en_cap": "Hours later | came the light: | the first naked-eye | supernova since 1604. | Then its debris | hit a ring the star | had shed 20,000 | years before."
