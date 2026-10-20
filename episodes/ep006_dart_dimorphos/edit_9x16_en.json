@@ -69,7 +69,7 @@
   {
    "text": "DART / DIMORPHOS",
    "size": 34,
-   "x": 0.455,
+   "x": 0.5,
    "y": 0.915,
    "font": "C:/Windows/Fonts/bahnschrift.ttf",
    "color": [
@@ -85,7 +85,7 @@
   {
    "text": "APPROACH SLOWED · ARTIST'S IMPRESSION",
    "size": 24,
-   "x": 0.455,
+   "x": 0.5,
    "y": 0.85,
    "font": "C:/Windows/Fonts/bahnschrift.ttf",
    "color": [
@@ -100,7 +100,7 @@
   {
    "text": "26 SEP 2022  /  6.1 km/s",
    "size": 40,
-   "x": 0.455,
+   "x": 0.5,
    "y": 0.89,
    "font": "C:/Windows/Fonts/bahnschrift.ttf",
    "color": [
@@ -115,7 +115,7 @@
   {
    "text": "IMPACT + EJECTA · TIME RESCALED",
    "size": 24,
-   "x": 0.455,
+   "x": 0.5,
    "y": 0.89,
    "font": "C:/Windows/Fonts/bahnschrift.ttf",
    "color": [
@@ -130,7 +130,7 @@
   {
    "text": "-33 min 15 s",
    "size": 76,
-   "x": 0.455,
+   "x": 0.5,
    "y": 0.88,
    "font": "C:/Windows/Fonts/bahnschrift.ttf",
    "color": [
@@ -146,7 +146,7 @@
   {
    "text": "SHORTER ORBITAL PERIOD",
    "size": 22,
-   "x": 0.455,
+   "x": 0.5,
    "y": 0.83,
    "font": "C:/Windows/Fonts/bahnschrift.ttf",
    "color": [
@@ -161,7 +161,7 @@
   {
    "text": "NOMINAL SCALE · TIME ACCELERATED",
    "size": 22,
-   "x": 0.455,
+   "x": 0.5,
    "y": 0.76,
    "font": "C:/Windows/Fonts/bahnschrift.ttf",
    "color": [
@@ -176,7 +176,7 @@
   {
    "text": "PLANETARY DEFENSE / FIRST KINETIC IMPACT TEST",
    "size": 28,
-   "x": 0.455,
+   "x": 0.5,
    "y": 0.89,
    "font": "C:/Windows/Fonts/bahnschrift.ttf",
    "color": [
@@ -191,7 +191,7 @@
   {
    "text": "WE MOVED\nAN ASTEROID",
    "size": 66,
-   "x": 0.455,
+   "x": 0.5,
    "y": 0.83,
    "font": "C:/Windows/Fonts/bahnschrift.ttf",
    "color": [
@@ -223,7 +223,7 @@
   {
    "text": "AFTER",
    "size": 31,
-   "x": 0.65,
+   "x": 0.7,
    "y": 0.7,
    "font": "C:/Windows/Fonts/bahnschrift.ttf",
    "color": [
@@ -239,7 +239,7 @@
   {
    "text": "DIDYMOS",
    "size": 28,
-   "x": 0.455,
+   "x": 0.5,
    "y": 0.585,
    "font": "C:/Windows/Fonts/bahnschrift.ttf",
    "color": [
@@ -255,8 +255,8 @@
   {
    "text": "DIMORPHOS ORBIT",
    "size": 26,
-   "x": 0.455,
-   "y": 0.355,
+   "x": 0.5,
+   "y": 0.315,
    "font": "C:/Windows/Fonts/bahnschrift.ttf",
    "color": [
     0.85,
@@ -271,7 +271,7 @@
   {
    "text": "BEFORE IMPACT",
    "size": 25,
-   "x": 0.455,
+   "x": 0.5,
    "y": 0.84,
    "font": "C:/Windows/Fonts/bahnschrift.ttf",
    "color": [
@@ -318,9 +318,9 @@
  ],
  "captions": {
   "size": 60,
-  "x": 0.455,
+  "x": 0.5,
   "y": 0.255,
-  "wrap": 0.73,
+  "wrap": 0.7,
   "font": "C:/Windows/Fonts/bahnschrift.ttf",
   "outline": 7,
   "color": [

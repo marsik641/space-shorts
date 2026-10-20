@@ -8,15 +8,17 @@
     a = build_asteroid("Dimorphos", radius=75.5, axes=(1.17, 1.15, .768))
     point = a["surface_point"]((0, -1, .1))
 
-close: 81 920 граней основы и 24 общих mesh валунов по 384 quad;
+close: 81 920 граней основы, сколотые блоки и GN-россыпь мелких фракций;
 mid: 20 480 граней основы и не более 900 валунов.
 """
 import math
+import os
 import random
+from itertools import combinations
 
 import bmesh
 import bpy
-from mathutils import Quaternion, Vector, noise
+from mathutils import Matrix, Quaternion, Vector, noise
 
 from .. import core as C
 
@@ -51,7 +53,7 @@ def _ramp(nodes, links, source, stops, name):
     return n.outputs[0]
 
 
-def _stone_material(name, root, radius, *, dust=False):
+def _stone_material(name, root, radius, *, dust=False, texture=None):
     """Сухой силикат: пятна, сколы, миллиметровое зерно и тонкие трещины."""
     mat, nodes, links, out = C.new_material(name)
     mat.diffuse_color = (.135, .130, .119, 1)
@@ -76,17 +78,17 @@ def _stone_material(name, root, radius, *, dust=False):
 
     # Масштабы в метрах; нормируем лишь крупную цветовую неоднородность.
     broad = tex(14 / radius, 4)
-    chip = tex(1.4, 3)
+    chip = tex(3.8, 3)
     grain = tex(48, 2, .8)
     micro = tex(215, 1, .7)
     tone = _math(nodes, links, "MULTIPLY_ADD", broad.outputs["Fac"], .74)
     # Для MULTIPLY_ADD третий вход задаётся отдельно.
     tone.node.inputs[2].default_value = .10
     color = _ramp(nodes, links, tone, [
-        (.20, (.045, .043, .039, 1)),
-        (.41, (.100, .097, .089, 1)),
-        (.60, (.185, .180, .166, 1)),
-        (.83, (.275, .269, .251, 1)),
+        (.20, (.045, .046, .046, 1)),
+        (.41, (.100, .102, .103, 1)),
+        (.60, (.185, .188, .187, 1)),
+        (.83, (.275, .278, .275, 1)),
     ], "Силикатные обломки")
 
     # Редкие прерывистые трещины, без регулярной сетки «брусчатки».
@@ -122,7 +124,7 @@ def _stone_material(name, root, radius, *, dust=False):
         powder = nodes.new("ShaderNodeMixRGB")
         links.new(_math(nodes, links, "MULTIPLY", attr.outputs["Fac"], .32), powder.inputs[0])
         links.new(color, powder.inputs[1])
-        powder.inputs[2].default_value = (.145, .140, .127, 1)
+        powder.inputs[2].default_value = (.145, .145, .141, 1)
         color = powder.outputs[0]
     else:
         # Разные валуны читаются отдельными фрагментами, а не одной коркой.
@@ -139,10 +141,37 @@ def _stone_material(name, root, radius, *, dust=False):
         color = stone.outputs[0]
     variation = nodes.new("ShaderNodeMixRGB")
     variation.blend_type = "MULTIPLY"
-    variation.inputs[0].default_value = .22
+    variation.inputs[0].default_value = .40
     links.new(color, variation.inputs[1])
-    links.new(grain.outputs["Color"], variation.inputs[2])
-    links.new(variation.outputs[0], bs.inputs["Base Color"])
+    mottling = _ramp(nodes, links, chip.outputs['Fac'], [
+        (.25, (.30, .31, .32, 1)), (.48, (.80, .81, .82, 1)),
+        (.72, (1.3, 1.29, 1.26, 1)),
+    ], 'Пятна и свежие сколы')
+    links.new(mottling, variation.inputs[2])
+    surface_color = variation.outputs[0]
+    stone_scan = None
+    if texture:
+        stone_scan = nodes.new('ShaderNodeTexImage')
+        stone_scan.image = bpy.data.images.load(os.path.abspath(texture), check_existing=True)
+        stone_scan.projection = 'BOX'
+        stone_scan.projection_blend = .28
+        stone_scan.extension = 'REPEAT'
+        scale = nodes.new('ShaderNodeVectorMath')
+        scale.operation = 'SCALE'
+        scale.inputs['Scale'].default_value = .25 if dust else .55
+        links.new(pos, scale.inputs[0])
+        links.new(scale.outputs['Vector'], stone_scan.inputs['Vector'])
+        gain = nodes.new('ShaderNodeVectorMath')
+        gain.operation = 'SCALE'
+        gain.inputs['Scale'].default_value = 5.0
+        links.new(stone_scan.outputs['Color'], gain.inputs[0])
+        blend = nodes.new('ShaderNodeMixRGB')
+        blend.blend_type = 'MULTIPLY'
+        blend.inputs[0].default_value = .88 if dust else .72
+        links.new(surface_color, blend.inputs[1])
+        links.new(gain.outputs['Vector'], blend.inputs[2])
+        surface_color = blend.outputs[0]
+    links.new(surface_color, bs.inputs["Base Color"])
     roughness = _math(nodes, links, "MULTIPLY_ADD", grain.outputs["Fac"], .16)
     roughness.node.inputs[2].default_value = .79
     links.new(roughness, bs.inputs["Roughness"])
@@ -151,8 +180,8 @@ def _stone_material(name, root, radius, *, dust=False):
     height = _math(nodes, links, "SUBTRACT", chip.outputs["Fac"],
                    _math(nodes, links, "MULTIPLY", fissure, .68))
     bump1 = nodes.new("ShaderNodeBump")
-    bump1.inputs["Strength"].default_value = .42
-    bump1.inputs["Distance"].default_value = .13
+    bump1.inputs["Strength"].default_value = .62
+    bump1.inputs["Distance"].default_value = .09
     links.new(height, bump1.inputs["Height"])
     bump2 = nodes.new("ShaderNodeBump")
     bump2.inputs["Strength"].default_value = .42
@@ -164,7 +193,15 @@ def _stone_material(name, root, radius, *, dust=False):
     bump3.inputs["Distance"].default_value = .003
     links.new(micro.outputs["Fac"], bump3.inputs["Height"])
     links.new(bump2.outputs["Normal"], bump3.inputs["Normal"])
-    links.new(bump3.outputs["Normal"], bs.inputs["Normal"])
+    if stone_scan:
+        grain_bump = nodes.new('ShaderNodeBump')
+        grain_bump.inputs['Strength'].default_value = .55
+        grain_bump.inputs['Distance'].default_value = .07 if dust else .025
+        links.new(stone_scan.outputs['Color'], grain_bump.inputs['Height'])
+        links.new(bump3.outputs['Normal'], grain_bump.inputs['Normal'])
+        links.new(grain_bump.outputs['Normal'], bs.inputs['Normal'])
+    else:
+        links.new(bump3.outputs["Normal"], bs.inputs["Normal"])
     return mat
 
 
@@ -205,76 +242,125 @@ def _surface_functions(radius, axes, seed):
 
 
 def _rock_mesh(name, seed, material, slab=False):
-    """Сколотый силикатный блок с округлыми кромками и настоящим рельефом."""
+    """Пересечение плоскостей раскола: широкие грани, сколы и узкие кромки."""
     rng = random.Random(seed)
-    stretch = Vector((rng.uniform(.86, 1.22), rng.uniform(.77, 1.12),
-                      rng.uniform(.51, .67) if slab else rng.uniform(.70, 1.05)))
+    stretch = Vector((rng.uniform(.85, 1.25), rng.uniform(.74, 1.15),
+                      rng.uniform(.35, .58) if slab else rng.uniform(.72, 1.08)))
     offset = Vector(tuple(rng.uniform(17, 211) for _ in range(3)))
-    exponent = rng.uniform(2.65, 3.75)
-    shear_x, shear_y = rng.uniform(-.15, .15), rng.uniform(-.13, .13)
-    # Плоскости сколов затрагивают лишь отдельные углы. Остальная сетка —
-    # непрерывная скала, поэтому силуэт не превращается в осколки стекла.
-    cuts = []
-    for _ in range(rng.randrange(1, 4)):
-        n = Vector(tuple(rng.uniform(-1, 1) for _ in range(3))).normalized()
-        cuts.append((n, rng.uniform(.95, 1.15)))
-
-    coordinates, faces, lookup = [], [], {}
-    steps = 8
-
-    def vertex(key):
-        if key in lookup:
-            return lookup[key]
-        p = Vector(tuple(c / steps for c in key))
-        length = sum(abs(c) ** exponent for c in p) ** (1 / exponent)
-        p /= length
-        for n, d in cuts:
-            over = n.dot(p) - d
-            if over > 0:
-                p -= n * over
-        # Первый слой меняет весь камень, второй скалывает края, третий
-        # оставляет сантиметровые неровности вместо идеальных плоскостей.
-        low = noise.noise(p * 1.1 + offset, noise_basis="PERLIN_ORIGINAL")
-        medium = noise.noise(p * 3.4 + offset * 1.17, noise_basis="PERLIN_ORIGINAL")
-        high = noise.noise(p * 9.5 + offset * 1.73, noise_basis="PERLIN_ORIGINAL")
-        p *= 1 + low * .17 + medium * .072 + high * .027
-        p.x += shear_x * p.z
-        p.y += shear_y * p.z
-        p = Vector((p.x * stretch.x, p.y * stretch.y, p.z * stretch.z))
-        index = len(coordinates)
-        coordinates.append(tuple(p))
-        lookup[key] = index
-        return index
-
-    # Общие вершины на швах шести граней: замкнутая сетка без щелей.
+    planes = []
     for axis in range(3):
-        u, v = [i for i in range(3) if i != axis]
         for sign in (-1, 1):
-            for i in range(steps):
-                for j in range(steps):
-                    keys = []
-                    for du, dv in ((0, 0), (1, 0), (1, 1), (0, 1)):
-                        key = [0, 0, 0]
-                        key[axis] = sign * steps
-                        key[u] = -steps + 2 * (i + du)
-                        key[v] = -steps + 2 * (j + dv)
-                        keys.append(tuple(key))
-                    direction = (Vector(keys[1]) - Vector(keys[0])).cross(
-                        Vector(keys[2]) - Vector(keys[0]))
-                    if direction[axis] * sign < 0:
-                        keys.reverse()
-                    faces.append(tuple(vertex(k) for k in keys))
+            n = Vector(tuple(rng.uniform(-.20, .20) for _ in range(3)))
+            n[axis] = sign
+            planes.append((n.normalized(), rng.uniform(.73, 1.02)))
+    for _ in range(7):
+        n = Vector(tuple(rng.uniform(-1, 1) for _ in range(3))).normalized()
+        planes.append((n, rng.uniform(1.03, 1.29)))
+    coordinates = []
+    for triple in combinations(planes, 3):
+        m = Matrix([p[0] for p in triple])
+        if abs(m.determinant()) < 1e-5:
+            continue
+        p = m.inverted() @ Vector([q[1] for q in triple])
+        if all(n.dot(p) <= d + 1e-5 for n, d in planes):
+            coordinates.append(p)
+    bm = bmesh.new()
+    for p in coordinates:
+        bm.verts.new(p)
+    bmesh.ops.convex_hull(bm, input=list(bm.verts), use_existing_faces=False)
+    bmesh.ops.dissolve_limit(bm, angle_limit=.002, verts=list(bm.verts),
+                              edges=list(bm.edges), delimit={'NORMAL'})
+    # Кромка узкая: камень не надувается и не превращается в шар.
+    bmesh.ops.bevel(bm, geom=list(bm.edges), offset=.060, segments=2,
+                    affect='EDGES', clamp_overlap=True)
+    bmesh.ops.triangulate(bm, faces=list(bm.faces))
+    bmesh.ops.subdivide_edges(bm, edges=list(bm.edges), cuts=2, use_grid_fill=True)
+    bm.normal_update()
+    for v in bm.verts:
+        p = v.co.copy()
+        relief = .070 * noise.noise(p * 5.3 + offset, noise_basis='PERLIN_ORIGINAL')
+        relief += .060 * noise.noise(p * 1.7 + offset * 1.3, noise_basis='PERLIN_ORIGINAL')
+        v.co += v.normal * relief
+        v.co.x *= stretch.x
+        v.co.y *= stretch.y
+        v.co.z *= stretch.z
+    bmesh.ops.recalc_face_normals(bm, faces=list(bm.faces))
     mesh = bpy.data.meshes.new(name)
-    mesh.from_pydata(coordinates, [], faces)
+    bm.to_mesh(mesh)
+    bm.free()
     mesh.materials.append(material)
     for polygon in mesh.polygons:
         polygon.use_smooth = True
+    mesh.set_sharp_from_angle(angle=math.radians(30))
     mesh.update()
     return mesh
 
 
+def _gravel(name, root, radius, axes, seed, point, prototypes, count):
+    """Мелкие сколотые фракции одним GN-объектом, без тысяч объектов сцены."""
+    rng = random.Random(seed + 63071)
+    verts, scales, rotations, variants = [], [], [], []
+    golden = math.pi * (3 - math.sqrt(5))
+    for i in range(count):
+        z = 1 - 2 * (i + rng.random()) / count
+        angle = i * golden + rng.uniform(-.08, .08)
+        ring = math.sqrt(max(0, 1-z*z))
+        d = Vector((ring*math.cos(angle), ring*math.sin(angle), z))
+        n = Vector((d.x/axes[0], d.y/axes[1], d.z/axes[2])).normalized()
+        if i % 2 == 0:
+            size = radius * (.0020 + .0060 * rng.random()**1.8)
+        else:
+            size = radius * (.0004 + .0016 * rng.random()**1.4)
+        verts.append(point(d) - n * size * .35)
+        scales.extend((size*rng.uniform(.75, 1.25), size*rng.uniform(.75, 1.2), size))
+        rot = n.to_track_quat('Z', 'Y') @ Quaternion((0,0,1), rng.uniform(0, math.tau))
+        rotations.extend(rot.to_euler())
+        variants.append(rng.randrange(len(prototypes)))
+    me = bpy.data.meshes.new(name+'_Points')
+    me.from_pydata(verts, [], [])
+    for nm, typ, field, data in [('scale','FLOAT_VECTOR','vector',scales),
+                               ('rotation','FLOAT_VECTOR','vector',rotations),
+                               ('variant','INT','value',variants)]:
+        a = me.attributes.new(nm, typ, 'POINT')
+        a.data.foreach_set(field, data)
+    ob = bpy.data.objects.new(name, me)
+    C.link(ob, COLL)
+    ob.parent = root
+    templates = bpy.data.collections.new(name+'_Templates')
+    for i, mesh in enumerate(prototypes):
+        templates.objects.link(bpy.data.objects.new(name+f'_Prototype{i}', mesh))
+    ng = bpy.data.node_groups.new(name+'_GN', 'GeometryNodeTree')
+    ng.interface.new_socket('Geometry', in_out='INPUT', socket_type='NodeSocketGeometry')
+    ng.interface.new_socket('Geometry', in_out='OUTPUT', socket_type='NodeSocketGeometry')
+    N, L = ng.nodes, ng.links
+    gi, go = N.new('NodeGroupInput'), N.new('NodeGroupOutput')
+    ci = N.new('GeometryNodeCollectionInfo')
+    ci.inputs['Collection'].default_value = templates
+    ci.inputs['Separate Children'].default_value = True
+    ci.inputs['Reset Children'].default_value = True
+    ip = N.new('GeometryNodeInstanceOnPoints')
+    ip.inputs['Pick Instance'].default_value = True
+    L.new(gi.outputs['Geometry'], ip.inputs['Points'])
+    L.new(ci.outputs['Instances'], ip.inputs['Instance'])
+    for nm, typ, socket in [('scale','FLOAT_VECTOR','Scale'),
+                            ('variant','INT','Instance Index')]:
+        a = N.new('GeometryNodeInputNamedAttribute')
+        a.data_type = typ
+        a.inputs['Name'].default_value = nm
+        L.new(a.outputs['Attribute'], ip.inputs[socket])
+    a = N.new('GeometryNodeInputNamedAttribute')
+    a.data_type = 'FLOAT_VECTOR'
+    a.inputs['Name'].default_value = 'rotation'
+    er = N.new('FunctionNodeEulerToRotation')
+    L.new(a.outputs['Attribute'], er.inputs['Euler'])
+    L.new(er.outputs['Rotation'], ip.inputs['Rotation'])
+    L.new(ip.outputs['Instances'], go.inputs['Geometry'])
+    ob.modifiers.new('Gravel', 'NODES').node_group = ng
+    return ob
+
+
 def build_asteroid(name, radius=75.5, location=(0, 0, 0), axes=(1.1, 1.08, .77),
-                   seed=6, detail="close", boulder_count=2500, parent=None):
+                   seed=6, detail="close", boulder_count=2500, parent=None, texture=None):
     """Создать локальную модель rubble pile; ключи движения ставить на root.
 
     ``boulders`` — список объектов с общими данными mesh, ``materials`` — словарь.
@@ -297,8 +383,8 @@ def build_asteroid(name, radius=75.5, location=(0, 0, 0), axes=(1.1, 1.08, .77),
     root["asteroid_axes"] = list(axes)
     root["shape_note"] = "Procedural scientific illustration; not a reconstructed DART shape model"
     mats = {
-        "body": _stone_material(name + "_Regolith", root, radius, dust=True),
-        "rock": _stone_material(name + "_Rock", root, radius),
+        "body": _stone_material(name + "_Regolith", root, radius, dust=True, texture=texture),
+        "rock": _stone_material(name + "_Rock", root, radius, texture=texture),
     }
     point, normal, field = _surface_functions(radius, axes, seed)
     bm = bmesh.new()
@@ -329,7 +415,7 @@ def build_asteroid(name, radius=75.5, location=(0, 0, 0), axes=(1.1, 1.08, .77),
 
     rng = random.Random(seed * 8137 + 31)
     prototypes = [_rock_mesh(name + f"_RockMesh_{i:02d}", seed * 1013 + i,
-                             mats["rock"], slab=i >= 18) for i in range(24)]
+                             mats["rock"], slab=i >= 20) for i in range(24)]
     count = int(boulder_count) if detail == "close" else min(int(boulder_count), 900)
     boulders = []
     golden = math.pi * (3 - math.sqrt(5))
@@ -341,21 +427,25 @@ def build_asteroid(name, radius=75.5, location=(0, 0, 0), axes=(1.1, 1.08, .77),
         direction = Vector((ring * math.cos(angle), ring * math.sin(angle), z))
         n = normal(direction)
         # Много мелких обломков, редкие валуны до нескольких метров.
-        size = radius * (.012 + .042 * rng.random() ** 1.8)
-        if i % 83 == 0:
-            size = radius * rng.uniform(.050, .075)
+        size = radius * (.003 + .021 * rng.random() ** 3.0)
+        if i % 109 == 0:
+            size = radius * rng.uniform(.025, .047)
         prototype = prototypes[rng.randrange(len(prototypes))]
         ob = bpy.data.objects.new(name + f"_Boulder_{i:04d}", prototype)
         C.link(ob, COLL)
         ob.parent = root
-        ob.location = point(direction) - n * (size * .20)
+        ob.location = point(direction) - n * (size * .30)
         ob.rotation_mode = "QUATERNION"
         ob.rotation_quaternion = n.to_track_quat("Z", "Y") @ Quaternion((0, 0, 1), rng.uniform(0, math.tau))
         ob.scale = (size * rng.uniform(.8, 1.3), size * rng.uniform(.75, 1.2), size * rng.uniform(.7, 1.05))
         boulders.append(ob)
 
+    gravel = _gravel(name+'_Gravel', root, radius, axes, seed, point, prototypes,
+                     100000 if detail == 'close' else 12000)
+
     return {
         "root": root, "body": body, "boulders": boulders, "materials": mats,
         "radius": radius, "axes": tuple(axes), "surface_point": point,
         "surface_normal": normal, "rock_meshes": prototypes,
+        "gravel": gravel,
     }

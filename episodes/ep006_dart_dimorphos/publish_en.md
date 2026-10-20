@@ -44,6 +44,7 @@ https://www.nature.com/articles/s41586-023-06998-2
 https://www.nasa.gov/solar-system/early-results-from-nasas-dart-mission/
 
 Rendered in Blender Cycles · scientific visualization / artist's impression.
+Stone materials include AI-generated texture work; this is reconstructed imagery, not mission footage.
 Bodies and orbital distances share a common physical scale. Mesh shapes, surface detail, orientations and viewpoints are reconstructed, not exact photogrammetry. Approach and impact are slowed; debris evolution and weeks of orbital change are compressed. Orbital motion is accelerated to one circuit in about eight screen seconds. The orbit diagram uses circles for clarity; the real post-impact orbit is slightly eccentric. Debris paths illustrate ballistic ejection and recoil, not an N-body solution. A consistent Sun direction is used, with soft fill approximating sunlight reflected from Dimorphos; illumination and exposure are not photometrically calibrated. Rock and dust are sunlit, without a fireball. Music and impact sound are artistic sound design. The final approach repeats the pre-impact moment to create a visual loop; it is not a second collision.
 #space #astronomy #DART #Dimorphos #PlanetaryDefense
 ```

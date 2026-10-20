@@ -19,15 +19,15 @@ from spacekit.fx import impact as IMP, path_line as PLN, label as LB
 import system as SY
 EP=os.path.basename(HERE)
 OUT=os.path.join(C.OUT,EP,'9x16')
+STONE_TEXTURE=os.path.join(C.ASSETS,'dart','stone_albedo_v1.png')
 S.OPT.update(fmt='9x16',fps=60)
 SHOTS={'v1':300,'v2':360,'v3':420,'v4':420,'v5':540,'v6':481}
 LB.FONT='C:/Windows/Fonts/bahnschrift.ttf'
 
 
-def base(n,samples=40,ex=.65):
+def base(n,samples=40,ex=1.1):
     sc=S.base_scene(n,exposure=ex,samples=samples,adaptive=.025,
-                    look='AgX - Medium High Contrast',bloom_strength=.22,
-                    comp=dict(vignette=.13,fog_strength=.10))
+                    look='None',bloom_strength=.35)
     sc.cycles.diffuse_bounces=2
     sc.cycles.glossy_bounces=3
     sc.render.motion_blur_shutter=.35
@@ -36,11 +36,16 @@ def base(n,samples=40,ex=.65):
     return sc
 
 
-def finish(sc,cam,n,ex=.65):
+def finish(sc,cam,n,ex=1.1):
     sc.frame_set(1)
-    stars=SKY.build_sky(sc,cam,ex,mw_strength=.01,star_brightness=.35,mag_limit=10.,n_stars=24000,
-                      gal=SKY.gal_for_view(Vector((0,1,0)),tilt_deg=35,l_center_deg=70))
-    S.finish(sc,stars,denoise='far',star_samples=16)
+    cam.data.clip_end=3000000
+    bpy.context.view_layer.update()
+    view=cam.matrix_world.to_quaternion() @ Vector((0,0,-1))
+    # Тот же sky и пресет, что у ep004/v1: стандартные MW, плотность и блеск.
+    stars=SKY.build_sky(sc,cam,ex,
+                      gal=SKY.gal_for_view(view,tilt_deg=-35,l_center_deg=70),
+                      star_brightness=.8)
+    S.finish(sc,stars,denoise='far',star_samples=32)
     return sc,n
 
 
@@ -54,9 +59,9 @@ def keycam(cam,tgt,n,fn,step=4):
     A.set_interpolation(tgt,'LINEAR',extrapolate='LINEAR')
 
 
-def dimorphos(detail='close',rocks=7000):
+def dimorphos(detail='close',rocks=4200):
     return AST.build_asteroid('Dimorphos',radius=SY.DIMORPHOS_R,axes=SY.DIMORPHOS_AXES,
-                             seed=SY.SEED,detail=detail,boulder_count=rocks)
+                             seed=SY.SEED,detail=detail,boulder_count=rocks,texture=STONE_TEXTURE)
 
 
 def spacecraft(pos,detail='close'):
@@ -88,7 +93,7 @@ def focus(cam,target,fstop=7.1):
 
 def hero(shot,t0):
     n=SHOTS[shot]; sc=base(n,48)
-    dimorphos(rocks=7000)
+    dimorphos(rocks=4200)
     d=spacecraft((0,-185,8))
     cam,tgt=CAM.camera_rig('Cam_'+shot,lens=48,clip_start=.03)
     fps=C.scene_fps(sc)
@@ -110,13 +115,13 @@ def shot_v1():
 
 
 def shot_v2():
-    n=SHOTS['v2']; sc=base(n,48,ex=.65)
-    dimorphos(rocks=5000)
+    n=SHOTS['v2']; sc=base(n,48,ex=1.1)
+    dimorphos(rocks=3000)
     d=spacecraft((0,-150,8))
     cam,tgt=CAM.camera_rig('Cam_v2',lens=58,clip_start=.02)
     def path(f):
         t=(f-1)/(n-1)
-        return ((-4.5+3.0*t,-144+1*t,11.8-.6*t),(-.4+.6*t,-150,8.3))
+        return ((-4.5+3.0*t,-144+1*t,11.68-.6*t),(-.4+.6*t,-150,8.18))
     keycam(cam,tgt,n,path)
     focus(cam,d['root'],11)
     print('EVENT v2 spacecraft: 1:0.7')
@@ -135,8 +140,8 @@ def hide_after(root,frame,n):
 
 
 def shot_v3():
-    n=SHOTS['v3']; sc=base(n,40,ex=.65)
-    a=dimorphos(rocks=7000); p=contact_point(a)
+    n=SHOTS['v3']; sc=base(n,40,ex=1.1)
+    a=dimorphos(rocks=4200); p=contact_point(a)
     d=spacecraft(p+Vector((0,-75,0)))
     for f,pos in [(1,p+Vector((0,-75,0))),(19,p+Vector((0,-1.2,0))),(20,p)]:
         d['root'].location=pos; d['root'].keyframe_insert('location',frame=f)
@@ -153,8 +158,8 @@ def shot_v3():
 
 
 def shot_v4():
-    n=SHOTS['v4']; sc=base(n,40,ex=.65)
-    a=dimorphos(rocks=7000); p=contact_point(a)
+    n=SHOTS['v4']; sc=base(n,40,ex=1.1)
+    a=dimorphos(rocks=4200); p=contact_point(a)
     ej=IMP.build_ejecta('Ejecta',p,(0,-1,.08),a['rock_meshes'],count=14000,seed=SY.SEED,
                         speed=(1,23),size=(.035,1.4))
     IMP.key_age(ej,[(1,8.),(n,18.)])
@@ -168,10 +173,10 @@ def shot_v4():
 
 
 def shot_v5():
-    n=SHOTS['v5']; sc=base(n,32,ex=.65)
+    n=SHOTS['v5']; sc=base(n,32,ex=1.1)
     AST.build_asteroid('Didymos',radius=SY.DIDYMOS_R,axes=(1.05,1.,.87),seed=6055,
-                       detail='mid',boulder_count=850)
-    a=dimorphos(detail='mid',rocks=700)
+                       detail='mid',boulder_count=510,texture=STONE_TEXTURE)
+    a=dimorphos(detail='mid',rocks=420)
     cam,tgt=CAM.camera_rig('Cam_v5',lens=48,clip_start=.1)
     keycam(cam,tgt,n,lambda f: ((2400-260*(f-1)/(n-1),-4900,4100+180*(f-1)/(n-1)),(0,0,0)))
     for name,r,col,width in [('Before',SY.ORBIT_BEFORE,(.25,.47,.73),.8),

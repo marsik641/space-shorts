@@ -44,9 +44,9 @@
  ],
  "caption_style": {
   "size": 60,
-  "x": 0.455,
+  "x": 0.5,
   "y": 0.255,
-  "wrap": 0.73,
+  "wrap": 0.7,
   "font": "C:/Windows/Fonts/bahnschrift.ttf",
   "outline": 7,
   "color": [
@@ -74,7 +74,7 @@
     "start_s": 0,
     "length_s": 4.8,
     "size": 34,
-    "x": 0.455,
+    "x": 0.5,
     "y": 0.915,
     "font": "C:/Windows/Fonts/bahnschrift.ttf",
     "color": [
@@ -90,7 +90,7 @@
     "start_s": 4.0,
     "length_s": 6.7,
     "size": 24,
-    "x": 0.455,
+    "x": 0.5,
     "y": 0.85,
     "font": "C:/Windows/Fonts/bahnschrift.ttf",
     "color": [
@@ -105,7 +105,7 @@
     "start_s": 5.2,
     "length_s": 5.4,
     "size": 40,
-    "x": 0.455,
+    "x": 0.5,
     "y": 0.89,
     "font": "C:/Windows/Fonts/bahnschrift.ttf",
     "color": [
@@ -120,7 +120,7 @@
     "start_s": 11,
     "length_s": 13.7,
     "size": 24,
-    "x": 0.455,
+    "x": 0.5,
     "y": 0.89,
     "font": "C:/Windows/Fonts/bahnschrift.ttf",
     "color": [
@@ -135,7 +135,7 @@
     "start_s": 27,
     "length_s": 6.7,
     "size": 76,
-    "x": 0.455,
+    "x": 0.5,
     "y": 0.88,
     "font": "C:/Windows/Fonts/bahnschrift.ttf",
     "color": [
@@ -151,7 +151,7 @@
     "start_s": 27.3,
     "length_s": 6.4,
     "size": 22,
-    "x": 0.455,
+    "x": 0.5,
     "y": 0.83,
     "font": "C:/Windows/Fonts/bahnschrift.ttf",
     "color": [
@@ -166,7 +166,7 @@
     "start_s": 25.2,
     "length_s": 8.5,
     "size": 22,
-    "x": 0.455,
+    "x": 0.5,
     "y": 0.76,
     "font": "C:/Windows/Fonts/bahnschrift.ttf",
     "color": [
@@ -181,7 +181,7 @@
     "start_s": 34.3,
     "length_s": 7.1,
     "size": 28,
-    "x": 0.455,
+    "x": 0.5,
     "y": 0.89,
     "font": "C:/Windows/Fonts/bahnschrift.ttf",
     "color": [
@@ -196,7 +196,7 @@
     "start_s": 0,
     "length_s": 3.8,
     "size": 66,
-    "x": 0.455,
+    "x": 0.5,
     "y": 0.83,
     "font": "C:/Windows/Fonts/bahnschrift.ttf",
     "color": [
@@ -228,7 +228,7 @@
     "start_s": 25.2,
     "length_s": 8.5,
     "size": 31,
-    "x": 0.65,
+    "x": 0.7,
     "y": 0.7,
     "font": "C:/Windows/Fonts/bahnschrift.ttf",
     "color": [
@@ -244,7 +244,7 @@
     "start_s": 25.2,
     "length_s": 8.5,
     "size": 28,
-    "x": 0.455,
+    "x": 0.5,
     "y": 0.585,
     "font": "C:/Windows/Fonts/bahnschrift.ttf",
     "color": [
@@ -260,8 +260,8 @@
     "start_s": 25.2,
     "length_s": 8.5,
     "size": 26,
-    "x": 0.455,
-    "y": 0.355,
+    "x": 0.5,
+    "y": 0.315,
     "font": "C:/Windows/Fonts/bahnschrift.ttf",
     "color": [
      0.85,
@@ -276,7 +276,7 @@
     "start_s": 34.1,
     "length_s": 7.5,
     "size": 25,
-    "x": 0.455,
+    "x": 0.5,
     "y": 0.84,
     "font": "C:/Windows/Fonts/bahnschrift.ttf",
     "color": [
