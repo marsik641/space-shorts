@@ -1,4 +1,4 @@
-# Ep. 003 — publish pack (EN, Orbitfall)
+# Ep. 003 — publish pack (EN, The Universe Inside Out)
 
 Rules — `docs/publish.md`. Release folder — `out/ep003_trappist1/release/`.
 
@@ -58,7 +58,7 @@ Which world should we fly to next: the planet hotter than most stars, or Saturn'
 - Altered or synthetic content: **YES** — voluntary. Photorealistic views of places nobody has photographed (Blender
   render, not GenAI); the label doesn't cut reach. The TTS voice may get an automatic YouTube label anyway.
 - Playlist / series: **ALIEN WORLDS**. Related video: none yet (no long-form on TRAPPIST-1); otherwise leave empty.
-- Publish: same steady US-evening slot as the previous episodes (e.g. 18:00 ET), not the same day as ep. 002.
+- Publish: next free Tue/Thu/Sat slot, 14:00 ET (docs/publish.md, «Расписание»), not the same day as another episode.
 
 ## Cross-post (clean master, no watermarks, no YouTube links)
 - TikTok: "That's not a moon. It's the next planet over — TRAPPIST-1, 40 light-years away. Real data, rendered.

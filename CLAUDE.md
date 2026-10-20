@@ -1,6 +1,6 @@
 # space-shotrs — как работать в этом репозитории
 
-Конвейер Shorts канала **Orbitfall** (`@Orbitfall`, «Real objects. Real numbers. Rendered.»): реальные объекты +
+Конвейер Shorts канала **The Universe Inside Out** (`@TheUniverseInsideOut`, «Real objects. Real numbers. Turned inside out.»): реальные объекты +
 реальные параметры → рендер Blender Cycles → вертикальный ролик с озвучкой → пакет к загрузке. Канал — про весь космос
 (планеты, луны, звёзды, чёрные дыры, галактики, экзопланеты, кометы, миссии, масштаб, «что если»); нейтронные звёзды
 эп. 001 — только начало. Обзор и структура — `README.md`, процесс — `docs/pipeline.md`, канал — `docs/channel.md`.

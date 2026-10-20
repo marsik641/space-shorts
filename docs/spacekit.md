@@ -174,7 +174,7 @@ trail_head_deg=0, trail_len_deg=0, floor=0.06)` — эллипс-кривая (�
 Rz(node)·Rx(incl), как `orbits.add_kepler_orbit`), эмиссия + прозрачность; `trail_len_deg>0` — след гаснет назад от
 головы (угол головы — истинная аномалия; для e=0 совпадает со средней). `key_trail(ob, deg0, deg1, f0, f1)` —
 бегущий след, `point_on_orbit(a, e, M_deg)` — куда ставить тело. Не освещает сцену и не отбрасывает тени.
-Пример — `tools/brand.py` (оформление Orbitfall).
+Пример — `tools/brand.py` (оформление The Universe Inside Out).
 
 ### Voyager (`bodies.voyager`)
 

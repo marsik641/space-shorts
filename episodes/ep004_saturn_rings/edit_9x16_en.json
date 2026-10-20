@@ -1,0 +1,367 @@
+{
+ "output": "out/ep004_saturn_rings/9x16/ep004_saturn_rings_en_1080x1920p60.mp4",
+ "format": {
+  "w": 1080,
+  "h": 1920,
+  "fps": 60
+ },
+ "video": {
+  "bitrate_kbps": 40000,
+  "preset": "BEST"
+ },
+ "crossfade": 0,
+ "fade_in": 0,
+ "fade_out": 0,
+ "tail": 0,
+ "shots": [
+  {
+   "dir": "out/ep004_saturn_rings/9x16/frames/v1",
+   "frames": 330,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep004_saturn_rings/9x16/frames/v2",
+   "frames": 600,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep004_saturn_rings/9x16/frames/v3",
+   "frames": 660,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep004_saturn_rings/9x16/frames/v4",
+   "frames": 840,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep004_saturn_rings/9x16/frames/v5",
+   "frames": 540,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep004_saturn_rings/9x16/frames/v6",
+   "frames": 600,
+   "first": 1,
+   "xfade_in": 0
+  }
+ ],
+ "titles": [
+  {
+   "text": "Scientific visualization · real data",
+   "size": 30,
+   "y": 0.955,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "color": [
+    0.78,
+    0.82,
+    0.9
+   ],
+   "fade": 0,
+   "start": 1,
+   "length": 3570
+  },
+  {
+   "text": "SATURN'S RINGS",
+   "size": 58,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/Candara.ttf",
+   "color": [
+    1.0,
+    0.95,
+    0.84
+   ],
+   "fade": 12,
+   "start": 1,
+   "length": 318
+  },
+  {
+   "text": "edge-on: the rings all but disappear",
+   "size": 30,
+   "y": 0.848,
+   "font": "C:/Windows/Fonts/Candara.ttf",
+   "color": [
+    0.86,
+    0.88,
+    0.94
+   ],
+   "fade": 12,
+   "outline": 3,
+   "start": 37,
+   "length": 156
+  },
+  {
+   "text": "true scale · real sizes and distances",
+   "size": 30,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/Candara.ttf",
+   "color": [
+    0.86,
+    0.88,
+    0.94
+   ],
+   "fade": 12,
+   "outline": 3,
+   "start": 349,
+   "length": 564
+  },
+  {
+   "text": "inside the A ring · true-scale model",
+   "size": 30,
+   "y": 0.92,
+   "font": "C:/Windows/Fonts/Candara.ttf",
+   "color": [
+    0.86,
+    0.88,
+    0.94
+   ],
+   "fade": 12,
+   "outline": 3,
+   "start": 1609,
+   "length": 360
+  },
+  {
+   "text": "all ring mass as solid ice · true sizes",
+   "size": 30,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/Candara.ttf",
+   "color": [
+    0.86,
+    0.88,
+    0.94
+   ],
+   "fade": 12,
+   "outline": 3,
+   "x": 0.42,
+   "start": 2461,
+   "length": 492
+  }
+ ],
+ "captions": {
+  "size": 64,
+  "x": 0.465,
+  "y": 0.255,
+  "wrap": 0.74,
+  "font": "C:/Windows/Fonts/Candarab.ttf",
+  "outline": 8,
+  "color": [
+   1.0,
+   0.93,
+   0.76
+  ],
+  "items": [
+   {
+    "text": "Saturn's rings are",
+    "start": 10,
+    "end": 71
+   },
+   {
+    "text": "about 10 meters thick,",
+    "start": 71,
+    "end": 152
+   },
+   {
+    "text": "yet 270,000 km",
+    "start": 166,
+    "end": 278
+   },
+   {
+    "text": "across.",
+    "start": 278,
+    "end": 345
+   },
+   {
+    "text": "Between Earth",
+    "start": 361,
+    "end": 399
+   },
+   {
+    "text": "and the Moon,",
+    "start": 399,
+    "end": 444
+   },
+   {
+    "text": "they'd span 70%",
+    "start": 453,
+    "end": 520
+   },
+   {
+    "text": "of the gap.",
+    "start": 520,
+    "end": 578
+   },
+   {
+    "text": "Shrink them",
+    "start": 637,
+    "end": 672
+   },
+   {
+    "text": "to paper thickness,",
+    "start": 672,
+    "end": 738
+   },
+   {
+    "text": "and they'd still be",
+    "start": 750,
+    "end": 827
+   },
+   {
+    "text": "almost 3 km across.",
+    "start": 827,
+    "end": 911
+   },
+   {
+    "text": "Up close, they split",
+    "start": 961,
+    "end": 1031
+   },
+   {
+    "text": "into ringlets and gaps,",
+    "start": 1031,
+    "end": 1118
+   },
+   {
+    "text": "one kept open by a moon",
+    "start": 1132,
+    "end": 1250
+   },
+   {
+    "text": "just 28 km wide.",
+    "start": 1250,
+    "end": 1341
+   },
+   {
+    "text": "They're not solid:",
+    "start": 1495,
+    "end": 1560
+   },
+   {
+    "text": "countless chunks",
+    "start": 1597,
+    "end": 1656
+   },
+   {
+    "text": "of almost pure water ice,",
+    "start": 1656,
+    "end": 1753
+   },
+   {
+    "text": "from specks of dust",
+    "start": 1766,
+    "end": 1834
+   },
+   {
+    "text": "to blocks",
+    "start": 1834,
+    "end": 1869
+   },
+   {
+    "text": "as big as a house.",
+    "start": 1869,
+    "end": 1941
+   },
+   {
+    "text": "Each circles Saturn",
+    "start": 1951,
+    "end": 2053
+   },
+   {
+    "text": "at about 60,000 km/h,",
+    "start": 2053,
+    "end": 2172
+   },
+   {
+    "text": "yet neighbors drift by",
+    "start": 2185,
+    "end": 2263
+   },
+   {
+    "text": "at a snail's pace:",
+    "start": 2263,
+    "end": 2334
+   },
+   {
+    "text": "millimeters per second.",
+    "start": 2351,
+    "end": 2433
+   },
+   {
+    "text": "Crush all that ice",
+    "start": 2455,
+    "end": 2519
+   },
+   {
+    "text": "into one ball:",
+    "start": 2519,
+    "end": 2577
+   },
+   {
+    "text": "about 320 km wide,",
+    "start": 2590,
+    "end": 2759
+   },
+   {
+    "text": "smaller than",
+    "start": 2778,
+    "end": 2821
+   },
+   {
+    "text": "Saturn's little moon",
+    "start": 2821,
+    "end": 2889
+   },
+   {
+    "text": "Mimas.",
+    "start": 2889,
+    "end": 2919
+   },
+   {
+    "text": "And it's raining",
+    "start": 2995,
+    "end": 3045
+   },
+   {
+    "text": "onto Saturn:",
+    "start": 3045,
+    "end": 3091
+   },
+   {
+    "text": "an Olympic pool's worth",
+    "start": 3102,
+    "end": 3180
+   },
+   {
+    "text": "every half hour.",
+    "start": 3180,
+    "end": 3243
+   },
+   {
+    "text": "In a few hundred",
+    "start": 3349,
+    "end": 3397
+   },
+   {
+    "text": "million years,",
+    "start": 3397,
+    "end": 3447
+   },
+   {
+    "text": "the rings may be gone.",
+    "start": 3453,
+    "end": 3534
+   }
+  ]
+ },
+ "audio": [
+  {
+   "path": "out/ep004_saturn_rings/9x16/audio/mix_en.wav",
+   "start": 1,
+   "volume": 1.0
+  }
+ ]
+}

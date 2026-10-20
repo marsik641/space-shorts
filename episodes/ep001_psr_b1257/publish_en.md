@@ -1,6 +1,6 @@
-# Ep. 001 — publish pack (EN, Orbitfall)
+# Ep. 001 — publish pack (EN, The Universe Inside Out)
 
-Channel: **Orbitfall** (`@Orbitfall`) · series **DEAD STARS** · release folder: `out/ep001_psr_b1257/release/`
+Channel: **The Universe Inside Out** (`@TheUniverseInsideOut`) · series **DEAD STARS** · release folder: `out/ep001_psr_b1257/release/`
 
 **Files:**
 - `ep001_psr_b1257_en_1080x1920p60.mp4` — master for YouTube (59.98 s = 3599 frames, 1080×1920, 60 fps)
@@ -51,8 +51,8 @@ This is the first episode of DEAD STARS — one series of many across the whole 
 ## Studio settings
 - Audience: **Not made for kids**. Category: **Science & Technology**. Language: English.
 - **Altered or synthetic content: YES (voluntary, conservative)** — photorealistic rendering of a scene that can't be filmed (planets, beams, auroras). Required by the help page for GenAI; a Blender render is formally not GenAI. The label doesn't reduce reach or monetization. The TTS voice may also get an automatic AI label in the description (C2PA/detection) — fine.
-- Playlist / series: **DEAD STARS** (Orbitfall). Related video: the long-form version when it exists.
-- Publish: steady evening slot for US viewers (e.g. 18:00 ET), same slot for the series.
+- Playlist / series: **DEAD STARS** (The Universe Inside Out). Related video: the long-form version when it exists.
+- Publish: next free Tue/Thu/Sat slot, 14:00 ET (docs/publish.md, «Расписание»).
 
 ## Cross-post (clean master, no watermarks)
 - **TikTok / Reels:** `A dead star spins 161 times per second — and the first confirmed exoplanets orbit it. 🌌 Real data, rendered. #space #astronomy #pulsar`

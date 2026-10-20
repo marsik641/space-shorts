@@ -292,6 +292,9 @@ def shot_v2():
     rr = ruler("RulerRings", R0, R1, cam, RULER_COL, 110, 190)
     for ln in rl + rr:
         fade_line(ln, 400, 430)
+    # для tools/framecheck: линейки и подписи появляются и гаснут — скачок размера PNG задуман (финал ep004: f112, f427).
+    # tools/cues.py с --events-to pulses превратит их в удары — для v2 исключать: --exclude v2:1-600
+    event("v2", "overlay", [112, 427])
     labels = [
         LB.build_label("Lbl_Earth", "EARTH", tuple(E), cam, px=40, offset_px=(0, -44), color=LABEL_COL),
         LB.build_label("Lbl_Moon", "MOON", tuple(Mo), cam, px=40, offset_px=(0, -36), color=LABEL_COL),
