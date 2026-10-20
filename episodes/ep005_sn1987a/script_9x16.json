@@ -1,0 +1,52 @@
+{
+ "title": "SN 1987A — the star Earth felt before it saw",
+ "duration_s": 59.5,
+ "caption_max_chars": 26,
+ "voices": {
+  "en": {"engine": "kokoro", "voice": "af_heart", "speed": 0.98, "lang": "en-us"}
+ },
+ "segments": [
+  {
+   "at": 0.3,
+   "shot": "v1",
+   "en": "In nineteen eighty-seven, Earth felt a star explode, hours before anyone could see it.",
+   "en_cap": "In 1987, Earth felt | a star explode, | hours before anyone | could see it."
+  },
+  {
+   "at": 5.0,
+   "shot": "v2",
+   "en": "It burned hydrogen for some ten million years, and silicon for only about two weeks, down to an iron core the size of Earth.",
+   "en_cap": "It burned hydrogen | for ~10 million years, | and silicon for only | about 2 weeks, | down to an iron core | the size of Earth."
+  },
+  {
+   "at": 14.0,
+   "shot": "v3",
+   "en": "Iron can't burn. In under a second, the core collapsed to the size of a city, and fired out ten to the fifty-eight neutrinos.",
+   "en_cap": "Iron can't burn. | In under a second, | the core collapsed | to the size of a city, | and fired out | ten to the fifty-eight | neutrinos."
+  },
+  {
+   "at": 22.5,
+   "shot": "v4",
+   "en": "They flew straight through the star. The shockwave took about two hours to reach the surface.",
+   "en_cap": "They flew straight | through the star. | The shockwave took | about 2 hours | to reach the surface."
+  },
+  {
+   "at": 29.1,
+   "shot": "v5",
+   "en": "A hundred and sixty-eight thousand years later, they came up through more than four thousand kilometers of rock, into a water tank in Japan. It caught twelve.",
+   "en_cap": "168,000 years later, | they came up through | over 4,000 km of rock, | into a water tank | in Japan. | It caught 12."
+  },
+  {
+   "at": 39.2,
+   "shot": "v6",
+   "en": "Hours later came the light: the first supernova seen by eye since sixteen-oh-four. Then its debris hit a ring the star had shed twenty thousand years before.",
+   "en_cap": "Hours later | came the light: | the first naked-eye | supernova since 1604. | Then its debris | hit a ring the star | had shed 20,000 | years before."
+  },
+  {
+   "at": 49.2,
+   "shot": "v7",
+   "en": "In twenty twenty-four, Webb found its likely heart: a neutron star, hidden in the dust. The one whose neutrinos got here first.",
+   "en_cap": "In 2024, Webb found | its likely heart: | a neutron star, | hidden in the dust. | The one whose neutrinos | got here first."
+  }
+ ]
+}
