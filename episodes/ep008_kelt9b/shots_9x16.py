@@ -31,6 +31,9 @@ import system as SY
 
 EP = "ep008_kelt9b"
 OUT = os.path.join(C.OUT, EP, "9x16")
+# Стандартный NVIDIA-кеш недоступен из sandbox; отдельная короткая папка эпизода.
+os.environ.setdefault("OPTIX_CACHE_PATH", os.path.join(C.OUT, "oc8"))
+os.makedirs(os.environ["OPTIX_CACHE_PATH"], exist_ok=True)
 S.OPT.update(fmt="9x16", fps=60)
 SHOTS = {"v1": 360, "v2": 660, "v3": 600, "v4": 600, "v5": 660, "v6": 690}
 
