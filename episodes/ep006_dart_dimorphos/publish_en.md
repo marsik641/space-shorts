@@ -4,10 +4,10 @@ Channel: **The Universe Inside Out** (`@TheUniverseInsideOut`) · series: **ORBI
 Release folder: `out/ep006_dart_dimorphos/release/`.
 
 **Files:**
-- `ep006_dart_dimorphos_en_1080x1920p60.mp4` — clean master for upload; target 42.0 s / 2520 frames, 1080×1920, 60 fps.
+- `ep006_dart_dimorphos_en_1080x1920p60.mp4` — clean H.264/AAC master; 42.000 s video / 42.005 s container, 2520 frames, 1080×1920, 60 fps; 133,263,214 bytes (133.3 MB).
 - `publish_en.md` — this file.
 
-Facts checked: 20 October 2026. Final technical QA must pass before the release package is handed over.
+Facts checked: 20 October 2026. Final frame integrity, technical and visual QA: **PASS, 21 October 2026**.
 
 ## Title (pick one)
 
