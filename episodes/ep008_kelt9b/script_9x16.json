@@ -1,0 +1,17 @@
+{
+ "title": "KELT-9b — a planet in stellar heat",
+ "duration_s": 59.5,
+ "caption_max_chars": 26,
+ "voices": {"en": {"engine": "kokoro", "voice": "af_heart", "speed": 0.98, "lang": "en-us"}},
+ "segments": [
+  {"at": 0.18, "shot": "v1", "en": "This gas giant's dayside is hotter than the surfaces of some stars.", "en_cap": "This gas giant's dayside | is hotter than | the surfaces of | some stars."},
+  {"at": 6.2, "shot": "v2", "en": "Spitzer's infrared data put its dayside near forty-six hundred kelvin.", "en_cap": "Spitzer's infrared data | put its dayside near | 4,600 kelvin."},
+  {"at": 11.65, "shot": "v2", "en": "Even the night glows at roughly twenty-six hundred kelvin, despite facing away.", "en_cap": "Even the night glows at | roughly 2,600 kelvin, | despite facing away."},
+  {"at": 17.25, "shot": "v3", "en": "Models suggest heat splits hydrogen molecules into atoms, absorbing energy. Gas carries them toward the cooler night.", "en_cap": "Models suggest heat | splits hydrogen molecules | into atoms, | absorbing energy. | Gas carries them toward | the cooler night."},
+  {"at": 27.2, "shot": "v4", "en": "There, atoms can join back into molecules, releasing energy. That helps move heat around the planet, through chemical changes.", "en_cap": "There, atoms can join | back into molecules, | releasing energy. | That helps move heat | around the planet, | through chemical changes."},
+  {"at": 37.2, "shot": "v5", "en": "Its whole year lasts about thirty-six hours, on an orbit almost over its star's poles.", "en_cap": "Its whole year lasts | about 36 hours, | on an orbit almost over | its star's poles."},
+  {"at": 43.5, "shot": "v5", "en": "A gas giant, almost twice Jupiter's radius.", "en_cap": "A gas giant, | almost twice | Jupiter's radius."},
+  {"at": 48.2, "shot": "v6", "en": "There is no solid surface to stand on, even on the nightside.", "en_cap": "There is no solid surface | to stand on, | even on the nightside."},
+  {"at": 54.3, "shot": "v6", "en": "A planet, with a dayside hotter than some stellar surfaces.", "en_cap": "A planet, with a dayside | hotter than | some stellar surfaces."}
+ ]
+}

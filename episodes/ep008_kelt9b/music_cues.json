@@ -1,0 +1,12 @@
+{
+ "duration_s": 59.5, "seed": 80921, "key": "Ab",
+ "chords": [[0, "Abmaj7#11"], [6, "Bb6"], [17, "Cm9"], [27, "Ebmaj9"], [37, "Bbadd9"], [48, "Abmaj9"], [55, "Eb7sus4"]],
+ "pulses": [], "risers": [], "fade_out_s": 0.35, "bpm": null,
+ "layers": {"drone": 0.65, "pad": 0.85, "sparks": 0.5, "wind": 0.22, "pulse": 0.45, "riser": 0.38},
+ "pad": {"harmonics": 5, "rolloff": 1.9, "detune": 0.07, "attack": 1.8, "release": 2.4, "octave": -1},
+ "sparks": {"mode": "lydian", "every_s": 3.3, "octave": 1},
+ "pulse": {"freq_hz": 207.65, "sweep_hz": 12, "decay": 12, "click": 0.06, "length_s": 0.4},
+ "reverb": {"seconds": 2.6, "mix": 0.28},
+ "mix": {"music_db": -21, "duck_db": -8},
+ "note": "Своя музыка: Ab лидийский. Акценты на диссоциации и рекомбинации; pulses/risers заполняются cues по EVENT. Не запись космического звука."
+}

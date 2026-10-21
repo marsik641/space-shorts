@@ -35,6 +35,21 @@ planets 1025 (3 kind ≈ 80–150 строк материала на kind), dust
 
 ## 2. Шпаргалка API
 
+### Ультрагорячие газовые гиганты — ep008
+
+`bodies.ultrahot.build_ultrahot(name, radius, location, parent, day_k, night_k,
+sun_dir, seed, strength, detail)` → `root/body/mat/radius/day_k/night_k`.
+Самосветящаяся газовая фотосфера: цвет чёрного тела, контраст порядка T⁴,
+плавные полосы и деформация течений. `key_flow(body, [(frame, value), ...])`
+анимирует рисунок ключами без драйверов. Нет твёрдого рельефа и объёмной симуляции.
+`sun_dir` — направление в локальных осях тела. Имена/материалы имеют префикс;
+существующие kind и API планет/звёзд не изменены.
+
+Температуры яркости полушарий не превращаются в измеренную карту атмосферы:
+градиент, цвет и течения — иллюстрация. Нет моделей переноса газа, ветра,
+диссоциации, химии, испарения и гравитационного потемнения звезды.
+Молекулярные сцены ep008 — явно подписанная схема в коде эпизода.
+
 Импорт в скрипте шота: `from spacekit import core as C, camera as CAM, shot as S, sky as SKY, orbits as ORB, lighting as LT`,
 `from spacekit.bodies import neutron_star as NS, planets as PL`, `from spacekit.fx import dust_ring as DR`.
 
