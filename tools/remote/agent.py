@@ -176,9 +176,17 @@ def pid_alive(pid):
 
 def status_dict(ep):
     st = jload(STATUS, {}) or {}
-    running = os.path.exists(LOCK) and pid_alive(st.get("pid"))
+    lease = jload(LOCK, {}) or {}
+    queue_running = lease.get("queue") and pid_alive(lease.get("pid"))
+    processes = False
+    if WIN:
+        processes = b"blender.exe" in subprocess.run(
+            ["tasklist", "/FI", "IMAGENAME eq blender.exe", "/NH"], capture_output=True).stdout.lower()
+    running = bool(os.path.exists(LOCK) or queue_running or processes)
     res = {"running": running, "state": st.get("state"), "current": st.get("current"), "started": st.get("started"),
            "errors": st.get("errors", []), "device": st.get("device")}
+    if lease.get("queue"):
+        res.update(state="queue", current=lease.get("label"), started=None)
     ep = ep or st.get("ep")
     if ep:
         exp = expected_frames(ep)
@@ -204,36 +212,8 @@ def cmd_status(a):
 
 # ---------------------------------------------------------------- запуск/остановка
 def cmd_start(a):
-    if os.path.exists(LOCK) and status_dict(None)["running"]:
-        print("ОШИБКА: рендер уже идёт:", open(LOCK, encoding="utf-8").read().strip())
-        sys.exit(2)
-    b = find_blender(a.blender)
-    if not b:
-        print("ОШИБКА: Blender не найден (--blender PATH)")
-        sys.exit(2)
-    shots = [s for s in a.shots.split(",") if s]
-    jdump({"ep": a.ep, "shots": shots, "blender": b, "device": a.device or ""}, JOB)
-    agent = os.path.abspath(__file__)
-    if WIN:
-        pyw = os.path.join(os.path.dirname(sys.executable), "pythonw.exe")
-        py = pyw if os.path.exists(pyw) else sys.executable
-        tr = f'"{py}" "{agent}" run'
-        if len(tr) > 255:
-            print("ОШИБКА: слишком длинный путь для Планировщика:", tr)
-            sys.exit(2)
-        subprocess.run(["schtasks", "/Create", "/F", "/TN", TASK, "/SC", "ONCE", "/ST", "23:59", "/TR", tr],
-                       check=True, capture_output=True)
-        subprocess.run(["schtasks", "/Run", "/TN", TASK], check=True, capture_output=True)
-    else:
-        log = open(os.path.join(OUT, "remote_agent.log"), "a")
-        subprocess.Popen([sys.executable, agent, "run"], stdout=log, stderr=log, stdin=subprocess.DEVNULL,
-                         start_new_session=True, cwd=ROOT)
-    for _ in range(30):
-        time.sleep(1)
-        if os.path.exists(LOCK):
-            print("OK: рендер запущен:", open(LOCK, encoding="utf-8").read().strip())
-            return
-    print("WARN: lock не появился за 30 с — смотрите out/remote_agent.log")
+    print("ОШИБКА: прямой start заменён очередью. На клиенте: tools/render_queue.py submit frames <episode.json> --approved <одобрение>")
+    sys.exit(2)
 
 
 def keep_awake(on):
@@ -302,6 +282,9 @@ def cmd_run(a):
 
 
 def cmd_stop(a):
+    if (jload(LOCK, {}) or {}).get("queue"):
+        print("ОШИБКА: это задание очереди; отменяй его через render_queue.py cancel JOB")
+        sys.exit(2)
     st = jload(STATUS, {}) or {}
     pid = st.get("pid")
     if WIN:

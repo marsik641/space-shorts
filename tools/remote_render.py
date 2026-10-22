@@ -4,7 +4,7 @@
     python tools/remote_render.py setup  --host user@100.x.y.z [--root D:/orbitfall] [--py python] [--ep EP]
     python tools/remote_render.py push   [--ep EP] [--assets]             залить код (после правок шотов/библиотеки)
     python tools/remote_render.py check                                    окружение там: Blender, GPU, шрифты, диск
-    python tools/remote_render.py start  [--ep EP] [--shots v1,v2] [--device OPTIX]
+    python tools/remote_render.py start  --ep EP --approved 'одобрение' [--shots v1,v2]  кадры через очередь
     python tools/remote_render.py status [--ep EP]
     python tools/remote_render.py pull   [--ep EP] [--watch] [--every 300] забрать готовые кадры (с проверкой PNG;
                                                                            все пришли — tools/framecheck.py, FAIL → код 1)
@@ -159,11 +159,17 @@ def cmd_check(a):
 
 # ---------------------------------------------------------------- рендер
 def cmd_start(a):
-    c = conf(a)
-    ep = a.ep or default_ep()
-    shots = a.shots or ",".join(expected(ep))
-    dev = f" --device {a.device}" if a.device else ""
-    print(agent(c, f"start --ep {ep} --shots {shots}{dev}").strip())
+    if not a.ep:
+        sys.exit("Для очереди нужен явный --ep (несколько чатов не должны брать последний эпизод)")
+    if a.device:
+        sys.exit("Устройство задаётся окружением рендер-ПК (SPACEKIT_DEVICE); смена устройства в очереди не поддержана")
+    if any((a.host, a.root, a.py)):
+        sys.exit("Настройки ПК сохраняются через setup; очередь использует out/remote.json основной рабочей копии")
+    cmd = [sys.executable, os.path.join(REPO, "tools", "render_queue.py"), "submit", "frames",
+           os.path.join(REPO, "episodes", a.ep, "episode.json"), "--target", "remote", "--approved", a.approved or ""]
+    if a.shots:
+        cmd += ["--shots", a.shots]
+    raise SystemExit(subprocess.run(cmd).returncode)
 
 
 def local_done(ep, shot):
@@ -291,15 +297,9 @@ def cmd_stop(a):
 # ---------------------------------------------------------------- какой ПК свободен
 def local_busy():
     """Здесь занято: out/RENDER.lock или любой blender.exe (рендер, превью, сборка — один Blender за раз)."""
-    why = []
-    if os.path.exists(os.path.join(REPO, "out", "RENDER.lock")):
-        why.append("out/RENDER.lock: " + open(os.path.join(REPO, "out", "RENDER.lock"), encoding="utf-8",
-                                               errors="replace").read().strip())
-    if os.name == "nt":
-        r = subprocess.run(["tasklist", "/FI", "IMAGENAME eq blender.exe", "/NH"], capture_output=True)
-        if b"blender.exe" in r.stdout.lower():
-            why.append("blender.exe в процессах")
-    return why
+    from queue_runtime import busy_reason, queue_home
+    reason = busy_reason(queue_home(REPO))
+    return [reason] if reason else []
 
 
 def cmd_free(a):
@@ -355,6 +355,7 @@ def main():
             p.add_argument("--shots")
         if name == "start":
             p.add_argument("--device", help="OPTIX|CUDA|HIP|ONEAPI|METAL|CPU (по умолчанию — первое доступное)")
+            p.add_argument("--approved", help="запись одобрения пользователя; start теперь ставит кадры в очередь")
         if name == "pull":
             p.add_argument("--watch", action="store_true")
             p.add_argument("--every", type=int, default=300)
