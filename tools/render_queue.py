@@ -31,6 +31,11 @@ ROOT = Path(__file__).resolve().parents[1]
 TERMINAL = ("done", "needs_review", "cancelled", "failed")
 
 
+def main_root():
+    """Основная копия (там .venv, веса TTS и постоянный worker), даже если клиент вызван из worktree."""
+    return queue_home(ROOT).parent.parent
+
+
 class Store:
     def __init__(self, home):
         self.home = Path(home).absolute()
@@ -113,9 +118,14 @@ def step(name, argv, log, lane="local", outputs=()):
     return dict(name=name, argv=list(map(str, argv)), log=log, lane=lane, outputs=list(outputs))
 
 
-def plan_episode(ep, episode_rel, kind, shots=None, frames=None, pct=50, samples=None, chunk=120, with_tts=False):
+def plan_episode(ep, episode_rel, kind, shots=None, frames=None, pct=50, samples=None, chunk=120, with_tts=False,
+                 hero=False):
+    """hero — превью в финальном качестве: кадры в <base>/hero/, лист sheet_hero.png по первому кадру шота."""
     eid, fmt = ep["id"], ep.get("format_name", "9x16")
     base = f"out/{eid}/{fmt}"
+    if hero and kind != "preview":
+        raise ValueError("--hero — только для submit preview")
+    shelf, tag = ("hero", "hero") if hero else ("previews", "prev")
     script = ep.get("shots_script", f"episodes/{eid}/shots_{fmt}.py")
     script_json = ep.get("script", f"episodes/{eid}/script_{fmt}.json")
     cues = ep.get("music_cues", f"episodes/{eid}/music_cues.json")
@@ -142,8 +152,10 @@ def plan_episode(ep, episode_rel, kind, shots=None, frames=None, pct=50, samples
             args = ["preview", ",".join(map(str, fs)), f"pct={pct}"]
             if samples is not None:
                 args += [f"samples={samples}"]
-            outputs = [f"{base}/previews/{shot}_f{f:04d}.png" for f in fs]
-            plan.append(step(f"preview {shot}", cmd + args, f"{base}/logs/prev_{shot}.log", "render", outputs))
+            if hero:
+                args += [f"outdir={base}/hero"]
+            outputs = [f"{base}/{shelf}/{shot}_f{f:04d}.png" for f in fs]
+            plan.append(step(f"{tag} {shot}", cmd + args, f"{base}/logs/{tag}_{shot}.log", "render", outputs))
         else:
             for start in range(first, end + 1, chunk):
                 last = min(end, start + chunk - 1)
@@ -151,9 +163,11 @@ def plan_episode(ep, episode_rel, kind, shots=None, frames=None, pct=50, samples
                 plan.append(step(f"render {shot} {start}-{last}", cmd + ["final", f"queue_range={start}-{last}"],
                                  f"out/logs/{eid}/render_{shot}.log", "render", outputs))
     if kind == "preview":
-        images = [p for s in plan for p in s["outputs"]]
+        # Hero: в лист — первый кадр шота (соседние нужны только для замера с/кадр); лист тайминга не трогается.
+        images = [s["outputs"][0] for s in plan[1:]] if hero else [p for s in plan for p in s["outputs"]]
+        sheet, cols, width = (base + "/sheet_hero.png", "4", "360") if hero else (base + "/sheet_prev.png", "4", "270")
         plan.append(step("contact", ["BLENDER", "-b", "--factory-startup", "--python-exit-code", "1", "-P", "tools/contact.py", "--",
-                                     base + "/sheet_prev.png", "4", "270", *images], "out/queue_contact.log", outputs=[base + "/sheet_prev.png"]))
+                                     sheet, cols, width, *images], "out/queue_contact.log", outputs=[sheet]))
     else:
         args = ["--shots", ",".join(selected)] if kind == "frames" else []
         plan.append(step("framecheck", ["PYTHON", "tools/framecheck.py", episode_rel, *args], "out/queue_frames.log"))
@@ -186,10 +200,9 @@ def snapshot(source, dest, episode_rel):
         shutil.copy2(ROOT / "tools" / name, dest / "tools" / name)
     if (source / "assets").is_dir():
         shutil.copytree(source / "assets", dest / "assets", ignore=shutil.ignore_patterns("tts", "__pycache__"))
-    tts_root = source / "assets" / "tts"
-    if not tts_root.is_dir():
-        tts_root = ROOT / "assets" / "tts"
-    if tts_root.is_dir():
+    # В worktree весов нет (gitignore): берём из основной копии.
+    tts_root = next((r / "assets" / "tts" for r in (source, main_root(), ROOT) if (r / "assets" / "tts").is_dir()), None)
+    if tts_root:
         (dest / "assets" / "tts").mkdir(parents=True)
         for p in tts_root.iterdir():
             if p.is_file():
@@ -241,7 +254,9 @@ def submit(store, a):
         plan = [step("task " + script, ["BLENDER", "-b", "--factory-startup", "--python-exit-code", "1", "-P",
                                        "tools/queue_blender.py", "--", script, *a.args], "out/queue_task.log")]
     else:
-        plan = plan_episode(frozen_ep, episode_rel, a.kind, a.shots, a.frames, a.pct, a.samples, a.chunk, a.with_tts)
+        hero = getattr(a, "hero", False)
+        pct = a.pct if a.pct is not None else (100 if hero else 50)
+        plan = plan_episode(frozen_ep, episode_rel, a.kind, a.shots, a.frames, pct, a.samples, a.chunk, a.with_tts, hero)
     fingerprint = hashlib.sha256((fingerprint + json.dumps(plan, sort_keys=True)).encode()).hexdigest()
     if a.kind in ("frames", "final"):
         # Только снимок, прошедший preflight, получает разрешение расходовать GPU.
@@ -421,7 +436,7 @@ class Remote:
 
 def python_for(job):
     source = Path(job["source"])
-    for root in (source, ROOT):
+    for root in (source, main_root(), ROOT):
         for rel in (".venv/Scripts/python.exe", ".venv/bin/python"):
             if (root / rel).is_file():
                 return str(root / rel)
@@ -528,15 +543,17 @@ def start_worker(store):
     pyw = py.with_name("pythonw.exe")
     if os.name == "nt" and pyw.is_file():
         py = pyw
+    # Постоянный worker — из основной копии: worktree удаляются, а автозапуск при входе не должен вести в пустоту.
+    home_root = main_root() if (main_root() / "tools/render_queue.py").is_file() else ROOT
     if os.name == "nt":
         # Планировщик создаёт процесс вне дерева чата/ssh и не ограничивает его 72 часами.
         # Отдельные Execute/Arguments также обходят лимит schtasks /TR в 255 символов.
         quote = lambda value: "'" + str(value).replace("'", "''") + "'"
-        args = subprocess.list2cmdline([str(ROOT / "tools/render_queue.py"), "--home", str(store.home), "work"])
+        args = subprocess.list2cmdline([str(home_root / "tools/render_queue.py"), "--home", str(store.home), "work"])
         name = "SpaceShortsQueue-" + hashlib.sha256(str(store.home).lower().encode()).hexdigest()[:12]
         script = (
             "$ErrorActionPreference='Stop';"
-            f"$action=New-ScheduledTaskAction -Execute {quote(py)} -Argument {quote(args)} -WorkingDirectory {quote(ROOT)};"
+            f"$action=New-ScheduledTaskAction -Execute {quote(py)} -Argument {quote(args)} -WorkingDirectory {quote(home_root)};"
             "$sid=[System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value;"
             "$principal=New-ScheduledTaskPrincipal -UserId $sid -LogonType Interactive -RunLevel Limited;"
             "$trigger=New-ScheduledTaskTrigger -AtLogOn -User $sid;"
@@ -556,7 +573,7 @@ def start_worker(store):
         return
     env = dict(os.environ, SPACEKIT_QUEUE_HOME=str(store.home), PYTHONIOENCODING="utf-8")
     with open(store.home / "worker.log", "ab") as log:
-        subprocess.Popen([str(py), str(ROOT / "tools/render_queue.py"), "work"], cwd=ROOT,
+        subprocess.Popen([str(py), str(home_root / "tools/render_queue.py"), "work"], cwd=home_root,
                          stdin=subprocess.DEVNULL, stdout=log, stderr=log, env=env,
                          creationflags=(0x00000008 | 0x00000200 | NO_WINDOW) if os.name == "nt" else 0,
                          start_new_session=os.name != "nt")
@@ -643,8 +660,10 @@ def main():
     p.add_argument("--target", choices=("auto", "local", "remote"), default="auto")
     p.add_argument("--shots")
     p.add_argument("--frames", help="кадры превью; по умолчанию четыре на каждый шот")
-    p.add_argument("--pct", type=int, default=50)
+    p.add_argument("--pct", type=int, help="по умолчанию 50, с --hero — 100")
     p.add_argument("--samples", type=int)
+    p.add_argument("--hero", action="store_true",
+                   help="preview в финальном качестве: out/<ep>/9x16/hero/ и sheet_hero.png (сэмплы — из кода шота)")
     p.add_argument("--chunk", type=int, default=120)
     p.add_argument("--with-tts", action="store_true")
     p.add_argument("--priority", type=int)
@@ -663,7 +682,8 @@ def main():
         if cmd == "retry":
             p.add_argument("--rerender-shots", help="вернуться к рендеру v1,v2 после удаления плохих кадров в снимке и на remote")
     a = ap.parse_args()
-    if a.cmd == "submit" and (a.chunk < 1 or not 1 <= a.pct <= 100 or (a.samples is not None and a.samples < 1)):
+    if a.cmd == "submit" and (a.chunk < 1 or (a.pct is not None and not 1 <= a.pct <= 100)
+                              or (a.samples is not None and a.samples < 1)):
         ap.error("chunk/samples > 0; pct в диапазоне 1…100")
     store = Store(Path(a.home) if a.home else queue_home(ROOT))
     if a.cmd == "work" and sys.stdout is None:
