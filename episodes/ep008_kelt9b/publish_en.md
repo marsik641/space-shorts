@@ -30,7 +30,7 @@ Sources:
 
 Rendered in Blender Cycles · scientific visualization / artist's impression.
 Published infrared brightness temperatures retain Mansfield et al.'s stellar calibration; geometric scales follow Borsa et al. These are separate published estimates, not a joint fit.
-The atmosphere's appearance and spatial temperature gradient are illustrative; the measured temperatures describe hemisphere-integrated brightness in one infrared band. Molecular scenes are model-based illustrations, not observations of individual particles. The orbital view uses nominal physical dimensions, an illustrative oblate star, a circular orbit and accelerated time (one orbit in eight screen seconds). Synchronous planetary rotation is assumed. The nearly polar geometry is model-based; no resolved image of this planet is shown. All music is original synthesis.
+The atmosphere's appearance and spatial temperature gradient are illustrative; the measured temperatures describe hemisphere-integrated brightness in one infrared band. Molecular scenes are model-based illustrations, not observations of individual particles; the expanding light ring is a graphic symbol for energy release. The size comparison uses a circle for Jupiter's nominal radius. The orbital view uses nominal physical dimensions, an illustrative oblate star, a circular orbit and accelerated time (one orbit in eight screen seconds). Synchronous planetary rotation is assumed. The nearly polar geometry is model-based; no resolved image of this planet is shown. All music is original synthesis.
 
 #space #astronomy #KELT9b #exoplanets
 

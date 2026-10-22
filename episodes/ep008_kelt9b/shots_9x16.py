@@ -74,8 +74,16 @@ def hero(shot, offset):
     cam, tgt = CAM.camera_rig("K9_Hero", lens=55)
     fps = C.scene_fps(sc)
     frames = sorted(set([1, n, n + 1] + list(range(1, n + 2, 6))))
-    CAM.key_camera(cam, tgt, [dict(frame=f, **hero_camera(offset + (f - 1) / fps))
-                              for f in frames], ipo="LINEAR")
+    keys = []
+    for f in frames:
+        key = hero_camera(offset + (f - 1) / fps)
+        if shot == "v6":
+            u = min(1.0, (f - 1) / (7.0 * fps))
+            blend = 1.0 - u * u * (3.0 - 2.0 * u)
+            key["loc"] = tuple(Vector(key["loc"]) * (1.0 - 0.35 * blend))
+            key["target"] = (0, 0, -0.13 + 0.35 * blend)
+        keys.append(dict(frame=f, **key))
+    CAM.key_camera(cam, tgt, keys, ipo="LINEAR")
     p = planet()
     UH.key_flow(p, [(f, 0.42 + 0.01 * (offset + (f - 1) / fps)) for f in (1, n + 1)])
     stars = sky(sc, cam, ex)
@@ -95,11 +103,11 @@ def shot_v2():
     n = SHOTS["v2"]
     ex = -0.8
     sc = base(n, ex)
-    cam, tgt = CAM.camera_rig("K9_Terminator", lens=58)
+    cam, tgt = CAM.camera_rig("K9_Terminator", lens=52)
     CAM.key_camera(cam, tgt, [
-        dict(frame=1, loc=CAM.sph(7.5, -58, 11), target=(0, 0, -0.1), lens=58),
-        dict(frame=320, loc=CAM.sph(7.0, -97, 9), target=(0, 0, -0.1)),
-        dict(frame=n, loc=CAM.sph(7.4, -143, 7), target=(0, 0, -0.1)),
+        dict(frame=1, loc=CAM.sph(4.3, -58, 11), target=(0, 0, 0.22), lens=52),
+        dict(frame=320, loc=CAM.sph(3.8, -97, 9), target=(0, 0, 0.22)),
+        dict(frame=n, loc=CAM.sph(4.2, -143, 7), target=(0, 0, 0.22)),
     ], ipo="LINEAR")
     p = planet()
     UH.key_flow(p, [(1, 0.48), (n, 0.59)])
@@ -178,7 +186,7 @@ def molecular(shot, recombine=False):
         dict(frame=n, loc=(-0.15, -12.2, 2.05), target=(0, 0, 0.5)),
     ], ipo="LINEAR")
     bg = planet("K9_Background", radius=8.0, location=(0, 10, -6.8), detail="mid", strength=2.0)
-    bg["root"].rotation_euler[2] = math.radians(-100 if recombine else -35)
+    bg["root"].rotation_euler[2] = math.radians(100 if recombine else -35)
     UH.key_flow(bg, [(1, 0.7), (n, 0.8)])
     diagram_light("MoleculeKey", (-3, -4, 5), 700, (1.0, 0.75, 0.45), 5)
     diagram_light("MoleculeRim", (3, 2, 3), 900, (0.7, 0.8, 1.0), 4)
@@ -191,27 +199,53 @@ def molecular(shot, recombine=False):
         unbound = 1.18 if k == 0 else 0.55
         split_a, split_b = (unbound, r * 1.45) if recombine else (r * 1.45, unbound)
         atoms = [sphere(f"H_{k}_{side}", r, (cx, cy, cz), mat) for side in (0, 1)]
-        for f, s in [(1, split_a), (145, split_a), (355, split_b), (n, split_b)]:
+        for f, s in [(1, split_a), (60, split_a), (300, split_b), (n, split_b)]:
+            drift = (0.4 if recombine else 0.0) + 0.4 * (f - 1) / (n - 1)
             for side, ob in enumerate(atoms):
                 sign = 2 * side - 1
-                ob.location = (cx + sign * s, cy, cz + sign * (s - min(split_a, split_b)) * 0.22)
+                ob.location = (cx + drift + sign * s, cy, cz + sign * (s - min(split_a, split_b)) * 0.22)
                 ob.keyframe_insert("location", frame=f)
         for ob in atoms:
             anim.set_interpolation(ob, "BEZIER")
         bond = curve(f"H2_Bond_{k}", [(-1, 0, 0), (1, 0, 0)], 0.045 if k == 0 else 0.018, bond_mat)
         bond.location = (cx, cy, cz)
-        for f, size in ([(1, 0.0001), (290, 0.0001), (355, split_b), (n, split_b)] if recombine else
-                        [(1, split_a), (145, split_a), (205, 0.0001), (n, 0.0001)]):
+        for f, size in ([(1, 0.0001), (240, 0.0001), (300, split_b), (n, split_b)] if recombine else
+                        [(1, split_a), (60, split_a), (180, 0.0001), (n, 0.0001)]):
             bond.scale = (size, 1, 1)
             bond.keyframe_insert("scale", frame=f)
+            bond.location.x = cx + (0.4 if recombine else 0.0) + 0.4 * (f - 1) / (n - 1)
+            bond.keyframe_insert("location", frame=f)
         anim.set_interpolation(bond, "BEZIER")
+    if recombine:
+        energy_mat = emission("ReleasedEnergy", (1.0, 0.50, 0.16), 1.5)
+        nodes, links = energy_mat.node_tree.nodes, energy_mat.node_tree.links
+        output = next(x for x in nodes if x.bl_idname == "ShaderNodeOutputMaterial")
+        glow = next(x for x in nodes if x.bl_idname == "ShaderNodeEmission")
+        transparent = nodes.new("ShaderNodeBsdfTransparent")
+        fade = nodes.new("ShaderNodeMixShader")
+        links.new(transparent.outputs[0], fade.inputs[1])
+        links.new(glow.outputs[0], fade.inputs[2])
+        links.new(fade.outputs[0], output.inputs["Surface"])
+        pulse = curve("EnergyIllustration", [(math.cos(t), 0, math.sin(t))
+                      for t in [2 * math.pi * k / 96 for k in range(97)]], 0.018, energy_mat)
+        for f, r, gain in [(1, 0.001, 0), (270, 0.1, 0), (300, 0.45, 1.0),
+                            (350, 0.95, 0.7), (420, 1.35, 0), (n, 1.35, 0)]:
+            pulse.scale = (r, r, r)
+            pulse.location = (0.4 + 0.4 * (f - 1) / (n - 1), -0.1, 0.7)
+            pulse.keyframe_insert("scale", frame=f)
+            pulse.keyframe_insert("location", frame=f)
+            fade.inputs[0].default_value = gain
+            fade.inputs[0].keyframe_insert("default_value", frame=f)
+        anim.set_interpolation(pulse, "LINEAR")
+        anim.set_interpolation(energy_mat.node_tree, "LINEAR")
     lab = LB.build_label("ChemicalEquation", "2 H  →  H₂" if recombine else "H₂  →  2 H",
-                         location=(0, 0, 2.05), cam=cam, px=52, color=(1, 0.8, 0.54), strength=1.3,
+                         location=(0, 0, 2.5), cam=cam, px=52, color=(1, 0.8, 0.54), strength=1.3,
                          font="C:/Windows/Fonts/segoeui.ttf")
     LB.key_screen_size(lab, cam, 1, n, step=6)
     stars = sky(sc, cam, ex)
     finish(sc, stars)
-    print(f"EVENT {shot} {'recombination' if recombine else 'dissociation'}: 290:0.75")
+    event_frame = 300 if recombine else 180
+    print(f"EVENT {shot} {'recombination' if recombine else 'dissociation'}: {event_frame}:0.75")
     return sc, n
 
 
@@ -227,10 +261,14 @@ def shot_v5():
     n = SHOTS["v5"]
     ex = -1.1
     sc = base(n, ex, samples=24)
+    # Внутри шота есть склейка камеры: blur смешивал две композиции на f391.
+    sc.render.use_motion_blur = False
     cam, tgt = CAM.camera_rig("K9_System", lens=48)
     CAM.key_camera(cam, tgt, [
         dict(frame=1, loc=(10, -30, 7), target=(0, 0, -0.25)),
-        dict(frame=n, loc=(8, -29, 6), target=(0, 0, -0.25)),
+        dict(frame=390, loc=(8, -29, 6), target=(0, 0, -0.25)),
+        dict(frame=391, loc=(39.8, -11.5, 1.4), target=(39.8, 0, 0)),
+        dict(frame=n, loc=(39.8, -11.0, 1.2), target=(39.8, 0, 0)),
     ], ipo="LINEAR")
     st = ST.build_star("KELT9", radius=SY.R_STAR, temp_k=SY.T_STAR_K, strength=4.5,
                        seed=809, detail="mid", halo=0.12, halo_scale=1.025, contrast=0.16, gran_scale=70)
@@ -257,11 +295,29 @@ def shot_v5():
                                      for t in [2 * math.pi * k / 64 for k in range(65)]], 0.006, line_mat)
     marker.parent = p["root"]
     marker.rotation_euler = (0, 0, 0)
-    axis_mat = emission("SpinAxisMat", (0.57, 0.67, 0.83), 0.55)
-    curve("StarSpinAxis", [(0, 0, -2.25), (0, 0, 2.25)], 0.008, axis_mat)
+    axis_mat = emission("SpinAxisMat", (0.45, 0.68, 1.0), 1.25)
+    curve("StarSpinAxis", [(0, 0, -3.2), (0, 0, 3.2)], 0.025, axis_mat)
+    for z, off in [(3.2, 24), (-3.2, -24)]:
+        label = LB.build_label("Pole" + str(z), "POLE", (0, 0, z), cam, px=25,
+                               offset_px=(0, off), color=(0.6, 0.77, 1.0), strength=1.3)
+        LB.key_screen_size(label, cam, 1, n, step=6)
+    label = LB.build_label("SpinAxisLabel", "STELLAR\nSPIN AXIS", (0, 0, -2.1), cam, px=24,
+                           offset_px=(100, 0), color=(0.6, 0.77, 1), strength=1.3)
+    LB.key_screen_size(label, cam, 1, n, step=6)
+    # Вторая композиция внутри шота: один круг радиуса Юпитера, не текстурная реконструкция Юпитера.
+    compare = planet("K9_RadiusCompare", radius=1.0, location=(39.0, 0, 0), detail="close")
+    UH.key_flow(compare, [(1, 0.6), (n, 0.7)])
+    jr = 1.0 / SY.R_PLANET_JUP
+    ring = curve("JupiterRadius", [(41.1 + jr * math.cos(t), 0, jr * math.sin(t))
+                 for t in [2 * math.pi * k / 128 for k in range(129)]], 0.006, line_mat)
+    for name, title, loc in [("CompareK9", "KELT-9b", (39.0, 0, 1.3)),
+                              ("CompareJupiter", "JUPITER\nRADIUS", (41.1, 0, 0.9))]:
+        label = LB.build_label(name, title, loc, cam, px=30,
+                               color=(0.85, 0.88, 1.0), strength=1.2)
+        LB.key_screen_size(label, cam, 1, n, step=6)
     stars = sky(sc, cam, ex)
     finish(sc, stars)
-    print("EVENT v5 orbit_complete: 481:0.55")
+    print("EVENT v5 radius_comparison: 391:0.6")
     return sc, n
 
 

@@ -1,0 +1,467 @@
+{
+ "output": "out/ep008_kelt9b/9x16/ep008_kelt9b_en_1080x1920p60.mp4",
+ "format": {
+  "w": 1080,
+  "h": 1920,
+  "fps": 60
+ },
+ "video": {
+  "bitrate_kbps": 40000,
+  "preset": "BEST"
+ },
+ "crossfade": 0,
+ "fade_in": 0,
+ "fade_out": 0,
+ "tail": 0,
+ "shots": [
+  {
+   "dir": "out/ep008_kelt9b/9x16/frames/v1",
+   "frames": 360,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep008_kelt9b/9x16/frames/v2",
+   "frames": 660,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep008_kelt9b/9x16/frames/v3",
+   "frames": 600,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep008_kelt9b/9x16/frames/v4",
+   "frames": 600,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep008_kelt9b/9x16/frames/v5",
+   "frames": 660,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep008_kelt9b/9x16/frames/v6",
+   "frames": 690,
+   "first": 1,
+   "xfade_in": 0
+  }
+ ],
+ "titles": [
+  {
+   "text": "Scientific visualization · real data",
+   "size": 27,
+   "x": 0.465,
+   "y": 0.92,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "color": [
+    0.73,
+    0.78,
+    0.87
+   ],
+   "fade": 0,
+   "start": 1,
+   "length": 3570
+  },
+  {
+   "text": "KELT-9b",
+   "size": 39,
+   "x": 0.465,
+   "y": 0.885,
+   "font": "C:/Windows/Fonts/corbelb.ttf",
+   "color": [
+    1,
+    0.76,
+    0.47
+   ],
+   "fade": 0,
+   "outline": 3,
+   "start": 1,
+   "length": 354
+  },
+  {
+   "text": "HOTTER THAN\nSOME STARS",
+   "size": 64,
+   "x": 0.465,
+   "y": 0.825,
+   "font": "C:/Windows/Fonts/corbelb.ttf",
+   "color": [
+    1,
+    0.94,
+    0.83
+   ],
+   "fade": 0,
+   "outline": 4,
+   "start": 1,
+   "length": 354
+  },
+  {
+   "text": "DAYSIDE  ≈4,600 K",
+   "size": 51,
+   "x": 0.465,
+   "y": 0.85,
+   "font": "C:/Windows/Fonts/corbelb.ttf",
+   "color": [
+    1,
+    0.78,
+    0.48
+   ],
+   "fade": 10,
+   "outline": 3,
+   "start": 367,
+   "length": 318
+  },
+  {
+   "text": "NIGHTSIDE  ≈2,600 K",
+   "size": 51,
+   "x": 0.465,
+   "y": 0.85,
+   "font": "C:/Windows/Fonts/corbelb.ttf",
+   "color": [
+    1,
+    0.66,
+    0.4
+   ],
+   "fade": 10,
+   "outline": 3,
+   "start": 694,
+   "length": 315
+  },
+  {
+   "text": "4.5 μm brightness temperature",
+   "size": 27,
+   "x": 0.465,
+   "y": 0.795,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "fade": 10,
+   "color": [
+    0.83,
+    0.85,
+    0.9
+   ],
+   "start": 367,
+   "length": 642
+  },
+  {
+   "text": "DAY / HYDROGEN DISSOCIATION",
+   "size": 34,
+   "x": 0.465,
+   "y": 0.88,
+   "font": "C:/Windows/Fonts/corbelb.ttf",
+   "fade": 10,
+   "color": [
+    1,
+    0.8,
+    0.55
+   ],
+   "start": 1027,
+   "length": 582
+  },
+  {
+   "text": "NIGHT / RECOMBINATION",
+   "size": 34,
+   "x": 0.465,
+   "y": 0.88,
+   "font": "C:/Windows/Fonts/corbelb.ttf",
+   "fade": 10,
+   "color": [
+    1,
+    0.8,
+    0.55
+   ],
+   "start": 1627,
+   "length": 582
+  },
+  {
+   "text": "MODEL-BASED ILLUSTRATION",
+   "size": 26,
+   "x": 0.465,
+   "y": 0.805,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "fade": 0,
+   "color": [
+    0.8,
+    0.85,
+    0.95
+   ],
+   "start": 1021,
+   "length": 1200
+  },
+  {
+   "text": "ONE YEAR  ≈36 HOURS",
+   "size": 45,
+   "x": 0.465,
+   "y": 0.87,
+   "font": "C:/Windows/Fonts/corbelb.ttf",
+   "fade": 10,
+   "color": [
+    1,
+    0.85,
+    0.58
+   ],
+   "start": 2227,
+   "length": 366
+  },
+  {
+   "text": "NOMINAL SCALE · 1 ORBIT = 8 s",
+   "size": 26,
+   "x": 0.465,
+   "y": 0.805,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "fade": 0,
+   "color": [
+    0.8,
+    0.85,
+    0.95
+   ],
+   "start": 2221,
+   "length": 384
+  },
+  {
+   "text": "1.94 × JUPITER'S RADIUS",
+   "size": 42,
+   "x": 0.465,
+   "y": 0.87,
+   "font": "C:/Windows/Fonts/corbelb.ttf",
+   "fade": 10,
+   "color": [
+    1,
+    0.85,
+    0.58
+   ],
+   "start": 2611,
+   "length": 258
+  },
+  {
+   "text": "RING = PLANET LOCATOR",
+   "size": 24,
+   "x": 0.465,
+   "y": 0.34,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "fade": 0,
+   "color": [
+    0.65,
+    0.75,
+    0.9
+   ],
+   "start": 2221,
+   "length": 384
+  },
+  {
+   "text": "KELT-9b / ULTRA-HOT GAS GIANT",
+   "size": 32,
+   "x": 0.465,
+   "y": 0.87,
+   "font": "C:/Windows/Fonts/corbelb.ttf",
+   "fade": 10,
+   "color": [
+    1,
+    0.8,
+    0.5
+   ],
+   "start": 2887,
+   "length": 360
+  }
+ ],
+ "captions": {
+  "size": 59,
+  "x": 0.465,
+  "y": 0.255,
+  "wrap": 0.75,
+  "font": "C:/Windows/Fonts/corbelb.ttf",
+  "outline": 7,
+  "color": [
+   1.0,
+   0.96,
+   0.88
+  ],
+  "items": [
+   {
+    "text": "This gas giant's dayside",
+    "start": 12,
+    "end": 101
+   },
+   {
+    "text": "is hotter than",
+    "start": 101,
+    "end": 154
+   },
+   {
+    "text": "the surfaces of",
+    "start": 154,
+    "end": 211
+   },
+   {
+    "text": "some stars.",
+    "start": 211,
+    "end": 261
+   },
+   {
+    "text": "Spitzer's infrared data",
+    "start": 373,
+    "end": 485
+   },
+   {
+    "text": "put its dayside near",
+    "start": 485,
+    "end": 582
+   },
+   {
+    "text": "4,600 kelvin.",
+    "start": 582,
+    "end": 655
+   },
+   {
+    "text": "Even the night glows at",
+    "start": 700,
+    "end": 795
+   },
+   {
+    "text": "roughly 2,600 kelvin,",
+    "start": 795,
+    "end": 888
+   },
+   {
+    "text": "despite facing away.",
+    "start": 898,
+    "end": 982
+   },
+   {
+    "text": "Models suggest heat",
+    "start": 1036,
+    "end": 1113
+   },
+   {
+    "text": "splits hydrogen molecules",
+    "start": 1113,
+    "end": 1213
+   },
+   {
+    "text": "into atoms,",
+    "start": 1213,
+    "end": 1266
+   },
+   {
+    "text": "absorbing energy.",
+    "start": 1266,
+    "end": 1342
+   },
+   {
+    "text": "Gas carries them toward",
+    "start": 1366,
+    "end": 1438
+   },
+   {
+    "text": "the cooler night.",
+    "start": 1438,
+    "end": 1500
+   },
+   {
+    "text": "There, atoms can join",
+    "start": 1633,
+    "end": 1716
+   },
+   {
+    "text": "back into molecules,",
+    "start": 1716,
+    "end": 1801
+   },
+   {
+    "text": "releasing energy.",
+    "start": 1801,
+    "end": 1872
+   },
+   {
+    "text": "That helps move heat",
+    "start": 1898,
+    "end": 1957
+   },
+   {
+    "text": "around the planet,",
+    "start": 1957,
+    "end": 2018
+   },
+   {
+    "text": "through chemical changes.",
+    "start": 2024,
+    "end": 2117
+   },
+   {
+    "text": "Its whole year lasts",
+    "start": 2233,
+    "end": 2322
+   },
+   {
+    "text": "about 36 hours,",
+    "start": 2322,
+    "end": 2396
+   },
+   {
+    "text": "on an orbit almost over",
+    "start": 2409,
+    "end": 2486
+   },
+   {
+    "text": "its star's poles.",
+    "start": 2486,
+    "end": 2551
+   },
+   {
+    "text": "A gas giant,",
+    "start": 2611,
+    "end": 2671
+   },
+   {
+    "text": "almost twice",
+    "start": 2676,
+    "end": 2722
+   },
+   {
+    "text": "Jupiter's radius.",
+    "start": 2722,
+    "end": 2793
+   },
+   {
+    "text": "There is no solid surface",
+    "start": 2893,
+    "end": 2978
+   },
+   {
+    "text": "to stand on,",
+    "start": 2978,
+    "end": 3028
+   },
+   {
+    "text": "even on the nightside.",
+    "start": 3038,
+    "end": 3116
+   },
+   {
+    "text": "A planet, with a dayside",
+    "start": 3259,
+    "end": 3342
+   },
+   {
+    "text": "hotter than",
+    "start": 3342,
+    "end": 3381
+   },
+   {
+    "text": "some stellar surfaces.",
+    "start": 3381,
+    "end": 3465
+   }
+  ]
+ },
+ "audio": [
+  {
+   "path": "out/ep008_kelt9b/9x16/audio/mix_en.wav",
+   "start": 1,
+   "volume": 1.0
+  }
+ ]
+}
