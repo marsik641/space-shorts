@@ -1,0 +1,75 @@
+{
+ "title": "Enceladus — how to sample a hidden ocean",
+ "duration_s": 59.5,
+ "caption_max_chars": 26,
+ "voices": {
+  "en": {
+   "engine": "kokoro",
+   "voice": "af_heart",
+   "speed": 0.98,
+   "lang": "en-us"
+  }
+ },
+ "segments": [
+  {
+   "at": 0.18,
+   "shot": "v1",
+   "en": "An ocean hides under this ice. How does its water reach space?",
+   "en_cap": "An ocean hides | under this ice. | How does its water | reach space?"
+  },
+  {
+   "at": 5.15,
+   "shot": "v2",
+   "en": "This is Enceladus, a bright, frozen moon of Saturn just five hundred and four kilometers across.",
+   "en_cap": "This is Enceladus, | a bright, frozen moon | of Saturn just | 504 kilometers across."
+  },
+  {
+   "at": 13.15,
+   "shot": "v3",
+   "en": "Cassini measured a tiny wobble in the frozen shell. Its motion revealed a global ocean separating the ice from the rocky interior.",
+   "en_cap": "Cassini measured | a tiny wobble | in the frozen shell. | Its motion revealed | a global ocean | separating the ice | from the rocky interior."
+  },
+  {
+   "at": 22.08,
+   "shot": "v4",
+   "en": "At the south pole, fractures vent water vapor and tiny grains of ice into space.",
+   "en_cap": "At the south pole, | fractures vent water vapor | and tiny grains of ice | into space."
+  },
+  {
+   "at": 29.12,
+   "shot": "v5",
+   "en": "Those grains carry salts from the ocean below.",
+   "en_cap": "Those grains carry salts | from the ocean below."
+  },
+  {
+   "at": 33.3,
+   "shot": "v5",
+   "en": "Cassini data even revealed phosphates, a source of phosphorus essential to life on Earth.",
+   "en_cap": "Cassini data even revealed | phosphates, | a source of phosphorus | essential to life | on Earth."
+  },
+  {
+   "at": 39.2,
+   "shot": "v6",
+   "en": "But ingredients are not organisms. Life has not been found here.",
+   "en_cap": "But ingredients | are not organisms. | Life has not | been found here."
+  },
+  {
+   "at": 44.6,
+   "shot": "v6",
+   "en": "The ocean itself stays hidden. Its spray does not.",
+   "en_cap": "The ocean itself | stays hidden. | Its spray does not."
+  },
+  {
+   "at": 49.15,
+   "shot": "v7",
+   "en": "A whole world, sealed in ice, sending pieces of its ocean out into space.",
+   "en_cap": "A whole world, | sealed in ice, | sending pieces | of its ocean | out into space."
+  },
+  {
+   "at": 56.2,
+   "shot": "v7",
+   "en": "So, how do you reach it?",
+   "en_cap": "So how do you reach it?"
+  }
+ ]
+}

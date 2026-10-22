@@ -1,0 +1,547 @@
+{
+ "output": "out/ep007_enceladus/9x16/ep007_enceladus_en_1080x1920p60_preview.mp4",
+ "format": {
+  "w": 1080,
+  "h": 1920,
+  "fps": 60
+ },
+ "video": {
+  "bitrate_kbps": 3400,
+  "preset": "BEST"
+ },
+ "crossfade": 0,
+ "fade_in": 0,
+ "fade_out": 0,
+ "tail": 0,
+ "shots": [
+  {
+   "dir": "out/ep007_enceladus/9x16/frames/v1",
+   "frames": 300,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep007_enceladus/9x16/frames/v2",
+   "frames": 480,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep007_enceladus/9x16/frames/v3",
+   "frames": 540,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep007_enceladus/9x16/frames/v4",
+   "frames": 420,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep007_enceladus/9x16/frames/v5",
+   "frames": 600,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep007_enceladus/9x16/frames/v6",
+   "frames": 600,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep007_enceladus/9x16/frames/v7",
+   "frames": 630,
+   "first": 1,
+   "xfade_in": 0
+  }
+ ],
+ "titles": [
+  {
+   "text": "Scientific visualization · real data",
+   "size": 27,
+   "x": 0.5,
+   "y": 0.955,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "color": [
+    0.7,
+    0.77,
+    0.84
+   ],
+   "fade": 0,
+   "wrap": 0.7,
+   "start": 1,
+   "length": 3570
+  },
+  {
+   "text": "ENCELADUS",
+   "size": 54,
+   "x": 0.5,
+   "y": 0.89,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.8,
+    0.9,
+    1
+   ],
+   "fade": 10,
+   "outline": 3,
+   "wrap": 0.7,
+   "start": 1,
+   "length": 300
+  },
+  {
+   "text": "AN OCEAN, UNDER ICE",
+   "size": 36,
+   "x": 0.5,
+   "y": 0.835,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.8,
+    0.9,
+    1
+   ],
+   "fade": 10,
+   "outline": 3,
+   "wrap": 0.7,
+   "start": 7,
+   "length": 270
+  },
+  {
+   "text": "504 km ACROSS",
+   "size": 45,
+   "x": 0.5,
+   "y": 0.87,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.8,
+    0.9,
+    1
+   ],
+   "fade": 10,
+   "outline": 3,
+   "wrap": 0.7,
+   "start": 319,
+   "length": 432
+  },
+  {
+   "text": "SATURN’S OCEAN MOON",
+   "size": 25,
+   "x": 0.5,
+   "y": 0.82,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.8,
+    0.9,
+    1
+   ],
+   "fade": 10,
+   "outline": 3,
+   "wrap": 0.7,
+   "start": 331,
+   "length": 414
+  },
+  {
+   "text": "SOUTH POLE · RECONSTRUCTION",
+   "size": 32,
+   "x": 0.5,
+   "y": 0.89,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.8,
+    0.9,
+    1
+   ],
+   "fade": 10,
+   "outline": 3,
+   "wrap": 0.7,
+   "start": 781,
+   "length": 432
+  },
+  {
+   "text": "GLOBAL OCEAN · INFERRED",
+   "size": 32,
+   "x": 0.5,
+   "y": 0.84,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.8,
+    0.9,
+    1
+   ],
+   "fade": 10,
+   "outline": 3,
+   "wrap": 0.7,
+   "start": 991,
+   "length": 216
+  },
+  {
+   "text": "ICE GRAIN · ENLARGED ILLUSTRATION",
+   "size": 25,
+   "x": 0.5,
+   "y": 0.89,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.8,
+    0.9,
+    1
+   ],
+   "fade": 10,
+   "outline": 3,
+   "wrap": 0.7,
+   "start": 1231,
+   "length": 486
+  },
+  {
+   "text": "PARTICLES ENLARGED · TIME RESCALED",
+   "size": 27,
+   "x": 0.5,
+   "y": 0.84,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.8,
+    0.9,
+    1
+   ],
+   "fade": 10,
+   "outline": 3,
+   "wrap": 0.7,
+   "start": 1249,
+   "length": 468
+  },
+  {
+   "text": "COMPOSITION SCHEMATIC",
+   "size": 29,
+   "x": 0.5,
+   "y": 0.89,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.8,
+    0.9,
+    1
+   ],
+   "fade": 10,
+   "outline": 3,
+   "wrap": 0.7,
+   "start": 1741,
+   "length": 588
+  },
+  {
+   "text": "WATER",
+   "size": 38,
+   "x": 0.61,
+   "y": 0.7,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.8,
+    0.9,
+    1
+   ],
+   "fade": 10,
+   "outline": 3,
+   "start": 1759,
+   "length": 570
+  },
+  {
+   "text": "SALTS",
+   "size": 38,
+   "x": 0.61,
+   "y": 0.5900000000000001,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.8,
+    0.9,
+    1
+   ],
+   "fade": 10,
+   "outline": 3,
+   "start": 1849,
+   "length": 480
+  },
+  {
+   "text": "PHOSPHATES",
+   "size": 38,
+   "x": 0.61,
+   "y": 0.48000000000000004,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.8,
+    0.9,
+    1
+   ],
+   "fade": 10,
+   "outline": 3,
+   "start": 2101,
+   "length": 228
+  },
+  {
+   "text": "LIFE HAS NOT BEEN FOUND",
+   "size": 34,
+   "x": 0.5,
+   "y": 0.88,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.8,
+    0.9,
+    1
+   ],
+   "fade": 10,
+   "outline": 3,
+   "wrap": 0.7,
+   "start": 2353,
+   "length": 306
+  },
+  {
+   "text": "OCEAN MATERIAL, EXPOSED",
+   "size": 34,
+   "x": 0.5,
+   "y": 0.88,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.8,
+    0.9,
+    1
+   ],
+   "fade": 10,
+   "outline": 3,
+   "wrap": 0.7,
+   "start": 2947,
+   "length": 384
+  },
+  {
+   "text": "SURFACE / PLUMES RECONSTRUCTED",
+   "size": 28,
+   "x": 0.5,
+   "y": 0.82,
+   "font": "C:/Windows/Fonts/bahnschrift.ttf",
+   "color": [
+    0.8,
+    0.9,
+    1
+   ],
+   "fade": 10,
+   "outline": 3,
+   "wrap": 0.7,
+   "start": 2941,
+   "length": 600
+  }
+ ],
+ "captions": {
+  "size": 58,
+  "x": 0.5,
+  "y": 0.245,
+  "wrap": 0.7,
+  "font": "C:/Windows/Fonts/bahnschrift.ttf",
+  "outline": 7,
+  "color": [
+   0.91,
+   0.96,
+   1
+  ],
+  "items": [
+   {
+    "text": "An ocean hides",
+    "start": 12,
+    "end": 63
+   },
+   {
+    "text": "under this ice.",
+    "start": 63,
+    "end": 124
+   },
+   {
+    "text": "How does its water",
+    "start": 135,
+    "end": 187
+   },
+   {
+    "text": "reach space?",
+    "start": 187,
+    "end": 230
+   },
+   {
+    "text": "This is Enceladus,",
+    "start": 310,
+    "end": 390
+   },
+   {
+    "text": "a bright, frozen moon",
+    "start": 405,
+    "end": 500
+   },
+   {
+    "text": "of Saturn just",
+    "start": 500,
+    "end": 565
+   },
+   {
+    "text": "504 kilometers across.",
+    "start": 565,
+    "end": 672
+   },
+   {
+    "text": "Cassini measured",
+    "start": 790,
+    "end": 848
+   },
+   {
+    "text": "a tiny wobble",
+    "start": 848,
+    "end": 896
+   },
+   {
+    "text": "in the frozen shell.",
+    "start": 896,
+    "end": 975
+   },
+   {
+    "text": "Its motion revealed",
+    "start": 1003,
+    "end": 1077
+   },
+   {
+    "text": "a global ocean",
+    "start": 1077,
+    "end": 1133
+   },
+   {
+    "text": "separating the ice",
+    "start": 1133,
+    "end": 1203
+   },
+   {
+    "text": "from the rocky interior.",
+    "start": 1203,
+    "end": 1303
+   },
+   {
+    "text": "At the south pole,",
+    "start": 1326,
+    "end": 1388
+   },
+   {
+    "text": "fractures vent water vapor",
+    "start": 1397,
+    "end": 1499
+   },
+   {
+    "text": "and tiny grains of ice",
+    "start": 1499,
+    "end": 1585
+   },
+   {
+    "text": "into space.",
+    "start": 1585,
+    "end": 1637
+   },
+   {
+    "text": "Those grains carry salts",
+    "start": 1748,
+    "end": 1830
+   },
+   {
+    "text": "from the ocean below.",
+    "start": 1830,
+    "end": 1909
+   },
+   {
+    "text": "Cassini data even revealed",
+    "start": 1999,
+    "end": 2105
+   },
+   {
+    "text": "phosphates,",
+    "start": 2105,
+    "end": 2159
+   },
+   {
+    "text": "a source of phosphorus",
+    "start": 2173,
+    "end": 2244
+   },
+   {
+    "text": "essential to life",
+    "start": 2244,
+    "end": 2300
+   },
+   {
+    "text": "on Earth.",
+    "start": 2300,
+    "end": 2339
+   },
+   {
+    "text": "But ingredients",
+    "start": 2353,
+    "end": 2410
+   },
+   {
+    "text": "are not organisms.",
+    "start": 2410,
+    "end": 2484
+   },
+   {
+    "text": "Life has not",
+    "start": 2496,
+    "end": 2536
+   },
+   {
+    "text": "been found here.",
+    "start": 2536,
+    "end": 2596
+   },
+   {
+    "text": "The ocean itself",
+    "start": 2677,
+    "end": 2729
+   },
+   {
+    "text": "stays hidden.",
+    "start": 2729,
+    "end": 2780
+   },
+   {
+    "text": "Its spray does not.",
+    "start": 2789,
+    "end": 2868
+   },
+   {
+    "text": "A whole world,",
+    "start": 2950,
+    "end": 3006
+   },
+   {
+    "text": "sealed in ice,",
+    "start": 3006,
+    "end": 3069
+   },
+   {
+    "text": "sending pieces",
+    "start": 3078,
+    "end": 3127
+   },
+   {
+    "text": "of its ocean",
+    "start": 3127,
+    "end": 3169
+   },
+   {
+    "text": "out into space.",
+    "start": 3169,
+    "end": 3229
+   },
+   {
+    "text": "So how do you reach it?",
+    "start": 3373,
+    "end": 3460
+   }
+  ]
+ },
+ "audio": [
+  {
+   "path": "out/ep007_enceladus/9x16/audio/mix_en.wav",
+   "start": 1,
+   "volume": 1.0
+  }
+ ]
+}

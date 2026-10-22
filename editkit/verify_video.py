@@ -57,12 +57,18 @@ else:
     print("AUDIO none")
 
 sc = bpy.context.scene
+sc.render.fps = max(1, round(fps))
+sc.render.fps_base = sc.render.fps / max(fps, 1)
 sc.render.resolution_x, sc.render.resolution_y = clip.size
 sc.render.resolution_percentage = 100
 sc.view_settings.view_transform = "Standard"
 sed = sc.sequence_editor_create()
-st = sed.strips.new_movie("v", path, channel=1, frame_start=1)
-sc.frame_start, sc.frame_end = 1, st.frame_final_end - 1
+sc.frame_start, sc.frame_end = 1, clip.frame_duration
+# При редких seek Blender может вернуть старый буфер декодера. Новый стрип для каждого
+# кадра закрывает прежний reader; контрольный PNG не зависит от предыдущего запроса.
+for attr in ("use_cache_raw", "use_cache_preprocessed", "use_cache_composite", "use_cache_final"):
+    if hasattr(sed, attr):
+        setattr(sed, attr, False)
 sc.render.use_sequencer = True
 sc.render.image_settings.media_type = "IMAGE"
 sc.render.image_settings.file_format = "PNG"
@@ -71,8 +77,10 @@ for f in frames:
     if not 1 <= f <= sc.frame_end:
         print(f"WARN кадр {f} вне 1..{sc.frame_end} — пропущен")
         continue
+    st = sed.strips.new_movie(f"v{f}", path, channel=1, frame_start=1)
     sc.frame_set(f)
     sc.render.filepath = os.path.join(out_dir, f"frame_{f:04d}.png")
     bpy.ops.render.render(write_still=True)
+    sed.strips.remove(st)
     n += 1
 print("EXTRACTED", n)

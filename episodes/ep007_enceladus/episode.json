@@ -1,0 +1,332 @@
+{
+ "id": "ep007_enceladus",
+ "object": "Enceladus",
+ "series": "HOME SYSTEM",
+ "format_name": "9x16",
+ "format": {
+  "w": 1080,
+  "h": 1920,
+  "fps": 60
+ },
+ "languages": [
+  "en"
+ ],
+ "output": "out/{id}/9x16/{id}_{lang}_1080x1920p60.mp4",
+ "video": {
+  "bitrate_kbps": 40000,
+  "preset": "BEST"
+ },
+ "edit": [
+  {
+   "shot": "v1",
+   "frames": 300
+  },
+  {
+   "shot": "v2",
+   "frames": 480
+  },
+  {
+   "shot": "v3",
+   "frames": 540
+  },
+  {
+   "shot": "v4",
+   "frames": 420
+  },
+  {
+   "shot": "v5",
+   "frames": 600
+  },
+  {
+   "shot": "v6",
+   "frames": 600
+  },
+  {
+   "shot": "v7",
+   "frames": 630
+  }
+ ],
+ "caption_style": {
+  "size": 58,
+  "x": 0.5,
+  "y": 0.245,
+  "wrap": 0.7,
+  "font": "C:/Windows/Fonts/bahnschrift.ttf",
+  "outline": 7,
+  "color": [
+   0.91,
+   0.96,
+   1
+  ]
+ },
+ "overlays": {
+  "en": [
+   {
+    "text": "Scientific visualization · real data",
+    "size": 27,
+    "x": 0.5,
+    "y": 0.955,
+    "font": "C:/Windows/Fonts/segoeui.ttf",
+    "color": [
+     0.7,
+     0.77,
+     0.84
+    ],
+    "fade": 0,
+    "wrap": 0.7
+   },
+   {
+    "text": "ENCELADUS",
+    "start_s": 0,
+    "length_s": 5,
+    "size": 54,
+    "x": 0.5,
+    "y": 0.89,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.8,
+     0.9,
+     1
+    ],
+    "fade": 10,
+    "outline": 3,
+    "wrap": 0.7
+   },
+   {
+    "text": "AN OCEAN, UNDER ICE",
+    "start_s": 0.1,
+    "length_s": 4.5,
+    "size": 36,
+    "x": 0.5,
+    "y": 0.835,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.8,
+     0.9,
+     1
+    ],
+    "fade": 10,
+    "outline": 3,
+    "wrap": 0.7
+   },
+   {
+    "text": "504 km ACROSS",
+    "start_s": 5.3,
+    "length_s": 7.2,
+    "size": 45,
+    "x": 0.5,
+    "y": 0.87,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.8,
+     0.9,
+     1
+    ],
+    "fade": 10,
+    "outline": 3,
+    "wrap": 0.7
+   },
+   {
+    "text": "SATURN’S OCEAN MOON",
+    "start_s": 5.5,
+    "length_s": 6.9,
+    "size": 25,
+    "x": 0.5,
+    "y": 0.82,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.8,
+     0.9,
+     1
+    ],
+    "fade": 10,
+    "outline": 3,
+    "wrap": 0.7
+   },
+   {
+    "text": "SOUTH POLE · RECONSTRUCTION",
+    "start_s": 13,
+    "length_s": 7.2,
+    "size": 32,
+    "x": 0.5,
+    "y": 0.89,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.8,
+     0.9,
+     1
+    ],
+    "fade": 10,
+    "outline": 3,
+    "wrap": 0.7
+   },
+   {
+    "text": "GLOBAL OCEAN · INFERRED",
+    "start_s": 16.5,
+    "length_s": 3.6,
+    "size": 32,
+    "x": 0.5,
+    "y": 0.84,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.8,
+     0.9,
+     1
+    ],
+    "fade": 10,
+    "outline": 3,
+    "wrap": 0.7
+   },
+   {
+    "text": "ICE GRAIN · ENLARGED ILLUSTRATION",
+    "start_s": 20.5,
+    "length_s": 8.1,
+    "size": 25,
+    "x": 0.5,
+    "y": 0.89,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.8,
+     0.9,
+     1
+    ],
+    "fade": 10,
+    "outline": 3,
+    "wrap": 0.7
+   },
+   {
+    "text": "PARTICLES ENLARGED · TIME RESCALED",
+    "start_s": 20.8,
+    "length_s": 7.8,
+    "size": 27,
+    "x": 0.5,
+    "y": 0.84,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.8,
+     0.9,
+     1
+    ],
+    "fade": 10,
+    "outline": 3,
+    "wrap": 0.7
+   },
+   {
+    "text": "COMPOSITION SCHEMATIC",
+    "start_s": 29,
+    "length_s": 9.8,
+    "size": 29,
+    "x": 0.5,
+    "y": 0.89,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.8,
+     0.9,
+     1
+    ],
+    "fade": 10,
+    "outline": 3,
+    "wrap": 0.7
+   },
+   {
+    "text": "WATER",
+    "start_s": 29.3,
+    "length_s": 9.5,
+    "size": 38,
+    "x": 0.61,
+    "y": 0.7,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.8,
+     0.9,
+     1
+    ],
+    "fade": 10,
+    "outline": 3
+   },
+   {
+    "text": "SALTS",
+    "start_s": 30.8,
+    "length_s": 8,
+    "size": 38,
+    "x": 0.61,
+    "y": 0.5900000000000001,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.8,
+     0.9,
+     1
+    ],
+    "fade": 10,
+    "outline": 3
+   },
+   {
+    "text": "PHOSPHATES",
+    "start_s": 35.0,
+    "length_s": 3.8,
+    "size": 38,
+    "x": 0.61,
+    "y": 0.48000000000000004,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.8,
+     0.9,
+     1
+    ],
+    "fade": 10,
+    "outline": 3
+   },
+   {
+    "text": "LIFE HAS NOT BEEN FOUND",
+    "start_s": 39.2,
+    "length_s": 5.1,
+    "size": 34,
+    "x": 0.5,
+    "y": 0.88,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.8,
+     0.9,
+     1
+    ],
+    "fade": 10,
+    "outline": 3,
+    "wrap": 0.7
+   },
+   {
+    "text": "OCEAN MATERIAL, EXPOSED",
+    "start_s": 49.1,
+    "length_s": 6.4,
+    "size": 34,
+    "x": 0.5,
+    "y": 0.88,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.8,
+     0.9,
+     1
+    ],
+    "fade": 10,
+    "outline": 3,
+    "wrap": 0.7
+   },
+   {
+    "text": "SURFACE / PLUMES RECONSTRUCTED",
+    "start_s": 49,
+    "length_s": 10,
+    "size": 28,
+    "x": 0.5,
+    "y": 0.82,
+    "font": "C:/Windows/Fonts/bahnschrift.ttf",
+    "color": [
+     0.8,
+     0.9,
+     1
+    ],
+    "fade": 10,
+    "outline": 3,
+    "wrap": 0.7
+   }
+  ]
+ }
+}
