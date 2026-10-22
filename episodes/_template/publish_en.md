@@ -14,7 +14,7 @@ Rules — `docs/publish.md`. Release folder — `out/epNNN_slug/release/`.
 <1st line — the hook, visible in the feed>
 <2nd line>
 
-Visualization based on real data:
+Real numbers:
 • <parameter = value>
 
 Sources:

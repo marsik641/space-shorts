@@ -64,7 +64,7 @@ Wibes). Факты по их монетизации сохранены в `docs/
 > explore them. Every object here is real: sizes, masses, orbits, speeds and temperatures come from published
 > measurements (NASA, ESA, JPL, the NASA Exoplanet Archive, peer-reviewed papers), and every description lists
 > its sources. We take the numbers apart and show what's inside.
-> Rendered in Blender Cycles; all visuals are scientific visualizations / artist's impressions based on data.
+> Real numbers, cinematic visualization: rendered in Blender Cycles, the visuals are artist's impressions built on the data.
 > A new Short every day.
 
 ## Оформление
@@ -79,7 +79,8 @@ plate) → `out/brand/` (`avatar_800.png`, `banner_plate.png`, `banner_2560x1440
 - **Баннер** 2560×1440 (безопасная зона 1546×423): та же планета в разрезе — в левой части безопасной зоны
   (видна и на телефоне), справа в две строки **THE UNIVERSE / INSIDE OUT**, слоган и строка
   «Cinematic space visualizations · a new Short every day».
-- **В каждом ролике:** сверху мелко «Scientific visualization · real data», название объекта в первые секунды,
+- **В каждом ролике:** сверху мелко «Real numbers · cinematic visualization» (с ep010; решение владельца
+  23.10.2026, до того — «Scientific visualization · real data»), название объекта в первые секунды,
   вшитые субтитры, бесшовная петля конец→начало. Без интро/логотипа (первая секунда — самый сильный кадр).
 
 ## Настройки загрузки по умолчанию (YouTube Studio → Настройки → Загрузка видео)

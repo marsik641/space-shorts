@@ -24,9 +24,10 @@ Faststart/BT.709 Blender не пишет — сознательно без ре�
 
 1. **Названия** — 3 варианта, ≤ 60 символов, факт-крючок или вопрос, без кликбейт-лжи
    (пример: «This Dead Star Spins 161 Times a Second»). Отметить рекомендуемый.
-2. **Описание**: 2–3 строки сути (первая строка видна в ленте) → «Visualization based on real data:» +
+2. **Описание**: 2–3 строки сути (первая строка видна в ленте) → «Real numbers:» +
    ключевые параметры → **Sources** — **каждое число ролика** со ссылкой из `facts.md` (не влезает — в закреп) →
-   «Rendered in Blender Cycles · scientific visualization / artist's impression» + условности (масштаб, замедление) →
+   «Rendered in Blender Cycles · real numbers (sources above), visuals are an artist's impression» +
+   «Artistic conventions:» — условности из `visual_brief.md` (масштаб, цвет, время, видимое невидимое) →
    3–5 хэштегов (`#space #astronomy #<объект>`).
 3. **Теги**: 5–8 (роль минимальная): объект, тип объекта, space, astronomy, science visualization, 3D render.
 4. **Закреплённый комментарий**: источники коротко + вопрос зрителю (выбор следующей темы).
