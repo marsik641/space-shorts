@@ -13,8 +13,8 @@
 | `facts.md` | Факты с источниками (каждое число — URL), гипотезы, условности визуализации |
 | `system.py` | Реальные параметры → экранный масштаб (общие для всех шотов), docstring «реальность → экран», сиды |
 | `shots_9x16.py` | Шоты 1080×1920 60 fps на `spacekit.shot` (каркас; API — `docs/spacekit.md`) |
-| `script_9x16.json` | Озвучка EN сегментами с якорями `at` (с), 59–59,5 с; `en_cap` — цифры, `|` — ручные разрывы. Голос канала — af_heart ×0.98 (docs/pipeline.md) |
-| `episode.json` | `id` = имя папки; `languages: ["en"]`; `edit` (кадры = SHOTS, Σ ≤ 3599 при 60 fps), оверлеи `en`, `caption_style` в безопасных зонах Shorts (`docs/pipeline.md`, «Титры и субтитры») |
+| `script_9x16.json` | Озвучка EN сегментами с якорями `at` (с), 29–29,5 с; `en_cap` — цифры, `|` — ручные разрывы. Голос канала — af_heart ×0.98 (docs/pipeline.md) |
+| `episode.json` | `id` = имя папки; `languages: ["en"]`; `edit` (кадры = SHOTS, Σ ≤ 1799 при 60 fps), оверлеи `en`, `caption_style` в безопасных зонах Shorts (`docs/pipeline.md`, «Титры и субтитры») |
 | `music_cues.json` | Своя тональность/гармония/seed; `pulses`/`risers` заполняет `tools/cues.py` |
 | `publish_en.md` | Пакет к загрузке — финал `/make-video` (`docs/publish.md`) |
 | `edit_9x16_en.json` | Генерирует `tools/build_edit.py` (коммитится — воспроизводимость монтажа) |

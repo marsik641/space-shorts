@@ -27,7 +27,7 @@
 Wibes). Факты по их монетизации сохранены в `docs/growth.md`, раздел 8; решение о монетизации — позже.
 
 ¹ TikTok из РФ: загрузка новых видео заблокирована с 03.2022 (low confidence, проверить); Creator Rewards — только
-ролики > 60 с, наш 60-секундный мастер не подходит. Instagram/Meta — только охват, без дохода (Meta в РФ признана
+ролики > 60 с, наш мастер до 30 с не подходит. Instagram/Meta — только охват, без дохода (Meta в РФ признана
 экстремистской, деньги от неё — юридический риск). Подробно — `docs/growth.md`, раздел 6.
 
 ## Название
@@ -59,7 +59,7 @@ Wibes). Факты по их монетизации сохранены в `docs/
 **Слоган:** «Real objects. Real numbers. Turned inside out.»
 
 **Описание канала (EN):**
-> The Universe Inside Out takes real astronomical data and turns it into cinematic 60-second visualizations —
+> The Universe Inside Out takes real astronomical data and turns it into cinematic visualizations in under 30 seconds —
 > planets and moons, stars living and dead, black holes, galaxies, alien worlds, comets and the missions that
 > explore them. Every object here is real: sizes, masses, orbits, speeds and temperatures come from published
 > measurements (NASA, ESA, JPL, the NASA Exoplanet Archive, peer-reviewed papers), and every description lists

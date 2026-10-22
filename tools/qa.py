@@ -13,7 +13,7 @@ PNG — <out_dir>/frame_NNNN.png (смотреть глазами: зоны ин
 команды; --force оставлен для совместимости и не обходит блокировку. --dry-run — только кадры и команда. --from-log — разобрать
 готовый лог verify_video без запуска.
 Проверки по строкам VIDEO/AUDIO: размер == format (1080x1920), fps == format.fps, кадры == длина
-монтажа (Σ edit.frames − Σ xfade_in), видео ≤ 60.0 с, звук есть и ≤ 60.0 с (контейнер ≈ max(видео, звук)),
+монтажа (Σ edit.frames − Σ xfade_in), видео ≤ 30.0 с, звук есть и ≤ 30.0 с (контейнер ≈ max(видео, звук)),
 расхождение звук/видео > 0.1 с — WARN. Код выхода: 0 PASS, 1 FAIL, 2 не запускалось.
 """
 import argparse
@@ -28,7 +28,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from build_edit import ep_paths, light_path, timeline_frames  # noqa: E402
 from queue_runtime import Busy, inherited_resource, queue_home, resource  # noqa: E402
 
-MAX_S = 60.0
+MAX_S = 30.0
 RX_VIDEO = re.compile(r"VIDEO size \((\d+), (\d+)\) fps ([\d.]+) frames (\d+) seconds ([\d.]+)")
 RX_AUDIO = re.compile(r"AUDIO seconds ([\d.]+)")
 

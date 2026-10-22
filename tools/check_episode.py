@@ -4,7 +4,7 @@
 
 Проверяет:
   • id == имени папки, явные пути episode.json содержат id, файлы script / music_cues / shots_script есть;
-  • длина монтажа (Σ edit.frames − Σ xfade_in) / fps ≤ 60.0 с (> 59.5 — WARN: запас на AAC) и равна
+  • длина монтажа (Σ edit.frames − Σ xfade_in) / fps ≤ 30.0 с (> 29.5 — WARN: запас на AAC) и равна
     script.duration_s и music_cues.duration_s;
   • edit против SHOTS в shots_<fmt>.py (разбор ast, без импорта): шот есть, first+frames−1 ≤ SHOTS;
   • сегменты сценария: at возрастает, лежит внутри своего шота, есть текст на всех languages и голос;
@@ -23,7 +23,7 @@ REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from build_edit import timeline_frames  # noqa: E402  (stdlib-only модуль)
 
-MAX_S, SAFE_S = 60.0, 59.5
+MAX_S, SAFE_S = 30.0, 29.5
 CHORD_RX = re.compile(r"^[A-G][#b]?[A-Za-z0-9#+]*$")
 
 
@@ -115,8 +115,8 @@ def main(ep_path):
     fps = fps or 60
     total = timeline_frames(edit)
     dur = total / fps
-    if dur > MAX_S + 1e-9:
-        rep.fail(f"монтаж {total} кадров = {dur:.3f} с > {MAX_S}")
+    if dur >= MAX_S - 1e-9:
+        rep.fail(f"монтаж {total} кадров = {dur:.3f} с: нужен запас AAC перед {MAX_S}")
     elif dur > SAFE_S:
         rep.warn(f"монтаж {total} кадров = {dur:.3f} с: ≤ {MAX_S}, но > {SAFE_S} (запас на AAC priming)")
     else:
