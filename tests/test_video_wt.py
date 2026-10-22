@@ -95,6 +95,27 @@ class VideoWorktree(unittest.TestCase):
         self.run_tool(self.main, "start")
         self.assertTrue(self.wt("ep003").is_dir())       # номер 002 не вернулся
 
+    def test_old_branch_episode_detected_and_out_protected(self):
+        w = Path(self.env["SS_WT_ROOT"]) / "w8"
+        sh(self.main, "git", "worktree", "add", "-q", "-b", "codex/ep008-kelt9b", str(w), "main")
+        (w / "episodes/ep008_kelt9b").mkdir(parents=True)
+        (w / "episodes/ep008_kelt9b/notes.md").write_text("x")
+        sh(w, "git", "add", ".")
+        sh(w, "git", "commit", "-qm", "feat(ep008_kelt9b): x")
+        self.assertEqual(vw.ep_of("codex/ep008-kelt9b", w), "ep008_kelt9b")
+        self.assertIn("нет пакета", self.run_tool(w, "finish", ok=False))   # старая ветка тоже проходит DoD
+        (w / "out/ep008_kelt9b/9x16/frames").mkdir(parents=True)
+        (w / "out/ep008_kelt9b/9x16/frames/0001.png").write_bytes(b"p")
+        self.assertIn("лежат", self.run_tool(self.main, "remove", "w8", "--abandon", ok=False))
+        self.assertTrue((w / "out/ep008_kelt9b/9x16/frames/0001.png").is_file())
+        self.run_tool(self.main, "remove", "w8", "--abandon", "--drop-out")
+        self.assertFalse(w.exists())
+
+    def test_finish_refuses_when_main_checkout_not_on_main(self):
+        self.run_tool(self.main, "start", "--task", "x")
+        sh(self.main, "git", "checkout", "-q", "-b", "side")
+        self.assertIn("не на ветке main", self.run_tool(self.wt("task-x"), "finish", ok=False))
+
     def test_remove_keeps_unmerged_branch(self):
         self.run_tool(self.main, "start", "--task", "docs-fix")
         w = self.wt("task-docs-fix")

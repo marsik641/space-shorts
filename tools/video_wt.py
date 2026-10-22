@@ -6,13 +6,16 @@
     python tools/video_wt.py finish [--no-release]         в своей worktree: DoD → main в ветку → тесты → ff main
     python tools/video_wt.py remove NAME [--abandon]       из основной копии: убрать влитую worktree и ветку
 
-Worktree лежат рядом с репо: <родитель>/space-shotrs.wt/<NAME> (SS_WT_ROOT — переопределить). Не внутри out/:
-сессия Claude в подпапке основной копии подтягивает её устаревшие CLAUDE.md и скиллы.
+Worktree лежат в out/wt/<NAME> основной копии (SS_WT_ROOT — переопределить): внутри папки проекта, куда пишет
+песочница Codex (workspace-write); out/ в .gitignore. Claude в такой worktree читает и родительский CLAUDE.md
+основной копии — при расхождении правила main новее: влить main в ветку.
 Номер — create-only ref refs/video/epNNN: два чата не получат один номер; номер не переиспользуется (и у брошенных).
 Игнорируемые ассеты основной копии (Млечный Путь, кеши текстур) копируются; assets/tts/ очередь берёт из основной.
-finish: дерево чистое, у ролика есть release/ (мастер + publish_en.md), визуальный QA принят (accept), нет живых
-заданий очереди → git merge main в ветку → check_episode + unittest → git merge --ff-only в основной копии →
-out/<ep>/ переносится в основную копию (release не теряется при удалении worktree).
+finish: дерево чистое, у ролика есть release/ (мастер + publish_en.md), финал принят (accept), нет живых заданий
+очереди → git merge main в ветку → check_episode + unittest → git merge --ff-only в основной копии (она на main) →
+out/<ep>/ переносится в основную копию (release не теряется при удалении worktree). Эпизод — из ветки
+video/epNNN_slug или, у старых веток (codex/…), по единственной папке episodes/epNNN_* в диффе с main.
+remove не удаляет worktree, в которой лежит out/ep* (кадры, мастер), без явного --drop-out.
 """
 import argparse
 import json
@@ -48,7 +51,7 @@ def top(cwd="."):
 
 
 def wt_root(main):
-    return Path(os.environ.get("SS_WT_ROOT") or main.parent / (main.name + ".wt"))
+    return Path(os.environ.get("SS_WT_ROOT") or main / "out" / "wt")
 
 
 def worktrees(main):
@@ -98,10 +101,16 @@ def copy_assets(main, dest):
     return k
 
 
-def ep_of(branch):
-    """video/ep010_kepler16b → ep010_kepler16b; до claim — None."""
-    m = re.fullmatch(r"video/(ep\d{3}_[a-z0-9_]+)", branch)
-    return m.group(1) if m else None
+def ep_of(branch, here=None):
+    """video/ep010_kepler16b → ep010_kepler16b; до claim — None. Старая ветка (codex/…) — по единственной папке
+    episodes/epNNN_* в её диффе с main."""
+    if m := re.fullmatch(r"video/(ep\d{3}_[a-z0-9_]+)", branch):
+        return m.group(1)
+    if here is None or branch.startswith("video/"):
+        return None
+    names = git("diff", "--name-only", "main...HEAD", "--", "episodes/", cwd=here, check=False).stdout.split()
+    eps = {m.group(1) for n in names if (m := re.match(r"episodes/(ep\d{3}_[a-z0-9_]+)/", n))}
+    return eps.pop() if len(eps) == 1 else None
 
 
 def cmd_start(a):
@@ -131,6 +140,8 @@ def cmd_start(a):
     print(f"OK {br}\n  путь:   {path}\n  main:   {main}\n  venv:   {main / '.venv' / 'Scripts' / 'python.exe'}\n"
           f"  ассеты: скопировано {k}\nДальше вся работа и все коммиты — в этой папке "
           f"(Claude: EnterWorktree path; Codex: workdir). Основную копию не править.")
+    if a.here:
+        print("Worktree создана приложением: после finish её не удалять (remove не нужен) — уберёт приложение.")
 
 
 def cmd_claim(a):
@@ -157,7 +168,7 @@ def cmd_status(a):
     for path, br in worktrees(main):
         ahead = git("rev-list", "--count", f"main..{br}", cwd=main, check=False).stdout.strip() or "?"
         last = git("log", "-1", "--format=%cr: %s", br, cwd=main, check=False).stdout.strip()
-        ep = ep_of(br)
+        ep = ep_of(br, path if path.exists() else None)
         rel = "release ✓" if ep and (path / "out" / ep / "release").is_dir() else ""
         state = "грязно" if path.exists() and dirty(path) else "чисто"
         print(f"  {br:32} {state:6} +{ahead:<3} {rel:9} {path}\n      {last}")
@@ -166,36 +177,51 @@ def cmd_status(a):
     print(f"следующий номер: ep{max(used_numbers(main) | {0}) + 1:03d}")
 
 
-def live_jobs(here):
+def queue_jobs(here):
+    """Задания общей очереди, поставленные из этой worktree; None — очередь недоступна."""
     r = subprocess.run([sys.executable, str(here / "tools" / "render_queue.py"), "status", "--json"],
                        capture_output=True, encoding="utf-8", errors="replace")
     try:
         jobs = json.loads(r.stdout).get("jobs", [])
     except ValueError:
-        return []
-    return [j for j in jobs if j.get("state") in LIVE and same(j.get("source", ""), here)]
+        return None
+    return [j for j in jobs if same(j.get("source", ""), here)]
+
+
+def check_release(here, ep, jobs):
+    rel = here / "out" / ep / "release"
+    if not (list(rel.glob("*.mp4")) and (rel / "publish_en.md").is_file()):
+        sys.exit(f"FAIL нет пакета {rel}: мастер MP4 + publish_en.md")
+    if jobs is None:                                     # очереди нет — по последнему результату
+        res = here / "out" / ep / "queue_result.json"
+        if res.is_file() and json.loads(res.read_text(encoding="utf-8")).get("review_required"):
+            sys.exit("FAIL визуальный QA не принят: render_queue.py accept JOB")
+        return
+    # queue_result.json перезаписывает любое следующее превью — судим по самим заданиям финала
+    finals = [j for j in jobs if j.get("kind") == "final" and j.get("episode") == ep]
+    if waiting := [j["id"] for j in finals if j.get("state") == "needs_review"]:
+        sys.exit("FAIL визуальный QA не принят: render_queue.py accept " + ", ".join(waiting))
+    if not any(j.get("state") == "done" for j in finals):
+        sys.exit(f"FAIL в очереди нет принятого финала {ep} из этой worktree")
 
 
 def cmd_finish(a):
     here, main = top(), main_root()
     if same(here, main):
         sys.exit("FAIL finish — из своей worktree, не из основной копии")
+    if git("branch", "--show-current", cwd=main).stdout.strip() != "main":
+        sys.exit("FAIL основная копия не на ветке main — не вливаю (спросить владельца)")
     br = git("branch", "--show-current", cwd=here).stdout.strip()
     if d := dirty(here):
         sys.exit("FAIL грязное дерево — закоммить логическими блоками (AGENTS.md, «Работа агентов»):\n" + d)
-    ep = ep_of(br)
-    if br.startswith("video/") and not a.no_release:
-        if not ep:
-            sys.exit("FAIL у ветки ролика нет эпизода: сначала claim SLUG (или --no-release для брошенного)")
-        rel = here / "out" / ep / "release"
-        if not (list(rel.glob("*.mp4")) and (rel / "publish_en.md").is_file()):
-            sys.exit(f"FAIL нет пакета {rel}: мастер MP4 + publish_en.md")
-        res = json.loads((here / "out" / ep / "queue_result.json").read_text(encoding="utf-8")) \
-            if (here / "out" / ep / "queue_result.json").is_file() else {}
-        if res.get("review_required"):
-            sys.exit(f"FAIL визуальный QA не принят: render_queue.py accept {res.get('job')}")
-    if jobs := live_jobs(here):
-        sys.exit("FAIL живые задания очереди из этой worktree: " + ", ".join(f"{j['id']} {j['state']}" for j in jobs))
+    ep = ep_of(br, here)
+    if br.startswith("video/") and not ep and not a.no_release:
+        sys.exit("FAIL у ветки ролика нет эпизода: сначала claim SLUG (или --no-release для брошенного)")
+    jobs = queue_jobs(here)
+    if ep and not a.no_release:
+        check_release(here, ep, jobs)
+    if live := [j for j in jobs or [] if j.get("state") in LIVE]:
+        sys.exit("FAIL живые задания очереди из этой worktree: " + ", ".join(f"{j['id']} {j['state']}" for j in live))
     r = git("merge", "--no-edit", "-m", f"chore(merge): main → {br}", "main", cwd=here, check=False)
     if r.returncode:
         sys.exit("FAIL конфликт при git merge main — реши в этой worktree (чужие правки сохранить), закоммить, "
@@ -237,7 +263,11 @@ def cmd_remove(a):
     merged = git("merge-base", "--is-ancestor", br, "main", cwd=main, check=False).returncode == 0
     if not merged and not a.abandon:
         sys.exit(f"FAIL {br} не влита в main: finish, или --abandon (ветка останется, worktree уйдёт)")
-    git("worktree", "remove", "--force", str(path), cwd=main)  # --force — только ради игнорируемых ассетов/out
+    kept = [p.name for p in (path / "out").glob("ep*") if p.is_dir() and any(p.iterdir())]
+    if kept and not a.drop_out:
+        sys.exit(f"FAIL в {path / 'out'} лежат {', '.join(kept)} (кадры, мастер): перенеси в out/ основной копии "
+                 "или --drop-out, если они не нужны")
+    git("worktree", "remove", "--force", str(path), cwd=main)  # --force — ради игнорируемых ассетов и out/
     if merged:
         git("branch", "-d", br, cwd=main)
     print(f"OK worktree {path} удалена; ветка {br} {'удалена' if merged else 'оставлена (не влита)'}")
@@ -259,6 +289,7 @@ def main():
     p = sub.add_parser("remove")
     p.add_argument("name")
     p.add_argument("--abandon", action="store_true")
+    p.add_argument("--drop-out", action="store_true", help="удалить и out/ep* worktree (кадры, мастер)")
     a = ap.parse_args()
     dict(start=cmd_start, claim=cmd_claim, status=cmd_status, finish=cmd_finish, remove=cmd_remove)[a.cmd](a)
 
