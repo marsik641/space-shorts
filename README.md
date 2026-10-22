@@ -1,10 +1,10 @@
 # space-shotrs — конвейер Shorts канала The Universe Inside Out
 
-**The Universe Inside Out** (`@TheUniverseInsideOut`) — «Real objects. Real numbers. Turned inside out.» Реалистичные научные визуализации
-**реальных** объектов и событий всего космоса (планеты и луны, звёзды и их останки, чёрные дыры, галактики,
-экзопланеты, кометы, миссии, масштаб, «что если») с параметрами из каталогов и статей → вертикальные ролики
-1080×1920 60 fps с озвучкой, музыкой и субтитрами → готовый пакет к загрузке (мастер + превью для телефона +
-название, описание с источниками, теги, закреп, настройки Studio). Нейтронные звёзды эп. 001 — только первая тема.
+**The Universe Inside Out** (`@TheUniverseInsideOut`) — «Real objects. Real numbers. Turned inside out.» Кинематографичные
+визуализации **реальных** объектов и событий всего космоса (планеты и луны, звёзды и их останки, чёрные дыры,
+галактики, экзопланеты, кометы, миссии, масштаб, «что если»): числа — из каталогов и статей, картинка — уровня
+кино (`docs/quality.md`) → вертикальные ролики 1080×1920 60 fps до 30 с с озвучкой, музыкой и субтитрами → пакет к
+загрузке (мастер MP4 + `publish_en.md`: название, описание с источниками, теги, закреп, настройки Studio).
 
 Только **EN**-версии (`languages: ["en"]`). Канал, серии, темы — `docs/channel.md`. Оформление (аватар, баннер) —
 `tools/brand.py` → `out/brand/`: каменная планета в разрезе — в вырезанном секторе светятся кора, мантия и ядро
@@ -12,11 +12,13 @@
 
 Рендер — Blender 5.2 Cycles (OptiX, RTX 3060). Вся сборка — скриптами, без ручной работы в Blender.
 
-**Несколько чатов → общая очередь двух ПК:** `tools/render_queue.py submit preview …` для подготовки;
-после одобрения — `submit final … --approved '…'` до мастера, машинного QA и пакета. Очередь продолжает без
-открытого чата, фиксирует код каждого задания и пропускает превью между порциями финала. Команды и ограничения —
-[docs/render_queue.md](docs/render_queue.md). Прямые команды быстрого старта ниже — справочник отдельных операций;
-в работе чаты используют очередь.
+**Как идёт работа** (`AGENTS.md`, `docs/pipeline.md`): один ролик = один чат = одна git worktree.
+`/next-video` → `tools/video_wt.py start` (номер эпизода, worktree `../space-shotrs.wt/epNNN`) → 3 варианта →
+`/make-video N` → факты, бриф, шоты, hero-кадры → одобрение → финал через общую очередь двух ПК
+(`tools/render_queue.py`, [docs/render_queue.md](docs/render_queue.md)) → release → `video_wt.py finish` (ветка
+влита в main). Несколько агентов (Claude, Codex) работают параллельно, каждый в своей worktree. Планка картинки —
+[docs/quality.md](docs/quality.md). Прямые команды быстрого старта ниже — справочник отдельных операций; в работе
+чаты используют очередь.
 
 ## Структура
 
@@ -24,12 +26,13 @@
 |---|---|
 | `spacekit/` | Библиотека сцен (импортируется внутри Blender): `core`, `render`, `camera`, `anim`, `orbits`, `lighting`, `sky`, `shot`, `bodies/` (пульсар, планеты), `fx/` (пылевое кольцо, светящиеся линии орбит). Возможности и API — `docs/spacekit.md` |
 | `editkit/` | Монтаж в VSE Blender (`assemble.py`: шоты + титры + субтитры + звук → MP4), проверка видео (`verify_video.py`) |
-| `tools/` | Озвучка (`tts.py`), музыка (`music.py`), cue по вспышкам из логов рендера (`cues.py`), сведение (`mix.py`), монтажный лист (`build_edit.py`), проверка эпизода (`check_episode.py`), проверка кадров до сборки (`framecheck.py`, PASS/FAIL), QA финального MP4 (`qa.py`, PASS/FAIL), сбор релиза (`release.py` → `out/<ep>/release/`), рендер эпизода (`render_episode.sh`; на другом ПК по ssh — `remote_render.py` + `remote/agent.py`, `docs/remote_render.md`), оформление канала (`brand.py`), контактные листы, регресс-сравнение картинок, мерцание |
-| `episodes/<id>/` | Эпизод: `facts.md` (факты + источники), `system.py` (параметры объекта), `shots_*.py` (шоты), `script_*.json` (текст + тайминг), `music_cues.json`, `episode.json`, `edit_*.json` (генерирует `build_edit.py`), `publish_en.md`. Сводка шотов всех эпизодов — `episodes/INDEX.md` |
-| `docs/` | `channel.md` (канал), `pipeline.md` (как делается ролик), `growth.md` (рост и деньги), `metrics.md` (метрики роликов), `spacekit.md` (что умеет библиотека), `timings.md` (замеры с/кадр и формула ETA), `approval.md` (сообщение на одобрение и что можно менять после «ок»), `publish.md` (пакет к загрузке), `remote_render.md` (рендер на другом ПК), `research/` (исследование с источниками) |
+| `tools/` | Озвучка (`tts.py`), музыка (`music.py`), cue по вспышкам из логов рендера (`cues.py`), сведение (`mix.py`), монтажный лист (`build_edit.py`), проверка эпизода (`check_episode.py`), проверка кадров до сборки (`framecheck.py`, PASS/FAIL), QA финального MP4 (`qa.py`, PASS/FAIL), сбор релиза (`release.py` → `out/<ep>/release/`), общая очередь рендера двух ПК (`render_queue.py`, `docs/render_queue.md`; транспорт на rinat-pc — `remote_render.py` + `remote/agent.py`), worktree ролика/задачи (`video_wt.py`), оформление канала (`brand.py`), контактные листы, регресс-сравнение картинок, мерцание |
+| `episodes/<id>/` | Эпизод: `facts.md` (факты + источники), `visual_brief.md` (постановка), `system.py` (параметры объекта), `shots_*.py` (шоты), `script_*.json` (текст + тайминг), `music_cues.json`, `episode.json`, `edit_*.json` (генерирует `build_edit.py`), `publish_en.md`. Сводка шотов всех эпизодов — `episodes/INDEX.md` |
+| `docs/` | `channel.md` (канал), `pipeline.md` (как делается ролик), `growth.md` (рост и деньги), `metrics.md` (метрики роликов), `spacekit.md` (что умеет библиотека), `timings.md` (замеры с/кадр и формула ETA), `quality.md` (планка картинки и бюджет рендера), `workflows.md` (роли: исследователь, фактчекер, постановщик, критики), `approval.md` (сообщение на одобрение и что можно менять после «ок»), `publish.md` (пакет к загрузке), `remote_render.md` (рендер на другом ПК), `research/` (исследование с источниками) |
 | `ideas/` | Варианты следующих роликов (`_TEMPLATE_options.md` — формат файла вариантов) |
-| `out/` | Кадры, превью, аудио, готовые видео, `<ep>/release/` (пакет к загрузке), `brand/` (в git не идёт). `out/RENDER.lock` — идёт финальный рендер |
-| `.claude/` | `skills/` — команды конвейера `/next-video`, `/make-video` (до пакета к загрузке включительно); `workflows.md` — промпты ролей (исследователь, фактчекер, критики превью) |
+| `out/` | Кадры, превью, аудио, готовые видео, `<ep>/release/` (пакет к загрузке), `brand/`, `q/` — общая очередь рендера (в git не идёт) |
+| `.claude/`, `.agents/` | `skills/` — команды конвейера `/next-video`, `/make-video` для Claude и Codex (одинаковые копии, `tests/test_harness.py`) |
+| `tests/` | Тесты без GPU и сети: очередь, worktree, длительность, харнесс (`python -m unittest discover -s tests`) |
 
 ## Быстрый старт
 
