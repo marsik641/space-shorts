@@ -12,7 +12,7 @@ Blender. **Только EN** (`languages: ["en"]`), **≤ 30 с** (`docs/shorts_
 
 ```
 [ТЫ] /next-video  (новый чат в основной копии)
-   └► video_wt.py start → worktree space-shotrs.wt/epNNN, ветка video/epNNN
+   └► video_wt.py start → worktree out/wt/epNNN, ветка video/epNNN
       → 3 варианта с money shot (ideas/<дата>_options.md) → коммит → стоп
 [ТЫ] /make-video N [+ правки]  (тот же чат)
    └► claim <slug> → факты → визуальный бриф → сценарий → сцена/шоты
@@ -30,21 +30,27 @@ Blender. **Только EN** (`languages: ["en"]`), **≤ 30 с** (`docs/shorts_
 
 | Команда (`python tools/video_wt.py …`) | Где | Что делает |
 |---|---|---|
-| `start` | основная копия | резерв номера `refs/video/epNNN` (create-only: два чата не получат один номер; номер не переиспользуется), worktree `../space-shotrs.wt/epNNN` на ветке `video/epNNN` от main, копия игнорируемых ассетов |
+| `start` | основная копия | резерв номера `refs/video/epNNN` (create-only: два чата не получат один номер; номер не переиспользуется), worktree `out/wt/epNNN` на ветке `video/epNNN` от main, копия игнорируемых ассетов |
 | `start --task <slug>` | основная копия | то же для не-ролика: `task-<slug>`, ветка `task/<slug>` |
 | `start --here` | worktree от приложения | резерв номера и переименование текущей ветки в `video/epNNN` |
 | `claim <slug>` | worktree ролика | ветка → `video/epNNN_<slug>`; папка эпизода — `episodes/epNNN_<slug>/` |
 | `status` | где угодно | все worktree: ветка, чисто/грязно, коммиты впереди main, release; резервы; следующий номер |
-| `finish [--no-release]` | своя worktree | DoD: чистое дерево, release (мастер + `publish_en.md`), визуальный QA принят, нет живых заданий очереди → `git merge main` в ветку → `check_episode` + тесты → `git merge --ff-only` в основной копии → `out/<ep>/` переносится в основную копию |
-| `remove <имя> [--abandon]` | основная копия | удалить влитую worktree и ветку; `--abandon` — только worktree, невлитая ветка остаётся |
+| `finish [--no-release]` | своя worktree | DoD: чистое дерево, release (мастер + `publish_en.md`), финал принят в очереди (`accept`), нет живых заданий → `git merge main` в ветку → `check_episode` + тесты → `git merge --ff-only` в основной копии (только если она на `main`) → `out/<ep>/` переносится в основную копию |
+| `remove <имя> [--abandon] [--drop-out]` | основная копия | удалить влитую worktree и ветку; `--abandon` — только worktree, невлитая ветка остаётся; worktree с `out/ep*` (кадры, мастер) — только с `--drop-out` |
 
 - Claude входит в worktree `EnterWorktree` с путём из `start` и выходит `ExitWorktree` (keep) перед `remove`;
   Codex работает с `workdir` = путь worktree. Чат по ролику открывать в основной копии.
-- Почему рядом с репо, а не в `out/`: сессия Claude в подпапке основной копии подтягивает её (старые) `CLAUDE.md` и
-  скиллы. Старые worktree `out/w8`, `out/w9` доживают до своего `finish`.
-- В worktree нет `.venv` и весов TTS: TTS и звук — в очереди (она берёт `.venv` и `assets/tts/` основной копии);
-  путь к venv для прочих скриптов печатает `start`.
-- Очередь общая (`out/q` основной копии), результаты задания возвращаются в `out/<ep>/` своей worktree.
+- Worktree — в `out/wt/` основной копии: внутри папки проекта, куда пишет песочница Codex (`workspace-write`), и
+  вне git (`out/` в `.gitignore`). Claude в ней читает и родительский `CLAUDE.md` основной копии: при расхождении
+  правила main новее — `git merge main` в свою ветку.
+- Worktree, созданная приложением (`start --here`): после `finish` её не удалять — она чистая и влитая, приложение
+  уберёт её при архивации чата; в ответе так и сказать.
+- Старые worktree (`out/w8`, `out/w9`, `../ss-ep005`, ветки `codex/…`, `ep005_…`): `finish` находит эпизод по папке
+  `episodes/epNNN_*` в диффе с main и проверяет тот же DoD; `remove` не удалит их `out/<ep>/` без `--drop-out`.
+- В worktree нет `.venv` и весов TTS: очередь берёт их из основной копии сама, из какой бы копии ни вызвали
+  `tools/render_queue.py`; путь к venv для прочих скриптов печатает `start`.
+- Очередь общая (`out/q` основной копии). Во время задания кадры и логи — в снимке (`snapshot` из
+  `render_queue.py status --json`); в `out/<ep>/` своей worktree результаты попадают по завершении задания.
 - `finish` не прошёл — причина в выводе: закоммитить, решить конфликт в своей worktree, дождаться задания, повторить.
   `main` сдвинулся между проверками — просто повторить.
 
@@ -77,14 +83,15 @@ Blender. **Только EN** (`languages: ["en"]`), **≤ 30 с** (`docs/shorts_
    55–70 слов); факт-крючок в первой фразе, «likely/probably» для гипотез, финальная фраза подводит к петле.
 5. **Сцена и шоты.** `system.py` (реальные параметры → экранный масштаб, условности — в docstring), новые модули
    `spacekit/` при необходимости (+ регресс эп. 001 через `tools/imgdiff.py`); `shots_9x16.py` по брифу и
-   `docs/quality.md` (6–10 склеек, глубина, свет, движение, оптика); `episode.json` (Σ кадров монтажа ≤ 1799 при
+   `docs/quality.md` (6–10 шотов по 2–5 с, глубина, свет, движение, оптика); `episode.json` (Σ кадров монтажа ≤ 1799 при
    60 fps — AAC округляет звук вверх, 1800 кадров → дорожка 30,016 с). `python tools/check_episode.py …`.
 6. **Превью тайминга.** `render_queue.py submit preview … --with-tts`: все шоты pct=50 → контактный лист +
    черновая озвучка (нет OVERRUN). Cue-лист музыки — по логам превью (FLASH печатается и там, см. ниже).
-7. **Hero-кадры.** По кадру на шот в 100 % и финальных сэмплах (`docs/quality.md`, «Ворота»): по ним судят
-   картинку и считают с/кадр; сэмплы и эффекты — под финал 4–6 ч.
+7. **Hero-кадры.** `submit preview … --hero` по шоту: 100 %, сэмплы из кода шота → `out/<ep>/9x16/hero/` и
+   `sheet_hero.png` (`docs/quality.md`, «Ворота»): по ним судят картинку и считают с/кадр; сэмплы и эффекты — под
+   финал 4–6 ч.
 8. **Критика** (`docs/workflows.md`): «Кино/вау» до 3 раундов (шот ≥ 8/10), остальные — до 2 → правки → 6–7.
-9. **Черновое видео** целиком (`docs/approval.md`, 1a).
+9. **Черновое видео** целиком (`docs/approval.md`, 1a); не собралось — одобрение без него.
 
 **Ты получаешь сообщение по шаблону `docs/approval.md` (hero-кадры + черновое видео) и отвечаешь: «ок» или
 правки.** После «ок» — до DoD без вопросов, кроме случаев остановки из `docs/approval.md`.
@@ -170,7 +177,7 @@ Blender. **Только EN** (`languages: ["en"]`), **≤ 30 с** (`docs/shorts_
 
 ## QA
 
-**Кадры — до сборки** (секунды, без Blender; `remote_render.py pull` запускает сам, когда пришли все кадры):
+**Кадры — до сборки** (секунды, без Blender; в финале очередь запускает сама после последней порции):
 
 ```bash
 python tools/framecheck.py episodes/<ep>/episode.json      # [--shots v1,v2] [--frames DIR]; код 0 PASS, 1 FAIL
@@ -185,8 +192,9 @@ python tools/framecheck.py episodes/<ep>/episode.json      # [--shots v1,v2] [--
   печатается как `событие` (ep002: v2 26–28 у EVENT sunrise 27; ep001: подъём/спад луча пульсара — до 12 кадров
   от пика FLASH). Задуманный скачок без строки EVENT даст FAIL — сравнить кадры глазами, чисто — собирать, а в шоте
   печатать EVENT на таких моментах.
-- FAIL → кадры из строк `RERENDER` удалить (рендер на rinat-pc — здесь и там), докачать рендер на той же машине,
-  повторить framecheck.
+- FAIL → кадры из строк `RERENDER` удалить в снимке `<snapshot>/out/<ep>/9x16/frames/<шот>/` (`snapshot` — из
+  `render_queue.py status --json`; рендер на rinat-pc — и в `D:\orbitfall\out\<ep>\9x16\frames\<шот>\`), затем
+  `render_queue.py retry JOB --rerender-shots vN`: очередь докачает кадры и повторит framecheck.
 
 **Готовый MP4.** `editkit/verify_video.py` **сам ничего не проверяет**: печатает размер/fps/кадры/секунды/байты и выгружает указанные
 кадры в PNG. Вердикт — `tools/qa.py`:

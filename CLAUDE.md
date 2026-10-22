@@ -4,8 +4,10 @@
 
 Общие правила — `AGENTS.md` выше (тот же файл читает Codex). Здесь — только то, что касается инструментов Claude.
 
-- **Worktree.** После `python tools/video_wt.py start` — `EnterWorktree` с `path` из вывода; дальше все Read/Edit/Bash —
-  в ней. Перед `video_wt.py remove` — `ExitWorktree` с `action: "keep"` (удалять worktree изнутри нельзя).
+- **Worktree.** После `python tools/video_wt.py start` — `EnterWorktree` с `path` из вывода (путь вне
+  `.claude/worktrees/` — приложение один раз спросит подтверждение, это штатно); дальше все Read/Edit/Bash — в ней.
+  Перед `video_wt.py remove` — `ExitWorktree` с `action: "keep"` (удалять worktree изнутри нельзя); сессия
+  вернётся туда, где была до `EnterWorktree`. Чат открыт приложением сразу в worktree (`start --here`) — не удалять.
   Не делать `cd` в чужие worktree: сессия сочтёт её своей, а запись в основную копию заблокирует.
 - **Файлы пользователю** — SendUserFile: hero-кадры и черновое видео на одобрение, оба файла `release/` в конце
   (мастер не проходит по размеру — путь к `out/<ep>/release/`).

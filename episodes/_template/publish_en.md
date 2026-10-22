@@ -20,8 +20,8 @@ Visualization based on real data:
 Sources:
 • <every number in the video> — <author year, journal> — <URL>
 
-Rendered in Blender Cycles · scientific visualization / artist's impression.
-Not to scale: <scale/time conventions from facts.md>.
+Rendered in Blender Cycles · real numbers (sources above), visuals are an artist's impression.
+Artistic conventions: <list from visual_brief.md, «Условности»: scale, colour, time, invisible made visible>.
 #space #astronomy #<object>
 ```
 

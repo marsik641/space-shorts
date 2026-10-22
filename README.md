@@ -13,7 +13,7 @@
 Рендер — Blender 5.2 Cycles (OptiX, RTX 3060). Вся сборка — скриптами, без ручной работы в Blender.
 
 **Как идёт работа** (`AGENTS.md`, `docs/pipeline.md`): один ролик = один чат = одна git worktree.
-`/next-video` → `tools/video_wt.py start` (номер эпизода, worktree `../space-shotrs.wt/epNNN`) → 3 варианта →
+`/next-video` → `tools/video_wt.py start` (номер эпизода, worktree `out/wt/epNNN`) → 3 варианта →
 `/make-video N` → факты, бриф, шоты, hero-кадры → одобрение → финал через общую очередь двух ПК
 (`tools/render_queue.py`, [docs/render_queue.md](docs/render_queue.md)) → release → `video_wt.py finish` (ветка
 влита в main). Несколько агентов (Claude, Codex) работают параллельно, каждый в своей worktree. Планка картинки —
