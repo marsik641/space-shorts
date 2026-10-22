@@ -40,7 +40,10 @@ planets 1025 (3 kind ≈ 80–150 строк материала на kind), dust
 `bodies.ultrahot.build_ultrahot(name, radius, location, parent, day_k, night_k,
 sun_dir, seed, strength, detail)` → `root/body/mat/radius/day_k/night_k`.
 Самосветящаяся газовая фотосфера: цвет чёрного тела, контраст порядка T⁴,
-плавные полосы и деформация течений. `key_flow(body, [(frame, value), ...])`
+деформация поля шума, нерегулярные яркостные структуры разной ширины и тонкие волокна.
+Широта, ширина и контраст структур — художественная условность; наблюдаемой карты
+полос и вихрей KELT-9b нет. Заданные спирали не используются.
+`key_flow(body, [(frame, value), ...])`
 анимирует рисунок ключами без драйверов. Нет твёрдого рельефа и объёмной симуляции.
 `sun_dir` — направление в локальных осях тела. Имена/материалы имеют префикс;
 существующие kind и API планет/звёзд не изменены.
@@ -49,6 +52,12 @@ sun_dir, seed, strength, detail)` → `root/body/mat/radius/day_k/night_k`.
 градиент, цвет и течения — иллюстрация. Нет моделей переноса газа, ветра,
 диссоциации, химии, испарения и гравитационного потемнения звезды.
 Молекулярные сцены ep008 — явно подписанная схема в коде эпизода.
+
+`bodies.textured_giant.build_textured_giant(name, texture, radius, location, polar_limit=80)`
+строит объёмную сферу с цилиндрической наблюдательной картой и рассеянным отражением.
+В ep008 — Юпитер с картой Hubble/OPAL2019; nominal radius задан отдельно от освещения.
+Широты за `polar_limit` заполняются ближайшей валидной строкой карты, это условность.
+Происхождение карты и credit сохранять в `facts.md` и `publish_en.md` эпизода.
 
 Импорт в скрипте шота: `from spacekit import core as C, camera as CAM, shot as S, sky as SKY, orbits as ORB, lighting as LT`,
 `from spacekit.bodies import neutron_star as NS, planets as PL`, `from spacekit.fx import dust_ring as DR`.

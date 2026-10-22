@@ -25,15 +25,28 @@ def thermal_material(name, day_k=4566.0, night_k=2556.0, sun_dir=(1, 0, 0), seed
     flow.outputs[0].default_value = seed * 0.013
     fw = flow.outputs[0]
     x, y, z = b.sep(p)
-    # Струйные полосы с крупными волнами, без Bump/Displacement.
-    warp = b.noise(p, 2.8, detail=3, rough=0.62, dist=0.4, w=fw).outputs["Color"]
-    shifted = b.v("ADD", p, b.v("SCALE", b.v("SUBTRACT", warp, (0.5, 0.5, 0.5)), scale=0.24))
-    broad = b.noise(shifted, 3.1, detail=3, rough=0.65, w=fw).outputs["Fac"]
-    lat = b.m("ADD", z, b.m("MULTIPLY", b.m("SUBTRACT", broad, 0.5), 0.25))
-    band = b.m("ADD", 0.5, b.m("MULTIPLY", b.m("SINE", b.m("MULTIPLY", lat, 44.0)), 0.5))
-    cloud = b.noise(b.v("MULTIPLY", shifted, (5.0, 5.0, 22.0)), 3.0,
-                    detail=3 if detail == "close" else 1, rough=0.55, w=fw).outputs["Fac"]
-    pattern = b.m("ADD", 0.68, b.m("ADD", b.m("MULTIPLY", band, 0.16), b.m("MULTIPLY", cloud, 0.32)))
+    # Нерегулярные структуры яркости; без периодических поясов и заданных спиралей.
+    warp = b.noise(p, 3.8, detail=4, rough=0.68, dist=1.4, w=fw).outputs["Color"]
+    q = b.v("ADD", p, b.v("SCALE", b.v("SUBTRACT", warp, (0.5, 0.5, 0.5)), scale=0.18))
+    drift = b.noise(q, 14.0, detail=4, rough=0.7, dist=1.5, w=fw).outputs["Color"]
+    q = b.v("ADD", q, b.v("SCALE", b.v("SUBTRACT", drift, (0.5, 0.5, 0.5)), scale=0.045))
+    broad = b.noise(q, 4.3, detail=4, rough=0.63, dist=0.8, w=fw).outputs["Fac"]
+    lat = b.m("ADD", z, b.m("MULTIPLY", b.m("SUBTRACT", broad, 0.5), 0.10))
+    band = 0.0
+    # Разная ширина и нерегулярные интервалы — художественные, не измеренные широты.
+    for center, width, amount in [(-0.73,.11,-.11),(-.51,.026,.07),(-.29,.16,-.12),
+                                   (.06,.055,.10),(.24,.022,-.07),(.49,.12,.11),(.74,.041,-.07)]:
+        d = b.m("DIVIDE", b.m("SUBTRACT", lat, center), width)
+        g = b.m("EXPONENT", b.m("MULTIPLY", b.m("MULTIPLY", d, d), -0.5))
+        band = b.m("ADD", band, b.m("MULTIPLY", g, amount))
+    threads = b.noise(b.v("MULTIPLY", q, (3.0, 3.0, 13.0)), 3.8,
+                      detail=5 if detail == "close" else 3, rough=0.69, dist=1.4, w=fw).outputs["Fac"]
+    fine = b.noise(q, 145 if detail == "close" else 75, detail=3, rough=0.7, w=fw).outputs["Fac"]
+    pattern = b.m("ADD", b.m("ADD", .82, band),
+                  b.m("ADD", b.m("MULTIPLY", b.m("SUBTRACT", broad, .5), .30),
+                  b.m("ADD", b.m("MULTIPLY", b.m("SUBTRACT", threads, .5), .34),
+                              b.m("MULTIPLY", b.m("SUBTRACT", fine, .5), .18))))
+    pattern = b.m("MULTIPLY", .82, b.m("POWER", b.m("MAXIMUM", b.m("DIVIDE", pattern, .82), .3), 3.0))
     mu = b.v("DOT_PRODUCT", p, tuple(Vector(sun_dir).normalized()))
     day = b.ss(mu, -0.65, 0.8)
     # Переход не выдаётся за восстановленную карту температуры.
@@ -44,7 +57,9 @@ def thermal_material(name, day_k=4566.0, night_k=2556.0, sun_dir=(1, 0, 0), seed
     lw = b.node("ShaderNodeLayerWeight", {"Blend": 0.5})
     facing = b.m("SUBTRACT", 1.0, lw.outputs["Facing"], clamp=True)
     limb = b.m("MULTIPLY_ADD", facing, 0.64, 0.36)
-    emit = b.node("ShaderNodeEmission", {"Color": bb.outputs["Color"],
+    tint = b.mix(b.m("SUBTRACT", 1, b.ss(pattern, 0.12, 1.3)),
+                 bb.outputs["Color"], b.v("MULTIPLY", bb.outputs["Color"], (0.90, 0.82, 0.70)))
+    emit = b.node("ShaderNodeEmission", {"Color": tint,
                   "Strength": b.m("MULTIPLY", strength, b.m("MULTIPLY", thermal, b.m("MULTIPLY", pattern, limb)))})
     links.new(emit.outputs[0], out.inputs["Surface"])
     mat.cycles.emission_sampling = "NONE"

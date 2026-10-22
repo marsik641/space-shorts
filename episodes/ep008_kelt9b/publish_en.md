@@ -27,10 +27,14 @@ Sources:
 - NASA/JPL, model interpretation of hydrogen chemistry: https://www.nasa.gov/centers-and-facilities/jpl/for-hottest-planet-a-major-meltdown-study-shows/
 - NASA, gas giants and their lack of a solid outer surface: https://science.nasa.gov/exoplanets/gas-giant/
 - IAU nominal radius conversions: https://arxiv.org/abs/1510.07674
+- Kitzmann et al. 2018, atmospheric chemistry and the cloud-free expectation: https://arxiv.org/abs/1804.07137
+- Pino et al. 2022, phase-resolved iron emission and day-to-night flow interpretation: https://arxiv.org/abs/2209.11735
+- Jupiter texture, Hubble/OPAL 2019: https://science.nasa.gov/asset/hubble/jupiter-global-map-2019/ — NASA, ESA, A. Simon (GSFC), M.H. Wong (UC Berkeley).
 
 Rendered in Blender Cycles · scientific visualization / artist's impression.
+Turbulent photospheric structures are illustrative brightness patterns, not measured cloud features or solid terrain. In the molecular diagrams, glowing clouds and dots represent electron probability density qualitatively; dots are probability samples, not many electrons in one atom. Nuclei, clouds and bonds are not to scale and are not a quantum calculation of H2.
 Published infrared brightness temperatures retain Mansfield et al.'s stellar calibration; geometric scales follow Borsa et al. These are separate published estimates, not a joint fit.
-The atmosphere's appearance and spatial temperature gradient are illustrative; the measured temperatures describe hemisphere-integrated brightness in one infrared band. Molecular scenes are model-based illustrations, not observations of individual particles; the expanding light ring is a graphic symbol for energy release. The size comparison uses a circle for Jupiter's nominal radius. The orbital view uses nominal physical dimensions, an illustrative oblate star, a circular orbit and accelerated time (one orbit in eight screen seconds). Synchronous planetary rotation is assumed. The nearly polar geometry is model-based; no resolved image of this planet is shown. All music is original synthesis.
+The atmosphere's appearance and spatial temperature gradient are illustrative; the measured temperatures describe hemisphere-integrated brightness in one infrared band. No resolved map constrains the depicted brightness structures; regular Jovian cloud belts and prescribed giant spirals are not shown. Molecular scenes and the magnification into them are model-based illustrations, not observations of individual particles; the expanding light ring is a graphic symbol for energy release. Two 3D spherical models compare nominal radii under normalized illumination. Jupiter uses the 2019 Hubble/OPAL map, with unobserved polar pixels extended from the nearest mapped latitude. The orbital view uses nominal physical dimensions, an illustrative oblate star, a circular orbit and accelerated time (one orbit in eight screen seconds). Synchronous planetary rotation is assumed. The nearly polar geometry is model-based; no resolved image of this planet is shown. All music is original synthesis.
 
 #space #astronomy #KELT9b #exoplanets
 

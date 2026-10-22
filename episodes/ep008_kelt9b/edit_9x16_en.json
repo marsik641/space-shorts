@@ -53,9 +53,9 @@
  ],
  "titles": [
   {
-   "text": "Scientific visualization · real data",
+   "text": "Scientific visualization · artist's impression",
    "size": 27,
-   "x": 0.465,
+   "x": 0.5,
    "y": 0.92,
    "font": "C:/Windows/Fonts/segoeui.ttf",
    "color": [
@@ -70,7 +70,7 @@
   {
    "text": "KELT-9b",
    "size": 39,
-   "x": 0.465,
+   "x": 0.5,
    "y": 0.885,
    "font": "C:/Windows/Fonts/corbelb.ttf",
    "color": [
@@ -86,7 +86,7 @@
   {
    "text": "HOTTER THAN\nSOME STARS",
    "size": 64,
-   "x": 0.465,
+   "x": 0.5,
    "y": 0.825,
    "font": "C:/Windows/Fonts/corbelb.ttf",
    "color": [
@@ -102,7 +102,7 @@
   {
    "text": "DAYSIDE  ≈4,600 K",
    "size": 51,
-   "x": 0.465,
+   "x": 0.5,
    "y": 0.85,
    "font": "C:/Windows/Fonts/corbelb.ttf",
    "color": [
@@ -118,7 +118,7 @@
   {
    "text": "NIGHTSIDE  ≈2,600 K",
    "size": 51,
-   "x": 0.465,
+   "x": 0.5,
    "y": 0.85,
    "font": "C:/Windows/Fonts/corbelb.ttf",
    "color": [
@@ -129,12 +129,12 @@
    "fade": 10,
    "outline": 3,
    "start": 694,
-   "length": 315
+   "length": 171
   },
   {
    "text": "4.5 μm brightness temperature",
    "size": 27,
-   "x": 0.465,
+   "x": 0.5,
    "y": 0.795,
    "font": "C:/Windows/Fonts/segoeui.ttf",
    "fade": 10,
@@ -144,12 +144,12 @@
     0.9
    ],
    "start": 367,
-   "length": 642
+   "length": 498
   },
   {
    "text": "DAY / HYDROGEN DISSOCIATION",
    "size": 34,
-   "x": 0.465,
+   "x": 0.5,
    "y": 0.88,
    "font": "C:/Windows/Fonts/corbelb.ttf",
    "fade": 10,
@@ -159,12 +159,12 @@
     0.55
    ],
    "start": 1027,
-   "length": 582
+   "length": 324
   },
   {
    "text": "NIGHT / RECOMBINATION",
    "size": 34,
-   "x": 0.465,
+   "x": 0.5,
    "y": 0.88,
    "font": "C:/Windows/Fonts/corbelb.ttf",
    "fade": 10,
@@ -173,13 +173,13 @@
     0.8,
     0.55
    ],
-   "start": 1627,
-   "length": 582
+   "start": 1747,
+   "length": 462
   },
   {
-   "text": "MODEL-BASED ILLUSTRATION",
-   "size": 26,
-   "x": 0.465,
+   "text": "MODEL-BASED ILLUSTRATION\nDOTS SAMPLE ELECTRON DENSITY / NOT TO SCALE",
+   "size": 23,
+   "x": 0.5,
    "y": 0.805,
    "font": "C:/Windows/Fonts/segoeui.ttf",
    "fade": 0,
@@ -194,7 +194,7 @@
   {
    "text": "ONE YEAR  ≈36 HOURS",
    "size": 45,
-   "x": 0.465,
+   "x": 0.5,
    "y": 0.87,
    "font": "C:/Windows/Fonts/corbelb.ttf",
    "fade": 10,
@@ -209,7 +209,7 @@
   {
    "text": "NOMINAL SCALE · 1 ORBIT = 8 s",
    "size": 26,
-   "x": 0.465,
+   "x": 0.5,
    "y": 0.805,
    "font": "C:/Windows/Fonts/segoeui.ttf",
    "fade": 0,
@@ -224,7 +224,7 @@
   {
    "text": "1.94 × JUPITER'S RADIUS",
    "size": 42,
-   "x": 0.465,
+   "x": 0.5,
    "y": 0.87,
    "font": "C:/Windows/Fonts/corbelb.ttf",
    "fade": 10,
@@ -239,7 +239,7 @@
   {
    "text": "RING = PLANET LOCATOR",
    "size": 24,
-   "x": 0.465,
+   "x": 0.5,
    "y": 0.34,
    "font": "C:/Windows/Fonts/segoeui.ttf",
    "fade": 0,
@@ -254,7 +254,7 @@
   {
    "text": "KELT-9b / ULTRA-HOT GAS GIANT",
    "size": 32,
-   "x": 0.465,
+   "x": 0.5,
    "y": 0.87,
    "font": "C:/Windows/Fonts/corbelb.ttf",
    "fade": 10,
@@ -265,13 +265,106 @@
    ],
    "start": 2887,
    "length": 360
+  },
+  {
+   "text": "TOWARD THE NIGHTSIDE",
+   "size": 34,
+   "x": 0.5,
+   "y": 0.88,
+   "font": "C:/Windows/Fonts/corbelb.ttf",
+   "color": [
+    0.7,
+    0.9,
+    1
+   ],
+   "fade": 10,
+   "outline": 3,
+   "start": 1363,
+   "length": 372
+  },
+  {
+   "text": "H₂  →  2 H",
+   "size": 52,
+   "x": 0.5,
+   "y": 0.72,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "color": [
+    0.7,
+    0.9,
+    1
+   ],
+   "fade": 10,
+   "outline": 3,
+   "start": 1027,
+   "length": 582
+  },
+  {
+   "text": "2 H  →  H₂",
+   "size": 52,
+   "x": 0.5,
+   "y": 0.72,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "color": [
+    0.7,
+    0.9,
+    1
+   ],
+   "fade": 10,
+   "outline": 3,
+   "start": 1627,
+   "length": 582
+  },
+  {
+   "text": "INTO THE ATMOSPHERE",
+   "size": 38,
+   "x": 0.5,
+   "y": 0.85,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "color": [
+    0.8,
+    0.85,
+    0.95
+   ],
+   "fade": 10,
+   "start": 871,
+   "length": 138
+  },
+  {
+   "text": "ILLUSTRATIVE MAGNIFICATION",
+   "size": 25,
+   "x": 0.5,
+   "y": 0.795,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "color": [
+    0.8,
+    0.85,
+    0.95
+   ],
+   "fade": 10,
+   "start": 871,
+   "length": 138
+  },
+  {
+   "text": "RADIUS COMPARISON / SAME SCALE",
+   "size": 25,
+   "x": 0.5,
+   "y": 0.805,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "color": [
+    0.8,
+    0.85,
+    0.95
+   ],
+   "fade": 10,
+   "start": 2611,
+   "length": 258
   }
  ],
  "captions": {
   "size": 59,
-  "x": 0.465,
+  "x": 0.5,
   "y": 0.255,
-  "wrap": 0.75,
+  "wrap": 0.7,
   "font": "C:/Windows/Fonts/corbelb.ttf",
   "outline": 7,
   "color": [
