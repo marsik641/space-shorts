@@ -232,6 +232,19 @@ def main(ep_path):
                    f"{len(cues.get('risers', []))} risers")
 
     # шрифты и оверлеи
+    text_styles = [("caption_style", ep.get("caption_style", {}))]
+    for lang, overlays in ep.get("overlays", {}).items():
+        text_styles += [(f"overlays.{lang}[{i}]", o) for i, o in enumerate(overlays)]
+    shifted = [f"{label}: x={style.get('x')}" for label, style in text_styles
+               if style.get("align", "CENTER") == "CENTER"
+               and abs(style.get("x", 0.5) - 0.5) > 0.001
+               and not style.get("intentional_offset", False)]
+    if shifted:
+        rep.warn("текст с CENTER смещён от центра кадра: " + "; ".join(shifted[:3])
+                 + ("; …" if len(shifted) > 3 else "")
+                 + ". По умолчанию x=0.5; для осознанной подписи — intentional_offset=true")
+    else:
+        rep.ok("центрированный текст: x=0.5 (явные композиционные исключения учтены)")
     fonts = [("caption_style", ep.get("caption_style", {}).get("font"))]
     ov = ep.get("overlays", {})
     for lang in langs:

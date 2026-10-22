@@ -15,7 +15,7 @@
   {"shot": "v5", "frames": 600},
   {"shot": "v6", "frames": 630}
  ],
- "caption_style": {"size": 66, "x": 0.465, "y": 0.30, "wrap": 0.76, "font": "C:/Windows/Fonts/seguisb.ttf",
+ "caption_style": {"size": 66, "x": 0.5, "y": 0.30, "wrap": 0.70, "font": "C:/Windows/Fonts/seguisb.ttf",
                    "outline": 8, "color": [1.0, 1.0, 1.0]},
  "overlays": {
   "en": [
