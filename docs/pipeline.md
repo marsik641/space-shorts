@@ -25,10 +25,11 @@
 
 ## Этап 0. GPU занят?
 
-Перед любым запуском Blender, TTS, music/mix: если есть `out/RENDER.lock` или в процессах `blender.exe`
-(`tasklist //FI "IMAGENAME eq blender.exe"` в Git Bash) — **только текстовая работа** (факты, сценарий, `system.py`,
-код шотов, `publish_en.md`). Превью, TTS и музыку — в очередь; пользователю — ETA текущего рендера
-(`docs/timings.md`). Один Blender за раз.
+Все Blender/TTS/music/mix выполняет общая постоянная очередь (`docs/render_queue.md`). Чат отправляет
+`submit preview … --with-tts` или, после одобрения, `submit final … --approved 'контекст одобрения'` и продолжает
+текстовую работу. Один Blender на ПК, два ПК обслуживаются независимо. Снимок фиксирует код и входы из нужной
+рабочей копии; другие чаты могут править свои сцены. Прямые команды ниже описывают отдельные операции;
+для запуска из чатов используется очередь.
 
 ## Этап 1. `/next-video` — варианты следующего ролика
 
@@ -64,9 +65,10 @@ Claude читает `docs/channel.md` (серии, темы, отметки ✅)
 **Ты получаешь сообщение по шаблону `docs/approval.md` и отвечаешь: «ок» или правки.** После «ок» — до конца без
 вопросов, кроме случаев остановки из `docs/approval.md`.
 
-6. **Рендер.** ПК два — этот и rinat-pc; свободный выбирается перед стартом (`docs/remote_render.md`, «Два ПК: какой
-   свободен»). На rinat-pc — `tools/remote_render.py start` + `pull --watch`. Здесь — `bash tools/render_episode.sh episodes/<ep>/shots_9x16.py v1 … vN` — в фоне, с докачкой,
-   пишет `out/RENDER.lock` (CPU не грузить параллельно). Время — по `docs/timings.md` (ep001 60 с ≈ 6 ч на RTX 3060, расчёт — `docs/timings.md`).
+6. **Рендер.** `python tools/render_queue.py submit final episodes/<ep>/episode.json --approved 'одобрение из чата'`.
+   Заранее готовы cue-лист и `publish_en.md`. Очередь выбирает свободный ПК, фиксирует его за эпизодом и выполняет
+   финал порциями по 120 кадров; между ними проходят приоритетные превью. Продолжает шаги 7–10 без присутствия модели.
+   Статус — `python tools/render_queue.py status --json`. Время — по `docs/timings.md` с учётом повторной сборки сцен.
    Все кадры здесь — `tools/framecheck.py` (см. «QA»): PASS до звука и сборки.
 7. **Звук.** `tools/tts.py` (Kokoro) → `tools/cues.py` (удары и подъёмы, см. «Музыка по событиям»)
    → `tools/music.py` → `tools/mix.py` (−14 LUFS, true-peak ≤ −1 dBTP).

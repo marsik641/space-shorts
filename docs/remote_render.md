@@ -1,5 +1,10 @@
 # Рендер на другом ПК (по ssh)
 
+**Новые задания отправляются через `tools/render_queue.py`** — `docs/render_queue.md`. Очередь сама отправляет
+изолированный снимок и забирает кадры; ручной выбор ПК, `push` и `pull --watch` не нужны. Этот документ сохраняет
+настройку SSH/ПК и диагностику старого транспорта. `start` теперь ставит кадры в очередь и требует явные
+`--ep EP --approved 'одобрение из чата'`. Статус новой очереди — `render_queue.py status`.
+
 Финальный рендер можно гнать на чужом ПК: этот ПК свободен, кадры по сети приходят сюда, дальше конвейер как
 обычно (звук, монтаж, QA, пакет). Инструменты: `tools/remote_render.py` (здесь), `tools/remote/agent.py` (там),
 `tools/remote/setup_remote_pc.ps1` (разовая настройка того ПК).
@@ -86,7 +91,7 @@ python tools/remote_render.py free     # последняя строка: FREE r
 
 ```bash
 python tools/remote_render.py setup --host <user>@<100.x.y.z>   # папка D:/orbitfall (--root); код + ассеты, проверка
-python tools/remote_render.py start                                 # все шоты последнего эпизода, в фоне там
+python tools/remote_render.py start --ep EP --approved 'одобрение из чата' # кадры явного эпизода через очередь
 python tools/remote_render.py status                                # кадры там/здесь, ошибки, оценка времени
 python tools/remote_render.py pull --watch                          # каждые 5 мин забирает кадры; все — framecheck
 python tools/remote_render.py stop                                  # остановить (докачка: start продолжит)

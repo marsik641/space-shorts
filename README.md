@@ -12,6 +12,12 @@
 
 Рендер — Blender 5.2 Cycles (OptiX, RTX 3060). Вся сборка — скриптами, без ручной работы в Blender.
 
+**Несколько чатов → общая очередь двух ПК:** `tools/render_queue.py submit preview …` для подготовки;
+после одобрения — `submit final … --approved '…'` до мастера, машинного QA и пакета. Очередь продолжает без
+открытого чата, фиксирует код каждого задания и пропускает превью между порциями финала. Команды и ограничения —
+[docs/render_queue.md](docs/render_queue.md). Прямые команды быстрого старта ниже — справочник отдельных операций;
+в работе чаты используют очередь.
+
 ## Структура
 
 | Папка | Что внутри |
@@ -46,7 +52,7 @@ python tools/check_episode.py episodes/ep001_psr_b1257/episode.json
 "/d/Blender/blender.exe" -b --factory-startup -P episodes/ep001_psr_b1257/shots_9x16.py -- v4 preview 1,480,960
 
 # 3. финальный рендер шотов (с докачкой)
-bash tools/render_episode.sh episodes/ep001_psr_b1257/shots_9x16.py v1 v2 v3 v4 v5 v6
+bash tools/render_episode.sh episodes/ep001_psr_b1257/shots_9x16.py v1 v2 v3 v4 v5 v6 --approved 'одобрение из чата'
 
 # 4. звук: озвучка -> музыка -> сведение
 A=out/ep001_psr_b1257/9x16/audio
