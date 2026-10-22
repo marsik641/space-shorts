@@ -1,0 +1,18 @@
+{
+  "title": "How Euclid discovered comet C/2026 S1",
+  "duration_s": 59.5,
+  "caption_max_chars": 26,
+  "voices": {"en": {"engine": "kokoro", "voice": "af_heart", "speed": 0.98, "lang": "en-us"}},
+  "segments": [
+    {"at": 0.25, "shot": "v1", "en": "A telescope built to map the dark Universe just discovered a comet. Here is how.", "en_cap": "A telescope built to map|the dark Universe|just discovered a comet.|Here is how."},
+    {"at": 6.7, "shot": "v2", "en": "Euclid holds the distant stars steady. But a nearby object keeps moving.", "en_cap": "Euclid holds the distant|stars steady.|But a nearby object|keeps moving."},
+    {"at": 12.0, "shot": "v2", "en": "Over a long exposure, that motion paints a short streak of light.", "en_cap": "Over a long exposure,|that motion paints|a short streak of light."},
+    {"at": 16.25, "shot": "v3", "en": "Search software flagged the stretched shape, hiding among countless distant points of light.", "en_cap": "Search software flagged|the stretched shape,|hiding among countless|distant points of light."},
+    {"at": 24.2, "shot": "v4", "en": "The team predicted where the same object should appear in other images.", "en_cap": "The team predicted where|the same object should|appear in other images."},
+    {"at": 29.3, "shot": "v4", "en": "They found it in sixteen exposures, across five different fields of view.", "en_cap": "They found it in|16 exposures, across|5 different fields|of view."},
+    {"at": 34.25, "shot": "v5", "en": "A fuzzy cloud around the object revealed dust and gas: the signature of an active comet.", "en_cap": "A fuzzy cloud around|the object revealed|dust and gas:|the signature of|an active comet."},
+    {"at": 42.2, "shot": "v6", "en": "It matched no known comet or asteroid. Ground-based follow-up helped confirm a new comet.", "en_cap": "It matched no known|comet or asteroid.|Ground-based follow-up|helped confirm|a new comet."},
+    {"at": 51.2, "shot": "v7", "en": "Meet C twenty twenty-six S one, Euclid.", "en_cap": "Meet C/2026 S1,|Euclid."},
+    {"at": 55.1, "shot": "v7", "en": "Hidden in plain sight, until its motion gave it away.", "en_cap": "Hidden in plain sight,|until its motion|gave it away."}
+  ]
+}

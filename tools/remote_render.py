@@ -6,7 +6,8 @@
     python tools/remote_render.py check                                    окружение там: Blender, GPU, шрифты, диск
     python tools/remote_render.py start  [--ep EP] [--shots v1,v2] [--device OPTIX]
     python tools/remote_render.py status [--ep EP]
-    python tools/remote_render.py pull   [--ep EP] [--watch] [--every 300] забрать готовые кадры (с проверкой PNG)
+    python tools/remote_render.py pull   [--ep EP] [--watch] [--every 300] забрать готовые кадры (с проверкой PNG;
+                                                                           все пришли — tools/framecheck.py, FAIL → код 1)
     python tools/remote_render.py stop
     python tools/remote_render.py free                                     какой ПК свободен (этот / удалённый)
 
@@ -269,7 +270,12 @@ def cmd_pull(a):
               + ", ".join(f"{s} {len(local_done(ep, s))}/{exp[s]}" for s in shots)
               + f"; там рендер {'идёт' if st['running'] else 'не идёт'}")
         if complete:
-            print("OK: все кадры здесь")
+            print("OK: все кадры здесь — framecheck (сбои рендера по скачкам размера PNG):", flush=True)
+            fc = [sys.executable, os.path.join(REPO, "tools", "framecheck.py"),
+                  os.path.join(REPO, "episodes", ep, "episode.json")] + (["--shots", a.shots] if a.shots else [])
+            if subprocess.run(fc).returncode:
+                sys.exit("framecheck FAIL: кадры из строк RERENDER удалить здесь и там, start (докачка) и pull "
+                         "(или перерендерить здесь) — docs/remote_render.md")
             return
         if not a.watch:
             return

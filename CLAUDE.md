@@ -74,8 +74,9 @@
   воспроизводимость монтажа), `publish_en.md`. Выход — `out/epNNN_<slug>/9x16/`, пакет — `out/epNNN_<slug>/release/`.
 - Номер и slug: `NNN = max(episodes/ep*) + 1`, трёхзначный, не переиспользуется (и у брошенных эпизодов).
   slug — `[a-z0-9_]`, ≤ 16 символов, по каталожному имени (`psr_j1748`, `trappist1`, `sgr_a`): лимит путей 260.
-- Перед превью и перед финалом — `tools/check_episode.py <episode.json>`. После сборки — `tools/qa.py <episode.json> en`
-  (PASS/FAIL), релиз — `tools/release.py`.
+- Перед превью и перед финалом — `tools/check_episode.py <episode.json>`. После рендера, до сборки —
+  `tools/framecheck.py <episode.json>` (битые кадры и разовые сбои рендера по скачкам размера PNG, PASS/FAIL).
+  После сборки — `tools/qa.py <episode.json> en` (PASS/FAIL), релиз — `tools/release.py`.
 - Перед финальным рендером — превью (pct=50) всех шотов + контактный лист (`tools/contact.py`) + проверка
   вспышек/таймингов (`tools/cues.py`: FLASH/EVENT из логов → pulses/risers). После — `editkit/verify_video.py`
   по ключевым кадрам (через `tools/qa.py`).

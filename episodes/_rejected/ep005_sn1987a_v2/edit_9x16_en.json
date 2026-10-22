@@ -1,0 +1,252 @@
+{
+ "output": "out/ep006_sn1987a/9x16/ep006_sn1987a_en_1080x1920p60.mp4",
+ "format": {
+  "w": 1080,
+  "h": 1920,
+  "fps": 60
+ },
+ "video": {
+  "bitrate_kbps": 40000,
+  "preset": "BEST"
+ },
+ "crossfade": 0,
+ "fade_in": 0,
+ "fade_out": 0,
+ "tail": 0,
+ "shots": [
+  {
+   "dir": "out/ep006_sn1987a/9x16/frames/v1",
+   "frames": 270,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep006_sn1987a/9x16/frames/v2",
+   "frames": 450,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep006_sn1987a/9x16/frames/v3",
+   "frames": 480,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep006_sn1987a/9x16/frames/v4",
+   "frames": 600,
+   "first": 1,
+   "xfade_in": 0
+  },
+  {
+   "dir": "out/ep006_sn1987a/9x16/frames/v5",
+   "frames": 600,
+   "first": 1,
+   "xfade_in": 0
+  }
+ ],
+ "titles": [
+  {
+   "text": "Scientific visualization",
+   "size": 26,
+   "x": 0.45,
+   "y": 0.915,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "color": [
+    0.7,
+    0.76,
+    0.82
+   ],
+   "fade": 0,
+   "start": 1,
+   "length": 2400
+  },
+  {
+   "text": "SN 1987A",
+   "size": 64,
+   "x": 0.45,
+   "y": 0.855,
+   "font": "C:/Windows/Fonts/segoeuisl.ttf",
+   "fade": 12,
+   "start": 13,
+   "length": 246
+  },
+  {
+   "text": "1987 · artist's reconstruction",
+   "size": 30,
+   "x": 0.45,
+   "y": 0.85,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "fade": 10,
+   "start": 277,
+   "length": 420
+  },
+  {
+   "text": "Shock breakout · time compressed",
+   "size": 28,
+   "x": 0.45,
+   "y": 0.85,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "fade": 10,
+   "start": 727,
+   "length": 450
+  },
+  {
+   "text": "Years later · time compressed",
+   "size": 28,
+   "x": 0.45,
+   "y": 0.85,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "fade": 10,
+   "start": 1207,
+   "length": 570
+  },
+  {
+   "text": "Remnant · artist's reconstruction",
+   "size": 28,
+   "x": 0.45,
+   "y": 0.85,
+   "font": "C:/Windows/Fonts/segoeui.ttf",
+   "fade": 10,
+   "start": 1807,
+   "length": 444
+  }
+ ],
+ "captions": {
+  "size": 60,
+  "x": 0.455,
+  "y": 0.245,
+  "wrap": 0.73,
+  "font": "C:/Windows/Fonts/seguisb.ttf",
+  "outline": 6,
+  "color": [
+   0.94,
+   0.96,
+   1.0
+  ],
+  "items": [
+   {
+    "text": "This ring glows where",
+    "start": 13,
+    "end": 79
+   },
+   {
+    "text": "a dead star's",
+    "start": 79,
+    "end": 121
+   },
+   {
+    "text": "shock wave struck.",
+    "start": 121,
+    "end": 186
+   },
+   {
+    "text": "In 1987, a blue",
+    "start": 289,
+    "end": 377
+   },
+   {
+    "text": "supergiant exploded.",
+    "start": 377,
+    "end": 499
+   },
+   {
+    "text": "We detected neutrinos",
+    "start": 511,
+    "end": 587
+   },
+   {
+    "text": "before we saw its light.",
+    "start": 587,
+    "end": 681
+   },
+   {
+    "text": "Then the shock broke",
+    "start": 736,
+    "end": 789
+   },
+   {
+    "text": "through the surface.",
+    "start": 789,
+    "end": 848
+   },
+   {
+    "text": "The star's wreckage",
+    "start": 863,
+    "end": 931
+   },
+   {
+    "text": "kept racing outward.",
+    "start": 931,
+    "end": 1008
+   },
+   {
+    "text": "Years later, it slammed",
+    "start": 1213,
+    "end": 1294
+   },
+   {
+    "text": "into gas the star",
+    "start": 1294,
+    "end": 1355
+   },
+   {
+    "text": "had shed long",
+    "start": 1355,
+    "end": 1403
+   },
+   {
+    "text": "before it died.",
+    "start": 1403,
+    "end": 1464
+   },
+   {
+    "text": "Dense knots heated up",
+    "start": 1573,
+    "end": 1647
+   },
+   {
+    "text": "and blazed.",
+    "start": 1647,
+    "end": 1694
+   },
+   {
+    "text": "Telescopes reveal",
+    "start": 1813,
+    "end": 1874
+   },
+   {
+    "text": "the tangled wreckage.",
+    "start": 1874,
+    "end": 1956
+   },
+   {
+    "text": "The star is gone.",
+    "start": 2059,
+    "end": 2134
+   },
+   {
+    "text": "Its shock wave is",
+    "start": 2148,
+    "end": 2200
+   },
+   {
+    "text": "still changing the",
+    "start": 2200,
+    "end": 2256
+   },
+   {
+    "text": "space around it.",
+    "start": 2256,
+    "end": 2312
+   }
+  ]
+ },
+ "audio": [
+  {
+   "path": "out/ep006_sn1987a/9x16/audio/mix_en.wav",
+   "start": 1,
+   "volume": 1.0
+  }
+ ]
+}

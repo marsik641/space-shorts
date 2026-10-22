@@ -88,7 +88,7 @@ python tools/remote_render.py free     # последняя строка: FREE r
 python tools/remote_render.py setup --host <user>@<100.x.y.z>   # папка D:/orbitfall (--root); код + ассеты, проверка
 python tools/remote_render.py start                                 # все шоты последнего эпизода, в фоне там
 python tools/remote_render.py status                                # кадры там/здесь, ошибки, оценка времени
-python tools/remote_render.py pull --watch                          # каждые 5 мин забирает готовые кадры
+python tools/remote_render.py pull --watch                          # каждые 5 мин забирает кадры; все — framecheck
 python tools/remote_render.py stop                                  # остановить (докачка: start продолжит)
 python tools/remote_render.py free                                  # какой ПК свободен: этот или удалённый
 ```
@@ -115,4 +115,8 @@ python tools/remote_render.py free                                  # какой
 - Сбой ep002 (18.10.2026): на rinat-pc в v1 подряд 31 кадр (135–165) вышел с другим светом — антенна без солнечного
   света, ошибок в логе нет, время кадра обычное. Повторный рендер тех же кадров здесь — чистый, т. е. сбой разовый
   (GPU/драйвер), не сцена. Ловится по скачку размера PNG на ±5 % при фоне ±0,1 % (так же видны задуманные события —
-  «восход» v2 f27). После скачивания кадров с другого ПК — проверять скачки размеров по всем шотам до сборки.
+  «восход» v2 f27). Найден был только глазами на мастере — пришлось пересобирать.
+- Поэтому `pull`, когда пришли все кадры (с `--shots` — этих шотов), сам запускает `tools/framecheck.py`
+  (`docs/pipeline.md`, «QA»): целость PNG и скачки размера вне FLASH/EVENT из забранных логов. FAIL — код выхода 1
+  и строки `RERENDER <шот>: a–b`: удалить эти кадры здесь и в `D:\orbitfall\out\<ep>\9x16\frames\<шот>\`, `start`
+  (докачка дорендерит только их) и `pull`; кадры, удалённые только здесь, `pull` скачает обратно те же битые.

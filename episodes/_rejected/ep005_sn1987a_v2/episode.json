@@ -1,0 +1,20 @@
+{
+ "id": "ep006_sn1987a",
+ "object": "SN 1987A",
+ "series": "DEAD STARS",
+ "format_name": "9x16",
+ "format": {"w": 1080, "h": 1920, "fps": 60},
+ "languages": ["en"],
+ "output": "out/{id}/9x16/{id}_{lang}_1080x1920p60.mp4",
+ "video": {"bitrate_kbps": 40000, "preset": "BEST"},
+ "edit": [{"shot": "v1", "frames": 270}, {"shot": "v2", "frames": 450}, {"shot": "v3", "frames": 480}, {"shot": "v4", "frames": 600}, {"shot": "v5", "frames": 600}],
+ "caption_style": {"size": 60, "x": 0.455, "y": 0.245, "wrap": 0.73, "font": "C:/Windows/Fonts/seguisb.ttf", "outline": 6, "color": [0.94, 0.96, 1.0]},
+ "overlays": {"en": [
+  {"text": "Scientific visualization", "size": 26, "x": 0.45, "y": 0.915, "font": "C:/Windows/Fonts/segoeui.ttf", "color": [0.7, 0.76, 0.82], "fade": 0},
+  {"text": "SN 1987A", "start_s": 0.2, "length_s": 4.1, "size": 64, "x": 0.45, "y": 0.855, "font": "C:/Windows/Fonts/segoeuisl.ttf", "fade": 12},
+  {"text": "1987 · artist's reconstruction", "start_s": 4.6, "length_s": 7.0, "size": 30, "x": 0.45, "y": 0.85, "font": "C:/Windows/Fonts/segoeui.ttf", "fade": 10},
+  {"text": "Shock breakout · time compressed", "start_s": 12.1, "length_s": 7.5, "size": 28, "x": 0.45, "y": 0.85, "font": "C:/Windows/Fonts/segoeui.ttf", "fade": 10},
+  {"text": "Years later · time compressed", "start_s": 20.1, "length_s": 9.5, "size": 28, "x": 0.45, "y": 0.85, "font": "C:/Windows/Fonts/segoeui.ttf", "fade": 10},
+  {"text": "Remnant · artist's reconstruction", "start_s": 30.1, "length_s": 7.4, "size": 28, "x": 0.45, "y": 0.85, "font": "C:/Windows/Fonts/segoeui.ttf", "fade": 10}
+ ]}
+}

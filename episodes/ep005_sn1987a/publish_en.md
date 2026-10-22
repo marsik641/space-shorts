@@ -1,4 +1,11 @@
-# Ep. 005 — publish pack (EN, The Universe Inside Out)
+# DO NOT PUBLISH — REJECTED · Ep. 005
+
+**БРАК — НЕ ВЫПУСКАЕМ.** Решение владельца 20.10.2026: обе версии SN 1987A отклонены,
+тема отложена. Этот мастер и публикационные тексты сохранены только как архив.
+QA PASS ниже — исторический технический результат, не одобрение выпуска.
+Вторая версия: `episodes/_rejected/ep005_sn1987a_v2/` (прежнее имя `ep006_sn1987a`).
+
+## Архив публикационного пакета (EN, The Universe Inside Out)
 
 Channel: **The Universe Inside Out** (`@TheUniverseInsideOut`) · series **DEAD STARS** · release folder: `out/ep005_sn1987a/release/`
 

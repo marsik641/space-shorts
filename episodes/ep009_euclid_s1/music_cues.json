@@ -1,0 +1,12 @@
+{
+  "duration_s": 59.5, "seed": 92026, "key": "Ab", "bpm": 82,
+  "chords": [[0, "Abmaj7#11"], [6.5, "Ebmaj9"], [16, "Fm9"], [24, "Bb9"], [34, "Dbmaj9"], [42, "Cm7"], [51, "Eb7sus4"], [55, "Abmaj9"]],
+  "pulses": [], "risers": [], "fade_out_s": 0.65,
+  "layers": {"drone": 0.7, "pad": 0.85, "sparks": 0.55, "wind": 0.25, "pulse": 0.65, "riser": 0.45},
+  "pad": {"harmonics": 4, "rolloff": 2.1, "detune": 0.08, "attack": 1.2, "release": 2.2, "octave": -1},
+  "sparks": {"mode": "lydian", "every_s": 1.45, "octave": 0},
+  "pulse": {"freq_hz": 830.61, "sweep_hz": 70, "decay": 13, "click": 0.08, "length_s": 0.3},
+  "riser": {"length_s": 1.0}, "reverb": {"seconds": 2.5, "mix": 0.28},
+  "grid": {"subdiv": 2, "offset_s": 0, "pulses": false},
+  "note": "Ля-бемоль лидийский: сухие короткие сигналы выделения и подтверждения, не звук кометы. pulses/risers заполнить cues.py по EVENT после превью; сейчас звук не генерировать."
+}

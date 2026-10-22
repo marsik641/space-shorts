@@ -1,0 +1,19 @@
+{
+  "id": "ep009_euclid_s1", "object": "C/2026 S1 (Euclid)", "series": "FRESH FROM ORBIT",
+  "format_name": "9x16", "format": {"w": 1080, "h": 1920, "fps": 60},
+  "languages": ["en"], "output": "out/{id}/9x16/{id}_{lang}_1080x1920p60.mp4",
+  "video": {"bitrate_kbps": 40000, "preset": "BEST"},
+  "edit": [
+    {"shot": "v1", "frames": 390}, {"shot": "v2", "frames": 570},
+    {"shot": "v3", "frames": 480}, {"shot": "v4", "frames": 600},
+    {"shot": "v5", "frames": 480}, {"shot": "v6", "frames": 540},
+    {"shot": "v7", "frames": 510}
+  ],
+  "caption_style": {"size": 58, "x": 0.465, "y": 0.245, "wrap": 0.76, "font": "C:/Windows/Fonts/seguisb.ttf", "outline": 7, "color": [0.93, 0.97, 1.0], "shadow": true},
+  "overlays": {"en": [
+    {"text": "Scientific visualization · real data", "size": 29, "y": 0.955, "x": 0.465, "font": "C:/Windows/Fonts/segoeui.ttf", "color": [0.64, 0.74, 0.86], "fade": 0},
+    {"text": "C/2026 S1 · EUCLID", "start_s": 0.2, "length_s": 5.5, "size": 52, "x": 0.465, "y": 0.885, "font": "C:/Windows/Fonts/seguisb.ttf", "fade": 10},
+    {"text": "Observation reconstruction", "start_s": 0, "length_s": 59.5, "size": 28, "x": 0.465, "y": 0.815, "font": "C:/Windows/Fonts/segoeui.ttf", "color": [0.45, 0.65, 0.81], "fade": 0},
+    {"text": "EUCLID'S FIRST NEW COMET", "start_s": 51.2, "length_s": 3.6, "size": 43, "x": 0.465, "y": 0.885, "font": "C:/Windows/Fonts/seguisb.ttf", "fade": 10}
+  ]}
+}

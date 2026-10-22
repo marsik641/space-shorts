@@ -1,0 +1,16 @@
+{
+ "title": "SN 1987A — the explosion is still unfolding",
+ "duration_s": 40.0,
+ "caption_max_chars": 26,
+ "voices": {"en": {"engine": "kokoro", "voice": "af_heart", "speed": 0.98, "lang": "en-us"}},
+ "segments": [
+  {"at": 0.2, "shot": "v1", "en": "This ring glows where a dead star's shock wave struck.", "en_cap": "This ring glows where | a dead star's | shock wave struck."},
+  {"at": 4.8, "shot": "v2", "en": "In nineteen eighty-seven, a blue supergiant exploded.", "en_cap": "In 1987, a blue | supergiant exploded."},
+  {"at": 8.5, "shot": "v2", "en": "We detected neutrinos before we saw its light.", "en_cap": "We detected neutrinos | before we saw its light."},
+  {"at": 12.25, "shot": "v3", "en": "Then the shock broke through the surface. The star's wreckage kept racing outward.", "en_cap": "Then the shock broke | through the surface. | The star's wreckage | kept racing outward."},
+  {"at": 20.2, "shot": "v4", "en": "Years later, it slammed into gas the star had shed long before it died.", "en_cap": "Years later, it slammed | into gas the star | had shed long | before it died."},
+  {"at": 26.2, "shot": "v4", "en": "Dense knots heated up and blazed.", "en_cap": "Dense knots heated up | and blazed."},
+  {"at": 30.2, "shot": "v5", "en": "Telescopes reveal the tangled wreckage.", "en_cap": "Telescopes reveal | the tangled wreckage."},
+  {"at": 34.3, "shot": "v5", "en": "The star is gone. Its shock wave is still changing the space around it.", "en_cap": "The star is gone. | Its shock wave is | still changing the | space around it."}
+ ]
+}
