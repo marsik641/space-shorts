@@ -156,8 +156,10 @@ class QueueTests(unittest.TestCase):
         snap = self.store.home / job["id"]
         (snap / "orphan.py").write_text(
             "import pathlib,os,time\npathlib.Path('child.pid').write_text(str(os.getpid()))\ntime.sleep(30)\n", encoding="utf-8")
-        code = ("import sys,json;sys.path.insert(0,sys.argv[1]);from queue_runtime import execute;"
-                "execute(sys.argv[2],json.loads(sys.argv[3]),sys.executable,sys.argv[4])")
+        # patch из setUp в подпроцесс не проходит: глушим поиск blender.exe там же, иначе живой рендер даёт Busy
+        code = ("import sys,json;sys.path.insert(0,sys.argv[1]);import queue_runtime as rt;"
+                "rt.blender_processes=lambda:False;"
+                "rt.execute(sys.argv[2],json.loads(sys.argv[3]),sys.executable,sys.argv[4])")
         proc = subprocess.Popen([sys.executable, "-c", code, str(ROOT / "tools"), str(snap),
                                  json.dumps(json.loads(job["plan"])[0]), str(self.store.home)],
                                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
