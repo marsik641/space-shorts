@@ -25,10 +25,11 @@
 
 ## Этап 0. GPU занят?
 
-Перед любым запуском Blender, TTS, music/mix: если есть `out/RENDER.lock` или в процессах `blender.exe`
-(`tasklist //FI "IMAGENAME eq blender.exe"` в Git Bash) — **только текстовая работа** (факты, сценарий, `system.py`,
-код шотов, `publish_en.md`). Превью, TTS и музыку — в очередь; пользователю — ETA текущего рендера
-(`docs/timings.md`). Один Blender за раз.
+Все Blender/TTS/music/mix выполняет общая постоянная очередь (`docs/render_queue.md`). Чат отправляет
+`submit preview … --with-tts` или, после одобрения, `submit final … --approved 'контекст одобрения'` и продолжает
+текстовую работу. Один Blender на ПК, два ПК обслуживаются независимо. Снимок фиксирует код и входы из нужной
+рабочей копии; другие чаты могут править свои сцены. Прямые команды ниже описывают отдельные операции;
+для запуска из чатов используется очередь.
 
 ## Этап 1. `/next-video` — варианты следующего ролика
 
@@ -50,12 +51,12 @@ Claude читает `docs/channel.md` (серии, темы, отметки ✅)
 ## Этап 2. `/make-video` — производство
 
 1. **Факты.** Исследователь + фактчекер (`.claude/workflows.md`) → `episodes/epNNN_<slug>/facts.md` с источниками.
-2. **Сценарий.** `script_9x16.json`: 8–10 фраз EN с якорями во времени (цель 59–59,5 с, жёсткий максимум 60,0 с;
-   120–150 слов); факт-крючок в первой фразе, «likely/probably» для гипотез, финальная фраза подводит к петле.
+2. **Сценарий.** `script_9x16.json`: 6–8 фраз EN с якорями во времени (цель 29–29,5 с, жёсткий максимум 30,0 с;
+   55–70 слов); факт-крючок в первой фразе, «likely/probably» для гипотез, финальная фраза подводит к петле.
 3. **Сцена.** `system.py` (реальные параметры → экранный масштаб, `spacekit.orbits.video_periods`),
    новые модули в `spacekit/` при необходимости (+ регресс эп. 001 через `tools/imgdiff.py`).
 4. **Шоты.** `shots_9x16.py` (5–7 шотов, 1080×1920 60 fps), `episode.json` (порядок, оверлеи, стиль субтитров;
-   Σ кадров монтажа ≤ 3599 — AAC округляет звук вверх, 3600 кадров → 60,011 с).
+   Σ кадров монтажа ≤ 1799 — AAC округляет звук вверх, 1800 кадров → дорожка 30,016 с).
    Проверка согласованности: `python tools/check_episode.py episodes/<ep>/episode.json`.
 5. **Превью.** Все шоты pct=50 по одному Blender за раз → `tools/contact.py` → контактный лист + черновая озвучка
    `tools/tts.py` (нет OVERRUN). Cue-лист музыки — уже по логам превью (FLASH печатается и там, см. ниже).
@@ -64,9 +65,10 @@ Claude читает `docs/channel.md` (серии, темы, отметки ✅)
 **Ты получаешь сообщение по шаблону `docs/approval.md` и отвечаешь: «ок» или правки.** После «ок» — до конца без
 вопросов, кроме случаев остановки из `docs/approval.md`.
 
-6. **Рендер.** ПК два — этот и rinat-pc; свободный выбирается перед стартом (`docs/remote_render.md`, «Два ПК: какой
-   свободен»). На rinat-pc — `tools/remote_render.py start` + `pull --watch`. Здесь — `bash tools/render_episode.sh episodes/<ep>/shots_9x16.py v1 … vN` — в фоне, с докачкой,
-   пишет `out/RENDER.lock` (CPU не грузить параллельно). Время — по `docs/timings.md` (ep001 60 с ≈ 6 ч на RTX 3060, расчёт — `docs/timings.md`).
+6. **Рендер.** `python tools/render_queue.py submit final episodes/<ep>/episode.json --approved 'одобрение из чата'`.
+   Заранее готовы cue-лист и `publish_en.md`. Очередь выбирает свободный ПК, фиксирует его за эпизодом и выполняет
+   финал порциями по 120 кадров; между ними проходят приоритетные превью. Продолжает шаги 7–10 без присутствия модели.
+   Статус — `python tools/render_queue.py status --json`. Время — по `docs/timings.md` с учётом повторной сборки сцен.
    Все кадры здесь — `tools/framecheck.py` (см. «QA»): PASS до звука и сборки.
 7. **Звук.** `tools/tts.py` (Kokoro) → `tools/cues.py` (удары и подъёмы, см. «Музыка по событиям»)
    → `tools/music.py` → `tools/mix.py` (−14 LUFS, true-peak ≤ −1 dBTP).
@@ -166,7 +168,7 @@ python tools/qa.py episodes/<ep>/episode.json en
 ```
 
 Считает кадры QA по `edit` (2, каждая склейка ±1, середины шотов, последний), вызывает verify_video,
-проверяет 1080×1920 / 60 fps / кадры == Σ edit.frames − Σ xfade_in / ≤ 60,0 с и печатает PASS или FAIL. Глазами по PNG: субтитры в
+проверяет 1080×1920 / 60 fps / кадры == Σ edit.frames − Σ xfade_in / ≤ 30,0 с и печатает PASS или FAIL. Глазами по PNG: субтитры в
 безопасных зонах, читаемость, петля (последний кадр ≈ первый), нет чёрных/битых кадров. Ручной вызов verify_video:
 `"/d/Blender/blender.exe" -b --factory-startup -P editkit/verify_video.py -- out/<ep>/9x16/<ep>_en_1080x1920p60.mp4 out/<ep>/9x16/qa_en <кадры из строки FRAMES: python tools/qa.py episodes/<ep>/episode.json en --dry-run>`.
 

@@ -2,7 +2,7 @@
 
 Rules — `docs/publish.md`. Release folder — `out/epNNN_slug/release/`.
 
-**Files:** `epNNN_slug_en_1080x1920p60.mp4` (master, upload this; 59.x s, 1080×1920, 60 fps) and this file.
+**Files:** `epNNN_slug_en_1080x1920p60.mp4` (master, upload this; 29.x s, 1080×1920, 60 fps) and this file.
 
 ## Title (pick one)
 1. **<fact hook, ≤ 60 chars>** ← recommended

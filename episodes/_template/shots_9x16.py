@@ -8,7 +8,7 @@
     Лог превью — перенаправлять в out/<ep>/9x16/logs/prev_<шот>.log (по нему tools/cues.py). Один Blender за раз.
 
 Монтаж (кадры @60): перечислить шоты, длительность и смысл каждого; где склейки и на каких событиях.
-SHOTS = episode.json → edit[].frames (проверяет tools/check_episode.py); цель Σ ≤ 3570 кадров (59,5 с).
+SHOTS = episode.json → edit[].frames (проверяет tools/check_episode.py); цель Σ ≤ 1770 кадров (29,5 с).
 Шоты с пульсаром: S.report_flash(<шот>, NS.key_pulse_flash(...)); другие события для музыки — print строки
 «EVENT <шот> <имя>: кадр[:значение], ...» (формат — docstring tools/cues.py).
 fps — из сцены (C.scene_fps(sc)), не из S.OPT. Общие параметры — system.py (from system import ...).
@@ -32,7 +32,7 @@ from spacekit import sky as SKY
 EP = os.path.basename(HERE)
 OUT = os.path.join(C.OUT, EP, "9x16")
 S.OPT.update(fmt="9x16", fps=60)
-SHOTS = {"v1": 300, "v2": 600, "v3": 720, "v4": 720, "v5": 600, "v6": 630}  # = episode.json edit
+SHOTS = {"v1": 180, "v2": 300, "v3": 360, "v4": 300, "v5": 300, "v6": 330}  # 1770 кадров
 sph = CAM.sph
 
 
